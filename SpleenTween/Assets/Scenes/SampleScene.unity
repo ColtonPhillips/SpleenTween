@@ -253,6 +253,7 @@ MonoBehaviour:
   to: 5
   duration: 3
   currentValue: 0
+  easing: 27
 --- !u!4 &242166098
 Transform:
   m_ObjectHideFlags: 0
