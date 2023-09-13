@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using SpleenTween;
 
@@ -13,6 +11,7 @@ public class TestPlayer : MonoBehaviour
 
     private void Start()
     {
-        Spleen.Tween(gameObject, from, to, duration, (val) => currentValue = val).OnComplete(() => print("COMPLETED"));
+        Spleen.Float(gameObject, from, to, duration, (val) => currentValue = val, Ease.Linear).OnComplete(() => print("COMPLETED"));
+        Spleen.Position(gameObject, transform.position, new Vector3(2, 2, 0), duration, Ease.OutSine);
     }
 }

@@ -5,48 +5,82 @@ namespace SpleenTween
 {
     public class TweenInstance : MonoBehaviour
     {
-        Action<float> onUpdate;
-        public Action onComplete;
+        //LATER -- MAKE BASE CLASS TWEEN WITH VIRTUAL VOID ONUPDATE, THEN MAKE DIFFERENT CHILD CLASSES WITH OVERRIDE UPDATES FOR EASIER AND FASTER CODE
 
-        float from;
-        float to;
+        Action<float> _onUpdate;
 
-        float currentTime;
-        float duration;
+        public Action _onComplete;
 
-        float currentValue;
+        float _from;
+        float _to;
+        float _value;
 
-        public void InjectConstructor(float from, float to, float duration, Action<float> onUpdate)
+        Vector3 _from3;
+        Vector3 _to3;
+
+        float _currentTime;
+        float _duration;
+
+        Ease _easing;
+        TweenType _tweenType;
+
+        public TweenInstance OnComplete(Action action)
         {
-            this.from = from;
-            this.to = to;
-            this.duration = duration;
-            this.onUpdate = onUpdate;
+            _onComplete = action;
+            return this;
         }
 
         void Update()
         {
-            currentTime += Time.deltaTime;
+            _currentTime += Time.deltaTime;
 
-            float lerpValue = currentTime / duration;
+            float lerpValue = _currentTime / _duration;
             lerpValue = Mathf.Clamp01(lerpValue);
 
-            currentValue = Mathf.Lerp(from, to, lerpValue);
+            float easeValue = Easing.EasingValue(_easing, lerpValue);
 
-            onUpdate?.Invoke(currentValue);
-
-            if (currentTime >= duration)
+            switch (_tweenType)
             {
-                onComplete?.Invoke();
+                case TweenType.Float: UpdateFloat(easeValue); break;
+                case TweenType.Position: UpdatePosition(easeValue); break;
+            }
+
+            if (_currentTime >= _duration)
+            {
+                _onComplete?.Invoke();
                 Destroy(this);
             }
         }
 
-        
-        public TweenInstance OnComplete(Action action)
+
+        void UpdateFloat(float easeValue)
         {
-            this.onComplete = action;
-            return this;
+            _value = Mathf.Lerp(_from, _to, easeValue);
+            _onUpdate?.Invoke(_value);
+        }
+        void UpdatePosition(float easeValue)
+        {
+            transform.position = Vector3.Lerp(_from3, _to3, easeValue);
+        }
+
+        public void InjectFloat(float from, float to, float duration, Action<float> onUpdate, Ease easing)
+        {
+            _from = from;
+            _to = to;
+            _duration = duration;
+            _onUpdate = onUpdate;
+            _easing = easing;
+
+            _tweenType = TweenType.Float;
+        }
+        public void InjectPosition(Vector3 from, Vector3 to, float duration, Ease easing)
+        {
+            _from3 = from;
+            _to3 = to;
+            _duration = duration;
+            _easing = easing;
+
+            _tweenType = TweenType.Position;
         }
     }
 }
