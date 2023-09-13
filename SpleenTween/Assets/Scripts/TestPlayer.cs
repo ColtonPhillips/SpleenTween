@@ -22,6 +22,8 @@ public class TestPlayer : MonoBehaviour
             //Spleen.PositionZ(gameObject, from, to, duration, easing);
             //Spleen.Scale(gameObject, Vector3.one * from, Vector3.one * to, duration, easing);
             //Spleen.ScaleX(gameObject, from, to, duration, easing);
+
+            Spleen.Tween.Float(from, to, duration, Ease.InBounce, (value) => currentValue = value).OnComplete(() => print("asd"));
         }
     }
 }

@@ -1,31 +1,24 @@
 using System;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace SpleenTween
 {
-    public class Tween : MonoBehaviour
+    public class Tween
     {
         public Action _onComplete;
 
-        float _currentTime;
-        float _duration;
+        protected float _currentTime;
+        protected float _duration;
 
-        Ease _easing;
+        protected Ease _easing;
+        protected float _easeValue;
 
-        void Update()
+        public Tween(float duration, Ease easing)
         {
-            _currentTime += Time.deltaTime;
-
-            float easeValue = Easing.EasingValue(_easing, LerpValue(_currentTime, _duration));
-            UpdateValue(easeValue);
-
-            if (_currentTime >= _duration)
-            {
-                UpdateValue(1);
-                _onComplete?.Invoke();
-
-                Destroy(this);
-            }
+            this._duration = duration;
+            this._easing = easing;
         }
 
         public Tween OnComplete(Action action)
@@ -40,13 +33,27 @@ namespace SpleenTween
             return lerpValue;
         }
 
-        public void InjectBase(float duration, Ease easing)
+        public bool Tweening()
         {
-            this._duration = duration;
-            this._easing = easing;
+            _currentTime += Time.deltaTime;
+            _easeValue = Easing.EasingValue(_easing, LerpValue(_currentTime, _duration));
+
+            UpdateValue();
+            if (_currentTime >= _duration)
+            {
+                _easeValue = 1;
+                UpdateValue();
+
+                _onComplete?.Invoke();
+                return false;
+            }
+            return true;
         }
 
-        public virtual void UpdateValue(float easeValue) { }
+        public virtual void UpdateValue()
+        {
+            
+        }
     }
 }
 
