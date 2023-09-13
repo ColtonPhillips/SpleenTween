@@ -16,13 +16,12 @@ namespace SpleenTween
 
         float currentValue;
 
-        public void InjectConstructor(float from, float to, float duration, Action<float> onUpdate, Action onComplete)
+        public void InjectConstructor(float from, float to, float duration, Action<float> onUpdate)
         {
             this.from = from;
             this.to = to;
             this.duration = duration;
             this.onUpdate = onUpdate;
-            this.onComplete = onComplete;
         }
 
         void Update()
@@ -41,6 +40,13 @@ namespace SpleenTween
                 onComplete?.Invoke();
                 Destroy(this);
             }
+        }
+
+        
+        public TweenInstance OnComplete(Action action)
+        {
+            this.onComplete = action;
+            return this;
         }
     }
 }

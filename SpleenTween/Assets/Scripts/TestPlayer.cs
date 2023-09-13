@@ -13,6 +13,6 @@ public class TestPlayer : MonoBehaviour
 
     private void Start()
     {
-        Spleen.Tween(gameObject, from, to, duration, (val) => currentValue = val);
+        Spleen.Tween(gameObject, from, to, duration, (val) => currentValue = val).OnComplete(() => print("COMPLETED"));
     }
 }
