@@ -23,7 +23,7 @@ public class TestPlayer : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.T))
         {
             transform.localScale = Vector3.zero;
-            SpleenTween.ScaleX(transform, 0, 3, 2, Ease.OutBounce).OnLerpValue(.25f, () => SpleenTween.ScaleY(transform, transform.localScale.y, 2f, 2f, Ease.OutSine));
+            //SpleenTween.ScaleX(transform, 0, 3, 2, Ease.OutBounce).OnLerpValue(.25f, () => SpleenTween.ScaleY(transform, transform.localScale.y, 2f, 2f, Ease.OutSine));
 
             SpleenTween.Value(from, to, duration, Ease.InCubic, (val) => currentValue = val);
 
