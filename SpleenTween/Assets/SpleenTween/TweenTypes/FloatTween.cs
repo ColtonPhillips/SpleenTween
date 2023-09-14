@@ -5,14 +5,15 @@ using UnityEngine;
 
 namespace SpleenTween
 {
-    public class TweenFloat : Tween
+    public class FloatTween : Tween
     {
-        Action<float> _onUpdate;
-        float _value;
-        float _from;
-        float _to;
+        readonly Action<float> _onUpdate;
+        readonly float _from;
+        readonly float _to;
 
-        public TweenFloat(float from, float to, float duration, Ease easing, Action<float> onUpdate) : base(duration, easing)
+        float _value;
+
+        public FloatTween(float from, float to, float duration, Ease easing, Action<float> onUpdate) : base(duration, easing)
         {
             this._from = from;
             this._to = to;

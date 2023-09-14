@@ -1,5 +1,6 @@
 using UnityEngine;
 using SpleenTween;
+using UnityEngine.SceneManagement;
 
 public class TestPlayer : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class TestPlayer : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.S)) SceneManager.LoadScene("SwitchingTestScene");
+        if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         if (Input.GetKeyDown(KeyCode.T))
         {
             //Spleen.Float(gameObject, from, to, duration, (val) => currentValue = val, easing);
@@ -23,7 +26,9 @@ public class TestPlayer : MonoBehaviour
             //Spleen.Scale(gameObject, Vector3.one * from, Vector3.one * to, duration, easing);
             //Spleen.ScaleX(gameObject, from, to, duration, easing);
 
-            Spleen.Tween.Float(from, to, duration, Ease.InBounce, (value) => currentValue = value).OnComplete(() => print("asd"));
+            
+            for(int i = 0; i < 1000; i++)
+                Spleen.TweenFloat(from, to, duration, Ease.InBounce, (value) => currentValue = value);
         }
     }
 }
