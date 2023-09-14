@@ -15,7 +15,7 @@ namespace Spleen
         readonly List<Tween> Tweens = new();
 
         public static SpleenTween Instance;
-
+        
         #region Initialization
         private void Awake()
         {
@@ -57,9 +57,9 @@ namespace Spleen
             for (int i = Tweens.Count - 1; i >= 0; i--)
             {
                 Tween tween = Tweens[i];
-                if(tween.GetType().IsSubclassOf(typeof(TweenTransform)))
+                if(tween.GetType().IsSubclassOf(typeof(TweenGameObject)))
                 {
-                    TweenTransform tweenTransform = (TweenTransform)tween;
+                    TweenGameObject tweenTransform = (TweenGameObject)tween;
                     if (tweenTransform._target == null)
                     {
                         Tweens.RemoveAt(i);
@@ -99,25 +99,25 @@ namespace Spleen
         #endregion
 
         #region Position
-        public static Tween Position(Transform target, Vector3 from, Vector3 to, float duration, Ease easing)
+        public static Tween Position(GameObject target, Vector3 from, Vector3 to, float duration, Ease easing)
         {
             Position tween = new(target, from, to, duration, easing);
             Instance.Tweens.Add(tween);
             return tween;
         }
-        public static Tween PositionX(Transform target, float from, float to, float duration, Ease easing)
+        public static Tween PositionX(GameObject target, float from, float to, float duration, Ease easing)
         {
             PositionX tween = new(target, from, to, duration, easing);
             Instance.Tweens.Add(tween);
             return tween;
         }
-        public static Tween PositionY(Transform target, float from, float to, float duration, Ease easing)
+        public static Tween PositionY(GameObject target, float from, float to, float duration, Ease easing)
         {
             PositionY tween = new(target, from, to, duration, easing);
             Instance.Tweens.Add(tween);
             return tween;
         }
-        public static Tween PositionZ(Transform target, float from, float to, float duration, Ease easing)
+        public static Tween PositionZ(GameObject target, float from, float to, float duration, Ease easing)
         {
             PositionZ tween = new(target, from, to, duration, easing);
             Instance.Tweens.Add(tween);
@@ -126,25 +126,25 @@ namespace Spleen
         #endregion
 
         #region Scale
-        public static Tween Scale(Transform target, Vector3 from, Vector3 to, float duration, Ease easing)
+        public static Tween Scale(GameObject target, Vector3 from, Vector3 to, float duration, Ease easing)
         {
             Scale tween = new(target, from, to, duration, easing);
             Instance.Tweens.Add(tween);
             return tween;
         }
-        public static Tween ScaleX(Transform target, float from, float to, float duration, Ease easing)
+        public static Tween ScaleX(GameObject target, float from, float to, float duration, Ease easing)
         {
             ScaleX tween = new(target, from, to, duration, easing);
             Instance.Tweens.Add(tween);
             return tween;
         }
-        public static Tween ScaleY(Transform target, float from, float to, float duration, Ease easing)
+        public static Tween ScaleY(GameObject target, float from, float to, float duration, Ease easing)
         {
             ScaleY tween = new(target, from, to, duration, easing);
             Instance.Tweens.Add(tween);
             return tween;
         }
-        public static Tween ScaleZ(Transform target, float from, float to, float duration, Ease easing)
+        public static Tween ScaleZ(GameObject target, float from, float to, float duration, Ease easing)
         {
             ScaleZ tween = new(target, from, to, duration, easing);
             Instance.Tweens.Add(tween);

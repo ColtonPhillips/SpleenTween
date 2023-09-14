@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace Spleen
 {
-    public class PositionY : TweenTransform
+    public class PositionY : TweenGameObject
     {
         readonly float _from;
         readonly float _to;
 
         float _value;
 
-        public PositionY(Transform target, float from, float to, float duration, Ease easing) : base(target, duration, easing)
+        public PositionY(GameObject target, float from, float to, float duration, Ease easing) : base(target, duration, easing)
         {
             _target = target;
             _from = from;

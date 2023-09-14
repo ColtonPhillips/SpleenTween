@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace Spleen
 {
-    public class ScaleZ : TweenTransform
+    public class ScaleZ : TweenGameObject
     {
         readonly float _from;
         readonly float _to;
 
         float _value;
 
-        public ScaleZ(Transform target, float from, float to, float duration, Ease easing) : base(target, duration, easing)
+        public ScaleZ(GameObject target, float from, float to, float duration, Ease easing) : base(target, duration, easing)
         {
             _target = target;
             _from = from;

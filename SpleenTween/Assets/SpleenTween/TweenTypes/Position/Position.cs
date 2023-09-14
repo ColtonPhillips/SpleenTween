@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace Spleen
 {
-    public class Position : TweenTransform
+    public class Position : TweenGameObject
     {
         readonly Vector3 _from;
         readonly Vector3 _to;
 
-        public Position(Transform target, Vector3 from, Vector3 to, float duration, Ease easing) : base(target, duration, easing)
+        public Position(GameObject target, Vector3 from, Vector3 to, float duration, Ease easing) : base(target, duration, easing)
         {
             _target = target;
             _from = from;
@@ -21,7 +21,7 @@ namespace Spleen
 
         public override void UpdateValue()
         {
-            _target.position = Vector3.LerpUnclamped(_from, _to, _easeValue);
+            _target.transform.position = Vector3.LerpUnclamped(_from, _to, _easeValue);
         }
     }
 }

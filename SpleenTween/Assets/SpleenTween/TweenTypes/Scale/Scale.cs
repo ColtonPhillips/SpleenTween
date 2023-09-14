@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace Spleen
 {
-    public class Scale : TweenTransform
+    public class Scale : TweenGameObject
     {
         readonly Vector3 _from;
         readonly Vector3 _to;
 
-        public Scale(Transform target, Vector3 from, Vector3 to, float duration, Ease easing) : base(target, duration, easing)
+        public Scale(GameObject target, Vector3 from, Vector3 to, float duration, Ease easing) : base(target, duration, easing)
         {
             _target = target;
             _from = from;
@@ -21,7 +21,7 @@ namespace Spleen
 
         public override void UpdateValue()
         {
-            _target.localScale = Vector3.LerpUnclamped(_from, _to, _easeValue);
+            _target.transform.localScale = Vector3.LerpUnclamped(_from, _to, _easeValue);
         }
     }
 }

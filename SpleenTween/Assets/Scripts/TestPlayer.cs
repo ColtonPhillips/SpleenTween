@@ -36,6 +36,6 @@ public class TestPlayer : MonoBehaviour
     {
 
         target = -target;
-        Tween tween = SpleenTween.PositionX(transform, transform.position.x, target, 1f, easing).OnComplete(BackForth);
+        Tween tween = SpleenTween.PositionX(gameObject, transform.position.x, target, 1f, easing).OnComplete(BackForth);
     }
 }
