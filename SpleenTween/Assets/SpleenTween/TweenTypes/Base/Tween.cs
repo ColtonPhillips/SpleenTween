@@ -14,8 +14,8 @@ namespace SpleenTween
 
         public Tween(float duration, Ease easing)
         {
-            this._duration = duration;
-            this._easing = easing;
+            _duration = duration;
+            _easing = easing;
         }
         public Tween OnComplete(Action onComplete)
         {

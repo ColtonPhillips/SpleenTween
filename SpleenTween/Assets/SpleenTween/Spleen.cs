@@ -2,28 +2,36 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 namespace SpleenTween
 {
     public class Spleen : MonoBehaviour
     {
-        public List<FloatTween> _activeTweensFloat = new();
+        //active tweens
+        readonly List<FloatTween> _floatTweens = new();
+        readonly List<PositionTween> _positionTweens = new();
+
         public static Spleen Instance;
         private void Awake()
         {
             if (Instance != null && Instance != this)
-                Destroy(this);
-            else
-                Instance = this;
+            {
+                Destroy(gameObject);
+                return;
+            }
+            Instance = this;
+            DontDestroyOnLoad(Instance);
         }
 
         private void OnEnable() => SceneManager.activeSceneChanged += StopAllTweens;
         private void OnDisable() => SceneManager.activeSceneChanged -= StopAllTweens;
 
         //reset all lists when scene loads to prevent tweens continuing after scene load
-        void StopAllTweens(Scene scene1, Scene scene2)
+        void StopAllTweens(Scene s1, Scene s2)
         {
-            _activeTweensFloat.Clear();
+            _floatTweens.Clear();
+            _positionTweens.Clear();
         }
 
         //create a new instance when the game starts
@@ -31,29 +39,48 @@ namespace SpleenTween
         static void Initialize()
         {
             Instance = new GameObject("SpleenTweenManager").AddComponent<Spleen>();
-            DontDestroyOnLoad(Instance);
         }
 
         private void Update()
         {
-            for (int i = _activeTweensFloat.Count - 1; i >= 0; i--)
+            foreach(FloatTween tween in _floatTweens.Reverse<FloatTween>())
             {
-                if (!_activeTweensFloat[i].Tweening())
+                if (!tween.Tweening())
+                    _floatTweens.Remove(tween);
+            }
+
+            foreach (PositionTween tween in _positionTweens.Reverse<PositionTween>())
+            {
+                if (tween._target == null)
                 {
-                    _activeTweensFloat.RemoveAt(i);
+                    _positionTweens.Remove(tween);
+                    continue;
                 }
+                if (!tween.Tweening())
+                    _positionTweens.Remove(tween);
             }
         }
 
-        Tween Float(float from, float to, float duration, Ease easing, Action<float> onUpdate)
+        Tween AddFloatTween(float from, float to, float duration, Ease easing, Action<float> onUpdate)
         {
             FloatTween tween = new(from, to, duration, easing, onUpdate);
-            _activeTweensFloat.Add(tween);
+            _floatTweens.Add(tween);
             return tween;
         }
-        public static void TweenFloat(float from, float to, float duration, Ease easing, Action<float> updateCallback)
+        public static Tween TweenFloat(float from, float to, float duration, Ease easing, Action<float> onUpdate)
         {
-            Instance.Float(from, to, duration, easing, updateCallback);
+            return Instance.AddFloatTween(from, to, duration, easing, onUpdate);
+        }
+
+        Tween AddPositionTween(Transform target, Vector3 from, Vector3 to, float duration, Ease easing)
+        {
+            PositionTween tween = new(target, from, to, duration, easing);
+            _positionTweens.Add(tween);
+            return tween;
+        }
+        public static Tween TweenPosition(Transform target, Vector3 from, Vector3 to, float duration, Ease easing)
+        {
+            return Instance.AddPositionTween(target, from, to, duration, easing);
         }
     }
 }

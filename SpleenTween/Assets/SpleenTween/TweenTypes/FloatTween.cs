@@ -15,11 +15,11 @@ namespace SpleenTween
 
         public FloatTween(float from, float to, float duration, Ease easing, Action<float> onUpdate) : base(duration, easing)
         {
-            this._from = from;
-            this._to = to;
-            this._duration = duration;
-            this._easing = easing;
-            this._onUpdate = onUpdate;
+            _from = from;
+            _to = to;
+            _duration = duration;
+            _easing = easing;
+            _onUpdate = onUpdate;
         }
 
         public override void UpdateValue()
