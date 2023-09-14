@@ -1,5 +1,5 @@
 using UnityEngine;
-using SpleenTween;
+using Spleen;
 using UnityEngine.SceneManagement;
 
 public class TestPlayer : MonoBehaviour
@@ -7,6 +7,8 @@ public class TestPlayer : MonoBehaviour
     [SerializeField] float from;
     [SerializeField] float to;
     [SerializeField] float duration;
+
+    [SerializeField] int iterations;
 
     [SerializeField] float currentValue;
 
@@ -20,11 +22,7 @@ public class TestPlayer : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         if (Input.GetKeyDown(KeyCode.T))
         {
-            for(int i = 0; i < 1; i++)
-                Spleen.TweenPosition(transform, Vector3.one * from, Vector3.one * to, duration, Ease.InBounce).OnComplete(() =>
-                {
-                    Spleen.TweenPosition(targetTest, Vector3.one * from, -Vector3.one * to, duration, Ease.InElastic);
-                });
+            SpleenTween.PositionX(transform, 0, -5, 2f, easing);
         }
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace SpleenTween
+namespace Spleen
 {
     public class Tween
     {
@@ -27,7 +27,6 @@ namespace SpleenTween
         {
             _currentTime += Time.deltaTime;
             _easeValue = Easing.EasingValue(_easing, GetLerpValue(_currentTime, _duration));
-            UpdateValue();
 
             if (_currentTime >= _duration)
             {
@@ -36,6 +35,10 @@ namespace SpleenTween
                 _onComplete?.Invoke();
 
                 return false;
+            }
+            else
+            {
+                UpdateValue();
             }
             return true;
         }

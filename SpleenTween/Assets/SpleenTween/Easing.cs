@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace SpleenTween
+namespace Spleen
 {
     public enum Ease
     {

@@ -3,15 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SpleenTween
+namespace Spleen
 {
-    public class PositionTween : Tween
+    public class Position : TweenTransform
     {
-        public readonly Transform _target;
         readonly Vector3 _from;
         readonly Vector3 _to;
 
-        public PositionTween(Transform target, Vector3 from, Vector3 to, float duration, Ease easing) : base(duration, easing)
+        public Position(Transform target, Vector3 from, Vector3 to, float duration, Ease easing) : base(target, duration, easing)
         {
             _target = target;
             _from = from;

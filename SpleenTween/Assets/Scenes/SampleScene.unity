@@ -208,9 +208,10 @@ MonoBehaviour:
   from: 1
   to: 5
   duration: 3
+  iterations: 1
   currentValue: 0
   targetTest: {fileID: 502540743}
-  easing: 27
+  easing: 19
 --- !u!4 &242166098
 Transform:
   m_ObjectHideFlags: 0
