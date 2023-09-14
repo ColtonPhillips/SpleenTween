@@ -10,6 +10,7 @@ namespace Spleen
         public Action _onComplete;
 
         protected float _currentTime;
+        protected float _delay;
         protected float _easeValue;
 
         public Tween(float duration, Ease easing)
@@ -22,10 +23,26 @@ namespace Spleen
             _onComplete = onComplete;
             return this;
         }
+        public Tween Delay(float delay)
+        {
+            _delay = delay;
+            return this;
+        }
 
         public bool Tweening()
         {
             _currentTime += Time.deltaTime;
+
+            if(_delay != 0)
+            {
+                if(_currentTime >= _delay)
+                {
+                    _delay = 0;
+                    _currentTime = Time.deltaTime;
+                }
+                return true;
+            }
+
             float lerpValue = GetLerpValue(_currentTime, _duration);
             _easeValue = Easing.EasingValue(_easing, lerpValue);
                 
