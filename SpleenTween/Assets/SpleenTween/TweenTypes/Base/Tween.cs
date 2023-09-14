@@ -38,7 +38,8 @@ namespace Spleen
                 if(_currentTime >= _delay)
                 {
                     _delay = 0;
-                    _currentTime = Time.deltaTime;
+                    _currentTime = 0;
+                    Tweening();
                 }
                 return true;
             }
