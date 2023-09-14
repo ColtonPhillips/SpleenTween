@@ -13,7 +13,6 @@ namespace Spleen
         [ReadOnly] public int ActiveTweensCount;
 
         readonly List<Tween> Tweens = new();
-        readonly List<TweenTransform> TransformTweens = new();
 
         public static SpleenTween Instance;
 
@@ -36,7 +35,6 @@ namespace Spleen
         void StopAllTweens(Scene s1, Scene s2)
         {
             Tweens.Clear();
-            TransformTweens.Clear();
         }
         //create a new instance when the game starts
         [RuntimeInitializeOnLoadMethod]
@@ -49,9 +47,8 @@ namespace Spleen
         private void Update()
         {
             RunTweens();
-            RunTransformTweens();
 
-            ActiveTweensCount = Tweens.Count + TransformTweens.Count;
+            ActiveTweensCount = Tweens.Count;
         }
 
         #region TweenRunners
@@ -60,142 +57,100 @@ namespace Spleen
             for (int i = Tweens.Count - 1; i >= 0; i--)
             {
                 Tween tween = Tweens[i];
+                if(tween.GetType().IsSubclassOf(typeof(TweenTransform)))
+                {
+                    TweenTransform tweenTransform = (TweenTransform)tween;
+                    if (tweenTransform._target == null)
+                    {
+                        Tweens.RemoveAt(i);
+                        continue;
+                    }
+                }
+
                 if (!tween.Tweening())
                 {
                     Tweens.RemoveAt(i);
                 }
             }
         }
-        void RunTransformTweens()
+
+        public static void StopTween(Tween tween)
         {
-            for (int i = TransformTweens.Count - 1; i >= 0; i--)
-            {
-                TweenTransform tween = TransformTweens[i];
-                if (tween._target == null)
-                {
-                    TransformTweens.RemoveAt(i);
-                }
-                else if (!tween.Tweening())
-                {
-                    TransformTweens.RemoveAt(i);
-                }
-            }
+            Instance.Tweens.Remove(tween);
         }
+
         #endregion
 
         #region TweenFunctions
 
         #region Value
-        Tween AddValue(float from, float to, float duration, Ease easing, Action<float> onUpdate)
-        {
-            Value tween = new(from, to, duration, easing, onUpdate);
-            Tweens.Add(tween);
-            return tween;
-        }
-        #endregion
-
-        #region Position
-        Tween AddPosition(Transform target, Vector3 from, Vector3 to, float duration, Ease easing)
-        {
-            Position tween = new(target, from, to, duration, easing);
-            TransformTweens.Add(tween);
-            return tween;
-        }
-        Tween AddPositionX(Transform target, float from, float to, float duration, Ease easing)
-        {
-            PositionX tween = new(target, from, to, duration, easing);
-            TransformTweens.Add(tween);
-            return tween;
-        }
-        Tween AddPositionY(Transform target, float from, float to, float duration, Ease easing)
-        {
-            PositionY tween = new(target, from, to, duration, easing);
-            TransformTweens.Add(tween);
-            return tween;
-        }
-        Tween AddPositionZ(Transform target, float from, float to, float duration, Ease easing)
-        {
-            PositionZ tween = new(target, from, to, duration, easing);
-            TransformTweens.Add(tween);
-            return tween;
-        }
-        #endregion
-
-        #region Scale
-        Tween AddScale(Transform target, Vector3 from, Vector3 to, float duration, Ease easing)
-        {
-            Scale tween = new(target, from, to, duration, easing);
-            TransformTweens.Add(tween);
-            return tween;
-        }
-        Tween AddScaleX(Transform target, float from, float to, float duration, Ease easing)
-        {
-            ScaleX tween = new(target, from, to, duration, easing);
-            TransformTweens.Add(tween);
-            return tween;
-        }
-        Tween AddScaleY(Transform target, float from, float to, float duration, Ease easing)
-        {
-            ScaleY tween = new(target, from, to, duration, easing);
-            TransformTweens.Add(tween);
-            return tween;
-        }
-        Tween AddScaleZ(Transform target, float from, float to, float duration, Ease easing)
-        {
-            ScaleZ tween = new(target, from, to, duration, easing);
-            TransformTweens.Add(tween);
-            return tween;
-        }
-
-        #endregion
-
-        #endregion
-
-        #region Helpers
-
-        #region Value
         public static Tween Value(float from, float to, float duration, Ease easing, Action<float> onUpdate)
         {
-            return Instance.AddValue(from, to, duration, easing, onUpdate);
+            Value tween = new(from, to, duration, easing, onUpdate);
+            Instance.Tweens.Add(tween);
+            return tween;
+        }
+        public static Tween Value3(Vector3 from, Vector3 to, float duration, Ease easing, Action<Vector3> onUpdate)
+        {
+            Value3 tween = new(from, to, duration, easing, onUpdate);
+            Instance.Tweens.Add(tween);
+            return tween;
         }
         #endregion
 
         #region Position
         public static Tween Position(Transform target, Vector3 from, Vector3 to, float duration, Ease easing)
         {
-            return Instance.AddPosition(target, from, to, duration, easing);
+            Position tween = new(target, from, to, duration, easing);
+            Instance.Tweens.Add(tween);
+            return tween;
         }
         public static Tween PositionX(Transform target, float from, float to, float duration, Ease easing)
         {
-            return Instance.AddPositionX(target, from, to, duration, easing);
+            PositionX tween = new(target, from, to, duration, easing);
+            Instance.Tweens.Add(tween);
+            return tween;
         }
         public static Tween PositionY(Transform target, float from, float to, float duration, Ease easing)
         {
-            return Instance.AddPositionY(target, from, to, duration, easing);
+            PositionY tween = new(target, from, to, duration, easing);
+            Instance.Tweens.Add(tween);
+            return tween;
         }
         public static Tween PositionZ(Transform target, float from, float to, float duration, Ease easing)
         {
-            return Instance.AddPositionZ(target, from, to, duration, easing);
+            PositionZ tween = new(target, from, to, duration, easing);
+            Instance.Tweens.Add(tween);
+            return tween;
         }
         #endregion
 
         #region Scale
         public static Tween Scale(Transform target, Vector3 from, Vector3 to, float duration, Ease easing)
         {
-            return Instance.AddScale(target, from, to, duration, easing);
+            Scale tween = new(target, from, to, duration, easing);
+            Instance.Tweens.Add(tween);
+            return tween;
         }
         public static Tween ScaleX(Transform target, float from, float to, float duration, Ease easing)
         {
-            return Instance.AddScaleX(target, from, to, duration, easing);
+            ScaleX tween = new(target, from, to, duration, easing);
+            Instance.Tweens.Add(tween);
+            return tween;
         }
         public static Tween ScaleY(Transform target, float from, float to, float duration, Ease easing)
         {
-            return Instance.AddScaleY(target, from, to, duration, easing);
+            ScaleY tween = new(target, from, to, duration, easing);
+            Instance.Tweens.Add(tween);
+            return tween;
         }
         public static Tween ScaleZ(Transform target, float from, float to, float duration, Ease easing)
         {
-            return Instance.AddScaleZ(target, from, to, duration, easing);
+            ScaleZ tween = new(target, from, to, duration, easing);
+            Instance.Tweens.Add(tween);
+            return tween;
         }
+
         #endregion
 
         #endregion

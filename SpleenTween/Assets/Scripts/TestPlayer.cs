@@ -22,12 +22,20 @@ public class TestPlayer : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         if (Input.GetKeyDown(KeyCode.T))
         {
-            transform.localScale = Vector3.zero;
-            //SpleenTween.ScaleX(transform, 0, 3, 2, Ease.OutBounce).OnLerpValue(.25f, () => SpleenTween.ScaleY(transform, transform.localScale.y, 2f, 2f, Ease.OutSine));
+            BackForth();
 
-            SpleenTween.Value(from, to, duration, Ease.InCubic, (val) => currentValue = val);
+            //SpleenTween.Scale(transform, Vector3.zero, Vector3.one * 5, .5f, easing);
 
-            //SpleenTween.PositionX(transform, 0, 5, 2, easing);
+            //SpleenTween.Value(from, to, duration, Ease.InCubic, (val) => currentValue = val);
+            //SpleenTween.Value3(Vector2.zero, Vector2.one * 5, 5f, Ease.InOutElastic, (val) => transform.position = val);
+
         }
+    }
+    float target = 5f;
+    void BackForth()
+    {
+
+        target = -target;
+        Tween tween = SpleenTween.PositionX(transform, transform.position.x, target, 1f, easing).OnComplete(BackForth);
     }
 }

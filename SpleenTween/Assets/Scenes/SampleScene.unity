@@ -211,7 +211,7 @@ MonoBehaviour:
   iterations: 1
   currentValue: 0
   targetTest: {fileID: 0}
-  easing: 0
+  easing: 27
 --- !u!4 &242166098
 Transform:
   m_ObjectHideFlags: 0
