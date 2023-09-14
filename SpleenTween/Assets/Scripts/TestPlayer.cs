@@ -23,6 +23,7 @@ public class TestPlayer : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.T))
         {
             BackForth();
+            //SpleenTween.PositionX(gameObject, transform.position.x, target, 1f, easing).Delay(3).OnComplete(() => print("complete")).Loop(true, 1f);
 
             //SpleenTween.Scale(transform, Vector3.zero, Vector3.one * 5, .5f, easing);
 
@@ -34,8 +35,7 @@ public class TestPlayer : MonoBehaviour
     float target = 5f;
     void BackForth()
     {
-
         target = -target;
-        Tween tween = SpleenTween.PositionX(gameObject, transform.position.x, target, 1f, easing).Delay(2f).OnComplete(BackForth);
+        Tween tween = SpleenTween.PositionX(gameObject, transform.position.x, target, 1f, easing).Delay(1f).OnComplete(BackForth);
     }
 }
