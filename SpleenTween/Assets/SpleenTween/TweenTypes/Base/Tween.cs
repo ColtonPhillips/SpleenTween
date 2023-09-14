@@ -8,6 +8,10 @@ namespace Spleen
         protected float _duration;
         protected Ease _easing;
         public Action _onComplete;
+        public Action _onLerpValue;
+
+        float _lerpValueTrigger;
+        bool _lerpValueTriggered;
 
         protected float _currentTime;
         protected float _easeValue;
@@ -22,12 +26,26 @@ namespace Spleen
             _onComplete = onComplete;
             return this;
         }
+        public Tween OnLerpValue(float lerpValue, Action onLerpValue)
+        {
+            lerpValue = Mathf.Clamp01(lerpValue);
+            _lerpValueTrigger = lerpValue;
+            _onLerpValue = onLerpValue;
+            return this;
+        }
 
         public bool Tweening()
         {
             _currentTime += Time.deltaTime;
-            _easeValue = Easing.EasingValue(_easing, GetLerpValue(_currentTime, _duration));
+            float lerpValue = GetLerpValue(_currentTime, _duration);
+            _easeValue = Easing.EasingValue(_easing, lerpValue);
 
+            if (!_lerpValueTriggered && _currentTime >= _lerpValueTrigger)
+            {
+                _lerpValueTriggered = true;
+                _onLerpValue?.Invoke();
+            }
+                
             if (_currentTime >= _duration)
             {
                 _easeValue = 1;

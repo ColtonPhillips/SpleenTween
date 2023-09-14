@@ -24,7 +24,7 @@ namespace Spleen
         public override void UpdateValue()
         {
             _value = Mathf.LerpUnclamped(_from, _to, _easeValue);
-            _target.transform.localScale = new Vector3(_target.transform.localScale.x, _value, _target.transform.localScale.x);
+            _target.transform.localScale = new Vector3(_target.transform.localScale.x, _target.transform.localScale.y, _value);
         }
     }
 }
