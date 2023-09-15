@@ -22,9 +22,12 @@ public class TestPlayer : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         if (Input.GetKeyDown(KeyCode.T))
         {
-            SpleenTween.PositionX(gameObject, transform.position.x, transform.position.x + 2f, 1f, easing).OnComplete(() => print("asd")).Loop()
-                .Delay(2f, () => SpleenTween.PositionY(gameObject, transform.position.y, transform.position.y + 1, 1f, Ease.OutElastic))
-                .Loop();
+            SpleenTween
+                .PositionX(gameObject, transform.position.x, 2f, 1f, Ease.OutElastic).Loop()
+                .OnComplete(() => SpleenTween.PositionY(gameObject, transform.position.y, 2f, 1f, Ease.OutElastic)
+                .OnComplete(() => SpleenTween.PositionX(gameObject, transform.position.x, -2f, 1f, Ease.OutElastic)
+                .OnComplete(() => SpleenTween.PositionY(gameObject, transform.position.y, -2f, 1f, Ease.OutElastic))));
+                
 
             //SpleenTween.Scale(transform, Vector3.zero, Vector3.one * 5, .5f, easing);
 
