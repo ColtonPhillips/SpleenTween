@@ -6,15 +6,15 @@ using System.Linq;
 using Unity.Collections;
 using System.Collections;
 
-namespace Spleen
+namespace SpleenTween
 {
-    public class SpleenTween : MonoBehaviour
+    public class Spleen : MonoBehaviour
     {
         [ReadOnly] public int ActiveTweensCount;
 
         readonly List<Tween> Tweens = new();
 
-        public static SpleenTween Instance;
+        public static Spleen Instance;
         
         #region Initialization
         private void Awake()
@@ -40,7 +40,7 @@ namespace Spleen
         [RuntimeInitializeOnLoadMethod]
         static void Initialize()
         {
-            Instance = new GameObject("SpleenTweenManager").AddComponent<SpleenTween>();
+            Instance = new GameObject("SpleenTweenManager").AddComponent<Spleen>();
         }
         #endregion
 

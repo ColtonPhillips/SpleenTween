@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Spleen
+namespace SpleenTween
 {
     public class PositionX : TweenGameObject
     {

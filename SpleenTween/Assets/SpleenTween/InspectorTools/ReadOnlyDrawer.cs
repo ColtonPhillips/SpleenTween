@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Spleen
+namespace SpleenTween
 {
     public class ReadOnlyAttribute : PropertyAttribute { }
 

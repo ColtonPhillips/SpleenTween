@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Spleen
+namespace SpleenTween
 {
     public class TweenGameObject : Tween
     {

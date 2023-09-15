@@ -1,5 +1,5 @@
 using UnityEngine;
-using Spleen;
+using SpleenTween;
 using UnityEngine.SceneManagement;
 
 public class TestPlayer : MonoBehaviour
@@ -22,11 +22,11 @@ public class TestPlayer : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         if (Input.GetKeyDown(KeyCode.T))
         {
-            SpleenTween
+            Spleen
                 .PositionX(gameObject, transform.position.x, 2f, 1f, Ease.OutElastic).Loop()
-                .OnComplete(() => SpleenTween.PositionY(gameObject, transform.position.y, 2f, 1f, Ease.OutElastic)
-                .OnComplete(() => SpleenTween.PositionX(gameObject, transform.position.x, -2f, 1f, Ease.OutElastic)
-                .OnComplete(() => SpleenTween.PositionY(gameObject, transform.position.y, -2f, 1f, Ease.OutElastic))));
+                .OnComplete(() => Spleen.PositionY(gameObject, transform.position.y, 2f, 1f, Ease.OutElastic)
+                .OnComplete(() => Spleen.PositionX(gameObject, transform.position.x, -2f, 1f, Ease.OutElastic)
+                .OnComplete(() => Spleen.PositionY(gameObject, transform.position.y, -2f, 1f, Ease.OutElastic))));
                 
 
             //SpleenTween.Scale(transform, Vector3.zero, Vector3.one * 5, .5f, easing);
@@ -40,6 +40,6 @@ public class TestPlayer : MonoBehaviour
     void BackForth()
     {
         target = -target;
-        Tween tween = SpleenTween.PositionX(gameObject, transform.position.x, target, 1f, easing).Delay(1f).OnComplete(BackForth);
+        Tween tween = Spleen.PositionX(gameObject, transform.position.x, target, 1f, easing).Delay(1f).OnComplete(BackForth);
     }
 }

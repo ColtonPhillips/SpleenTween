@@ -5,7 +5,7 @@ using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.Diagnostics;
 
-namespace Spleen
+namespace SpleenTween
 {
     public class Tween
     {
