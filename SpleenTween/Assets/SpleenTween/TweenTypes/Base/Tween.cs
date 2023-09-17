@@ -25,6 +25,9 @@ namespace SpleenTween
         protected float _lerpValue;
 
         protected bool _loop;
+        protected int _loopCount;
+        protected Action _onAllLoopsComplete;
+        bool _loopForever = false;
 
         int _targetLerp = 1;
 
@@ -51,11 +54,27 @@ namespace SpleenTween
             _currentDelay = delay;
             return this;
         }
+
         public Tween Loop(Loop loopType)
         {
+            _loopForever = true;
             _loopType = loopType;
             _loop = true;
-            _onComplete += Restart;
+            return this;
+        }
+        public Tween Loop(Loop loopType, int loopCount)
+        {
+            _loopType = loopType;
+            _loopCount = loopCount;
+            _loop = true;
+            return this;
+        }
+        public Tween Loop(Loop loopType, int loopCount, Action onAllLoopsComplete)
+        {
+            _loopType = loopType;
+            _loopCount = loopCount;
+            _onAllLoopsComplete += onAllLoopsComplete;
+            _loop = true;
             return this;
         }
 
@@ -87,7 +106,19 @@ namespace SpleenTween
 
             if (_currentTime >= _duration)
             {
-                _easeValue = 1;
+                if (!_loopForever && _loopCount <= 0)
+                {
+                    _loop = false;
+                    _onComplete?.Invoke();
+                    _onAllLoopsComplete?.Invoke();
+
+                    _easeValue = _targetLerp;
+                    UpdateValue();
+
+                    return false;
+                }
+
+                _easeValue = _targetLerp;
                 UpdateValue();
                 _currentDelay = _delay;
                 _onComplete?.Invoke();
@@ -98,11 +129,15 @@ namespace SpleenTween
                 {
                     Restart();
 
-                    if (_targetLerp == 1)
-                        _targetLerp = 0;
-                    else if(_targetLerp == 0)
-                        _targetLerp = 1;
-
+                    if(_loopType == SpleenTween.Loop.Reverse || _loopType == SpleenTween.Loop.Yoyo)
+                    {
+                        if (_targetLerp == 1)
+                            _targetLerp = 0;
+                        else if (_targetLerp == 0)
+                            _targetLerp = 1;
+                    }
+                    
+                    _loopCount--;
                     return true;
                 }
             }
