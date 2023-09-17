@@ -7,7 +7,7 @@ namespace SpleenTween
     {
         protected float _duration;
         protected Ease _easing;
-        public Action _onComplete;
+        protected Action _onComplete;
         protected Action _onDelay;
 
         public Action _nullCheck;
@@ -22,7 +22,7 @@ namespace SpleenTween
         protected float _loopDelay;
 
         protected float _easeValue;
-        public float _lerpValue;
+        protected float _lerpValue;
 
         protected bool _loop;
 
@@ -71,7 +71,10 @@ namespace SpleenTween
 
             if (_currentDelay != 0)
             {
-                TriggerDelay();
+                if (_currentTime >= _delay)
+                {
+                    TriggerDelay();
+                }
                 return true;
             }
 
@@ -119,13 +122,10 @@ namespace SpleenTween
 
         void TriggerDelay()
         {
-            if (_currentTime >= _delay)
-            {
-                _onDelay?.Invoke();
-                _currentDelay = 0;
-                Restart();
-                UpdateValue();
-            }
+            _onDelay?.Invoke();
+            _currentDelay = 0;
+            _currentTime = 0;
+            UpdateValue();
         }
 
         public void Restart()

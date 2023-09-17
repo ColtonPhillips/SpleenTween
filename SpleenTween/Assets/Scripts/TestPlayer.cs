@@ -17,13 +17,16 @@ public class TestPlayer : MonoBehaviour
     [SerializeField] Ease easing;
     [SerializeField] Loop loop;
 
+    Tween tween;
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.S)) SceneManager.LoadScene("SwitchingTestScene");
         if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         if (Input.GetKeyDown(KeyCode.T))
         {
-            Spleen.PositionX(transform.gameObject, from, to, duration, easing).Loop(loop);
+            Spleen.StopTween(tween);
+            tween = Spleen.Scale(gameObject, Vector3.one * from, Vector3.one * to, duration, easing).OnComplete(() => print("complete")).Delay(1).Loop(loop);
         }
     }
 }

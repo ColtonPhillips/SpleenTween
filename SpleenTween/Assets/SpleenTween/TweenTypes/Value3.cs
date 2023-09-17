@@ -7,7 +7,7 @@ namespace SpleenTween
 {
     public class Value3 : Tween
     {
-        readonly Action<Vector3> _onUpdate;
+        public Action<Vector3> _onUpdate;
         readonly Vector3 _from;
         readonly Vector3 _to;
 

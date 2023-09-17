@@ -7,7 +7,7 @@ namespace SpleenTween
 {
     public class Value : Tween
     {
-        readonly Action<float> _onUpdate;
+        public Action<float> _onUpdate;
         readonly float _from;
         readonly float _to;
 
