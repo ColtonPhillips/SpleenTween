@@ -2,15 +2,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Linq;
-using Unity.Collections;
-using System.Collections;
 
 namespace SpleenTween
 {
     public class Spleen : MonoBehaviour
     {
-        [ReadOnly] public int ActiveTweensCount;
+        public int ActiveTweensCount;
 
         readonly List<Tween> Tweens = new();
 

@@ -16,7 +16,8 @@ namespace SpleenTween
         protected float _currentTime;
 
         protected float _delay;
-        protected float _currentDelay;
+        protected bool _shouldDelay;
+        protected bool _triggeredDelay;
 
         protected Loop _loopType;
         protected float _loopDelay;
@@ -44,14 +45,18 @@ namespace SpleenTween
         public Tween Delay(float delay)
         {
             _delay = delay;
-            _currentDelay = delay;
+            _shouldDelay = true;
+            _currentTime -= delay;
+            _triggeredDelay = true;
             return this;
         }
         public Tween Delay(float delay, Action onDelay)
         {
             _onDelay = onDelay;
             _delay = delay;
-            _currentDelay = delay;
+            _shouldDelay = true;
+            _currentTime -= delay;
+            _triggeredDelay = true;
             return this;
         }
 
@@ -86,16 +91,18 @@ namespace SpleenTween
                 return false;
             }
 
+            if(_shouldDelay && !_triggeredDelay)
+                TriggerDelay();
+
             _currentTime += Time.deltaTime;
 
-            if (_currentDelay != 0)
-            {
-                if (_currentTime >= _delay)
-                {
-                    TriggerDelay();
-                }
+            if (_currentTime <= 0)
                 return true;
+            else if(_shouldDelay && _currentTime > 0)
+            {
+                _onDelay?.Invoke();
             }
+
 
             _lerpValue = GetLerpValue(_currentTime, _duration);
 
@@ -106,6 +113,7 @@ namespace SpleenTween
 
             if (_currentTime >= _duration)
             {
+                _triggeredDelay = false;
                 if (!_loopForever && _loopCount <= 0)
                 {
                     _loop = false;
@@ -120,7 +128,6 @@ namespace SpleenTween
 
                 _easeValue = _targetLerp;
                 UpdateValue();
-                _currentDelay = _delay;
                 _onComplete?.Invoke();
 
                 if (!_loop)
@@ -157,10 +164,18 @@ namespace SpleenTween
 
         void TriggerDelay()
         {
-            _onDelay?.Invoke();
-            _currentDelay = 0;
-            _currentTime = 0;
+            _lerpValue = 0;
+            if (_loopType == SpleenTween.Loop.Reverse || _loopType == SpleenTween.Loop.Yoyo)
+            {
+                if (_targetLerp == 1)
+                    _lerpValue = 0;
+                else if (_targetLerp == 0)
+                    _lerpValue = 1;
+            }
+            _easeValue = Easing.EasingValue(_easing, _lerpValue);
+            _triggeredDelay = true;
             UpdateValue();
+            _currentTime -= _delay;
         }
 
         public void Restart()

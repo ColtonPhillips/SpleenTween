@@ -1,5 +1,5 @@
-using UnityEngine;
 using SpleenTween;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class TestPlayer : MonoBehaviour
