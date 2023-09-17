@@ -7,7 +7,7 @@ namespace SpleenTween
         Restart,
         Reverse,
         Yoyo,
-        Incremental
+        Relative
     }
 
     public class LoopTypes

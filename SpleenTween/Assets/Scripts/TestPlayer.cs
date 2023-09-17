@@ -15,6 +15,7 @@ public class TestPlayer : MonoBehaviour
     [SerializeField] Transform targetTest;
 
     [SerializeField] Ease easing;
+    [SerializeField] Loop loop;
 
     private void Update()
     {
@@ -22,21 +23,7 @@ public class TestPlayer : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         if (Input.GetKeyDown(KeyCode.T))
         {
-            Spleen
-                .PositionX(gameObject, transform.position.x, transform.position.x + 2f, 1f, Ease.OutElastic).Loop(Loop.Yoyo);
-                
-
-            //SpleenTween.Scale(transform, Vector3.zero, Vector3.one * 5, .5f, easing);
-
-            //SpleenTween.Value(from, to, duration, Ease.InCubic, (val) => currentValue = val);
-            //SpleenTween.Value3(Vector2.zero, Vector2.one * 5, 5f, Ease.InOutElastic, (val) => transform.position = val);
-
+            Spleen.PositionX(transform.gameObject, from, to, duration, easing).Loop(loop);
         }
-    }
-    float target = 5f;
-    void BackForth()
-    {
-        target = -target;
-        Tween tween = Spleen.PositionX(gameObject, transform.position.x, target, 1f, easing).Delay(1f).OnComplete(BackForth);
     }
 }

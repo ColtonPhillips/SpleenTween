@@ -1,9 +1,5 @@
 using System;
-using System.Reflection;
-using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
-using UnityEngine.Diagnostics;
 
 namespace SpleenTween
 {
@@ -13,6 +9,9 @@ namespace SpleenTween
         protected Ease _easing;
         public Action _onComplete;
         protected Action _onDelay;
+
+        public Action _nullCheck;
+        public bool _targetIsNull;
 
         protected float _currentTime;
 
@@ -62,6 +61,12 @@ namespace SpleenTween
 
         public bool Tweening()
         {
+            _nullCheck?.Invoke();
+            if (_targetIsNull)
+            {
+                return false;
+            }
+
             _currentTime += Time.deltaTime;
 
             if (_currentDelay != 0)
@@ -71,13 +76,12 @@ namespace SpleenTween
             }
 
             _lerpValue = GetLerpValue(_currentTime, _duration);
-            _easeValue = Easing.EasingValue(_easing, _lerpValue);
 
             if (_loop && _targetLerp == 0)
-            {
-                _easeValue = Easing.EasingValue(_easing, LoopTypes.LoopValue(_loopType, _lerpValue));
-            }
-                
+                _lerpValue = LoopTypes.LoopValue(_loopType, _lerpValue);
+
+            _easeValue = Easing.EasingValue(_easing, _lerpValue);
+
             if (_currentTime >= _duration)
             {
                 _easeValue = 1;
@@ -85,19 +89,19 @@ namespace SpleenTween
                 _currentDelay = _delay;
                 _onComplete?.Invoke();
 
-                if (_loop)
+                if (!_loop)
+                    return false;
+                else
                 {
+                    Restart();
+
                     if (_targetLerp == 1)
                         _targetLerp = 0;
                     else if(_targetLerp == 0)
                         _targetLerp = 1;
 
-                    Restart();
                     return true;
                 }
-                    
-                
-                return false;
             }
             else
             {
@@ -126,9 +130,9 @@ namespace SpleenTween
 
         public void Restart()
         {
-            _easeValue = 0;
-            _lerpValue = 0f;
+            _lerpValue = _targetLerp;
             _currentTime = 0;
+            _easeValue = Easing.EasingValue(_easing, _lerpValue);
             UpdateValue();
         }
 
