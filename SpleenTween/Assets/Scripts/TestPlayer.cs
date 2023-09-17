@@ -23,10 +23,7 @@ public class TestPlayer : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.T))
         {
             Spleen
-                .PositionX(gameObject, transform.position.x, 2f, 1f, Ease.OutElastic).Loop()
-                .OnComplete(() => Spleen.PositionY(gameObject, transform.position.y, 2f, 1f, Ease.OutElastic)
-                .OnComplete(() => Spleen.PositionX(gameObject, transform.position.x, -2f, 1f, Ease.OutElastic)
-                .OnComplete(() => Spleen.PositionY(gameObject, transform.position.y, -2f, 1f, Ease.OutElastic))));
+                .PositionX(gameObject, transform.position.x, transform.position.x + 2f, 1f, Ease.OutElastic).Loop(Loop.Yoyo);
                 
 
             //SpleenTween.Scale(transform, Vector3.zero, Vector3.one * 5, .5f, easing);

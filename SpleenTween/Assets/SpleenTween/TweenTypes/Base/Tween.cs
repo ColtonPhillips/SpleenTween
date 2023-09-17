@@ -19,12 +19,15 @@ namespace SpleenTween
         protected float _delay;
         protected float _currentDelay;
 
+        protected Loop _loopType;
         protected float _loopDelay;
 
         protected float _easeValue;
         public float _lerpValue;
 
         protected bool _loop;
+
+        int _targetLerp = 1;
 
         public Tween(float duration, Ease easing)
         {
@@ -49,8 +52,9 @@ namespace SpleenTween
             _currentDelay = delay;
             return this;
         }
-        public Tween Loop()
+        public Tween Loop(Loop loopType)
         {
+            _loopType = loopType;
             _loop = true;
             _onComplete += Restart;
             return this;
@@ -68,6 +72,11 @@ namespace SpleenTween
 
             _lerpValue = GetLerpValue(_currentTime, _duration);
             _easeValue = Easing.EasingValue(_easing, _lerpValue);
+
+            if (_loop && _targetLerp == 0)
+            {
+                _easeValue = Easing.EasingValue(_easing, LoopTypes.LoopValue(_loopType, _lerpValue));
+            }
                 
             if (_currentTime >= _duration)
             {
@@ -78,6 +87,11 @@ namespace SpleenTween
 
                 if (_loop)
                 {
+                    if (_targetLerp == 1)
+                        _targetLerp = 0;
+                    else if(_targetLerp == 0)
+                        _targetLerp = 1;
+
                     Restart();
                     return true;
                 }
