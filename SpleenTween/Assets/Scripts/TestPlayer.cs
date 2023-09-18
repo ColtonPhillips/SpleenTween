@@ -26,7 +26,7 @@ public class TestPlayer : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.T))
         {
             Spleen.StopTween(tween);
-            tween = Spleen.Scale(gameObject, Vector3.one * from, Vector3.one * to, duration, easing).OnComplete(() => print("complete")).Delay(1).Loop(loop);
+            tween = Spleen.Scale(gameObject, Vector3.one * from, Vector3.one * to, duration, easing).Loop(loop, 4);
         }
     }
 }

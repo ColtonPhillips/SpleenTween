@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 namespace SpleenTween
@@ -39,7 +40,7 @@ namespace SpleenTween
         }
         public Tween OnComplete(Action onComplete)
         {
-            _onComplete = onComplete;
+            _onComplete += onComplete;
             return this;
         }
         public Tween Delay(float delay)
@@ -52,7 +53,7 @@ namespace SpleenTween
         }
         public Tween Delay(float delay, Action onDelay)
         {
-            _onDelay = onDelay;
+            _onDelay += onDelay;
             _delay = delay;
             _shouldDelay = true;
             _currentTime -= delay;
@@ -60,24 +61,25 @@ namespace SpleenTween
             return this;
         }
 
-        public Tween Loop(Loop loopType)
+        public virtual Tween Loop(Loop loopType)
         {
             _loopForever = true;
             _loopType = loopType;
             _loop = true;
             return this;
         }
-        public Tween Loop(Loop loopType, int loopCount)
+
+        public virtual Tween Loop(Loop loopType, int loopCount)
         {
             _loopType = loopType;
-            _loopCount = loopCount;
+            _loopCount = loopCount - 1;
             _loop = true;
             return this;
         }
-        public Tween Loop(Loop loopType, int loopCount, Action onAllLoopsComplete)
+        public virtual Tween Loop(Loop loopType, int loopCount, Action onAllLoopsComplete)
         {
             _loopType = loopType;
-            _loopCount = loopCount;
+            _loopCount = loopCount - 1;
             _onAllLoopsComplete += onAllLoopsComplete;
             _loop = true;
             return this;
@@ -107,45 +109,43 @@ namespace SpleenTween
             _lerpValue = GetLerpValue(_currentTime, _duration);
 
             if (_loop && _targetLerp == 0)
-                _lerpValue = LoopTypes.LoopValue(_loopType, _lerpValue);
+                _lerpValue = Loops.LoopValue(_loopType, _lerpValue);
 
             _easeValue = Easing.EasingValue(_easing, _lerpValue);
 
             if (_currentTime >= _duration)
             {
                 _triggeredDelay = false;
-                if (!_loopForever && _loopCount <= 0)
-                {
-                    _loop = false;
-                    _onComplete?.Invoke();
-                    _onAllLoopsComplete?.Invoke();
-
-                    _easeValue = _targetLerp;
-                    UpdateValue();
-
-                    return false;
-                }
-
+   
                 _easeValue = _targetLerp;
                 UpdateValue();
                 _onComplete?.Invoke();
-
-                if (!_loop)
-                    return false;
-                else
+                
+                if(_loopCount > 0 || _loopForever)
                 {
-                    Restart();
-
-                    if(_loopType == SpleenTween.Loop.Reverse || _loopType == SpleenTween.Loop.Yoyo)
+                    if (_loopType == SpleenTween.Loop.Reverse)
                     {
                         if (_targetLerp == 1)
                             _targetLerp = 0;
                         else if (_targetLerp == 0)
                             _targetLerp = 1;
                     }
-                    
+                    Restart();
                     _loopCount--;
                     return true;
+                }
+                else if (_loopCount <= 0 && !_loopForever)
+                {
+                    _loop = false;
+                    _onAllLoopsComplete?.Invoke();
+
+                    Restart();
+
+                    if (_loopType == SpleenTween.Loop.Yoyo)
+                        _easeValue = 0;
+                    UpdateValue();
+
+                    return false;
                 }
             }
             else
@@ -165,7 +165,7 @@ namespace SpleenTween
         void TriggerDelay()
         {
             _lerpValue = 0;
-            if (_loopType == SpleenTween.Loop.Reverse || _loopType == SpleenTween.Loop.Yoyo)
+            if (_loopType == SpleenTween.Loop.Reverse)
             {
                 if (_targetLerp == 1)
                     _lerpValue = 0;
@@ -183,7 +183,14 @@ namespace SpleenTween
             _lerpValue = _targetLerp;
             _currentTime = 0;
             _easeValue = Easing.EasingValue(_easing, _lerpValue);
-            UpdateValue();
+
+            if (_loopType == SpleenTween.Loop.Yoyo && (_loopCount > 0 || _loopForever))
+                _easeValue = 0;
+            else if(_loopType == SpleenTween.Loop.Yoyo && _loopForever)
+                _easeValue = 1;
+
+            if(_loopType != SpleenTween.Loop.Reverse)
+                UpdateValue();
         }
 
         public void StopLoop()
