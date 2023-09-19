@@ -25,9 +25,7 @@ public class TestPlayer : MonoBehaviour
         {
             for (int i = 0; i < iterations; i++)
             {
-                Spleen.PositionX(gameObject, transform.position.x, transform.position.x + 1, 2f, Ease.Linear).Loop(LoopType.Incremental)
-                    .OnComplete(() => Spleen.PositionY(gameObject, transform.position.y, transform.position.y + 1.5f, 1f, Ease.Linear));
-                
+                Spleen.RotZ(gameObject, transform.rotation.z, transform.rotation.z + 360, 2f, Ease.Linear).Loop(LoopType.Incremental);
             }
         }
     }
