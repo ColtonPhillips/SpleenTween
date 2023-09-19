@@ -21,7 +21,7 @@ namespace SpleenTween
         protected bool _delayTriggered;
         protected bool _delayTriggerActivated;
 
-        protected Loops _loopType;
+        protected LoopType _loopType;
         protected float _loopDelay;
 
         protected float _easeValue;
@@ -62,7 +62,7 @@ namespace SpleenTween
             return this;
         }
 
-        public virtual Tween Loop(Loops loopType)
+        public virtual Tween Loop(LoopType loopType)
         {
             _loopForever = true;
             _loopType = loopType;
@@ -70,14 +70,14 @@ namespace SpleenTween
             return this;
         }
 
-        public virtual Tween Loop(Loops loopType, int loopCount)
+        public virtual Tween Loop(LoopType loopType, int loopCount)
         {
             _loopType = loopType;
             _loopCount = loopCount - 1;
             _loop = true;
             return this;
         }
-        public virtual Tween Loop(Loops loopType, int loopCount, Action onAllLoopsComplete)
+        public virtual Tween Loop(LoopType loopType, int loopCount, Action onAllLoopsComplete)
         {
             _loopType = loopType;
             _loopCount = loopCount - 1;
@@ -131,7 +131,7 @@ namespace SpleenTween
                 if (_loopCount > 0 || _loopForever)
                 {
                     //set the direction of the tween if its reversing
-                    if (_loopType == Loops.Rewind)
+                    if (_loopType == LoopType.Rewind)
                     {
                         if (_targetLerp == 1)
                             _targetLerp = 0;
@@ -152,7 +152,7 @@ namespace SpleenTween
                     Restart();
 
                     //make sure yoyo loop is at the right final value
-                    if (_loopType == Loops.Yoyo)
+                    if (_loopType == LoopType.Yoyo)
                         _easeValue = 0;
 
                     UpdateValue();
@@ -178,7 +178,7 @@ namespace SpleenTween
         void UpdateDelayTimer()
         {
             _lerpValue = 0;
-            if (_loopType == Loops.Rewind)
+            if (_loopType == LoopType.Rewind)
             {
                 if (_targetLerp == 1)
                     _lerpValue = 0;
@@ -201,15 +201,15 @@ namespace SpleenTween
             _easeValue = Easing.EasingValue(_easing, _lerpValue);
 
             //set target ease for final value on yoyo loop
-            if (_loopType == Loops.Yoyo && (_loopCount > 0 || _loopForever))
+            if (_loopType == LoopType.Yoyo && (_loopCount > 0 || _loopForever))
                 _easeValue = 0;
-            else if (_loopType == Loops.Yoyo && _loopForever)
+            else if (_loopType == LoopType.Yoyo && _loopForever)
                 _easeValue = 1;
 
-            if(_loopType == Loops.Incremental)
+            if(_loopType == LoopType.Incremental)
                 _easeValue = 0;
 
-            if (_loopType != Loops.Rewind)
+            if (_loopType != LoopType.Rewind)
                 UpdateValue();
         }
 
