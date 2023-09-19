@@ -26,9 +26,9 @@ namespace SpleenTween
             _onUpdate?.Invoke(_value);
         }
 
-        void CheckIfLoopYoyo(Loop loopType)
+        void LoopSpecificActions(Loops loopType)
         {
-            if (loopType == SpleenTween.Loop.Yoyo)
+            if (loopType == Loops.Yoyo)
             {
                 _onComplete += () =>
                 {
@@ -39,22 +39,31 @@ namespace SpleenTween
                     _to = from;
                 };
             }
+            else if(loopType == Loops.Incremental)
+            {
+                _onComplete += () =>
+                {
+                    float diff = _to - _from;
+                    _from += diff;
+                    _to += diff;
+                };
+            }
         }
-        public override Tween Loop(Loop loopType)
+        public override Tween Loop(Loops loopType)
         {
-            CheckIfLoopYoyo(loopType);
+            LoopSpecificActions(loopType);
             base.Loop(loopType);
             return this;
         }
-        public override Tween Loop(Loop loopType, int loopCount)
+        public override Tween Loop(Loops loopType, int loopCount)
         {
-            CheckIfLoopYoyo(loopType);
+            LoopSpecificActions(loopType);
             base.Loop(loopType, loopCount);
             return this;
         }
-        public override Tween Loop(Loop loopType, int loopCount, Action onAllLoopsComplete)
+        public override Tween Loop(Loops loopType, int loopCount, Action onAllLoopsComplete)
         {
-            CheckIfLoopYoyo(loopType);
+            LoopSpecificActions(loopType);
             base.Loop(loopType, loopCount, onAllLoopsComplete);
             return this;
         }

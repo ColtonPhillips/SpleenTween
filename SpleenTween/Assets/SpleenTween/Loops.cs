@@ -2,23 +2,24 @@ using System;
 
 namespace SpleenTween
 {
-    public enum Loop
+    public enum Loops
     {
         Restart,
-        Reverse,
+        Rewind,
         Yoyo,
-        Relative
+        Incremental
     }
 
-    public class Loops
+    public class Looping
     {
-        public static float LoopValue(Loop loopType, float lerpValue)
+        public static float LoopValue(Loops loopType, float lerpValue)
         {
             return loopType switch
             {
-                Loop.Restart => lerpValue,
-                Loop.Reverse => 1 - lerpValue,
-                Loop.Yoyo => 1 - lerpValue,
+                Loops.Restart => lerpValue,
+                Loops.Rewind => 1 - lerpValue,
+                Loops.Yoyo => 1 - lerpValue,
+                Loops.Incremental => lerpValue,
 
                 _ => throw new NotImplementedException(),
             };
