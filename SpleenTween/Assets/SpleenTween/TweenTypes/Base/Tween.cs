@@ -8,26 +8,26 @@ namespace SpleenTween
         protected float _duration;
         protected Ease _easing;
         protected Action _onComplete;
-        protected Action _onStart;
+        Action _onStart;
 
         public Action _nullCheck;
         public bool _targetIsNull;
 
-        protected float _currentTime;
+        float _currentTime;
 
-        protected float _delayDuration;
-        protected bool _delayEnabled;
-        protected bool _startTriggered;
+        float _delayDuration;
+        bool _delayEnabled;
+        bool _startTriggered;
 
         protected LoopType _loopType;
-        protected float _loopDelay;
+        float _loopDelay;
 
         protected float _easeValue;
-        protected float _lerpValue;
+        float _lerpValue;
 
-        protected bool _loop;
-        protected int _loopCount;
-        protected Action _onAllLoopsComplete;
+        bool _loop;
+        int _loopCount;
+        Action _onAllLoopsComplete;
         bool _loopForever = false;
 
         int _targetLerp = 1;

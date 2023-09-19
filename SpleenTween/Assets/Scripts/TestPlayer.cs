@@ -26,9 +26,7 @@ public class TestPlayer : MonoBehaviour
         {
             for (int i = 0; i < iterations; i++)
             {
-                Spleen.RotZ(gameObject, transform.rotation.z, transform.rotation.z + 360, 3f, Ease.OutElastic).Loop(loop)
-                    .OnComplete(() => Spleen.Pos(gameObject, transform.position, Vector3.one * 3, 2f, Ease.Linear)
-                    .OnComplete(() => Spleen.Pos(gameObject, transform.position, Vector3.one * -3, 4f, Ease.Linear)));
+                Spleen.Pos(gameObject, transform.position + Vector3.one * 1.1f, 2f, Ease.InOutElastic);
             }
         }
     }
