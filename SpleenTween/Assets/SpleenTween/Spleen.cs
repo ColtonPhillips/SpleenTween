@@ -51,7 +51,7 @@ namespace SpleenTween
         #region TweenRunners
         void RunTweens()
         {
-            for (int i = Tweens.Count - 1; i >= 0; i--)
+            for (int i = 0; i < Tweens.Count; i++)
             {
                 Tween tween = Tweens[i];
                 if (!tween.Tweening())
@@ -64,6 +64,10 @@ namespace SpleenTween
         public static void StopTween(Tween tween)
         {
             Instance.Tweens.Remove(tween);
+        }
+        public static void StopAll()
+        {
+            Instance.Tweens.Clear();
         }
 
         static void AddNullCheck(Tween tween, GameObject obj)

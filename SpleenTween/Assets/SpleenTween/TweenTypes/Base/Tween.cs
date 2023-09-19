@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 namespace SpleenTween
@@ -85,7 +84,7 @@ namespace SpleenTween
         {
             _nullCheck?.Invoke();
             if (_targetIsNull)
-                return false;
+                Spleen.StopTween(this);
 
             _currentTime += Time.deltaTime;
 
@@ -141,10 +140,11 @@ namespace SpleenTween
 
                 UpdateValue();
 
-                return false;
+                Spleen.StopTween(this);
             }
             return true;
         }
+
         public virtual void UpdateValue() { }
 
         float GetLerpValue(float time, float duration)
