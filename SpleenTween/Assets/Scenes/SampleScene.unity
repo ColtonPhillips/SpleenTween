@@ -206,13 +206,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   from: 1
-  to: 5
+  to: 1.25
   duration: 1
   iterations: 1
   currentValue: 0
   targetTest: {fileID: 0}
-  easing: 11
-  loop: 0
+  easing: 26
+  loop: 3
 --- !u!4 &242166098
 Transform:
   m_ObjectHideFlags: 0

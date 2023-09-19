@@ -17,6 +17,7 @@ public class TestPlayer : MonoBehaviour
     [SerializeField] Ease easing;
     [SerializeField] LoopType loop;
 
+    Tween tween;
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.S)) SceneManager.LoadScene("SwitchingTestScene");
@@ -25,7 +26,8 @@ public class TestPlayer : MonoBehaviour
         {
             for (int i = 0; i < iterations; i++)
             {
-                Spleen.RotZ(gameObject, transform.rotation.z, transform.rotation.z + 360, 2f, Ease.Linear).Loop(LoopType.Incremental);
+                Spleen.StopTween(tween);
+                tween = Spleen.ScaleX(gameObject, 2, 4, 3f, Ease.OutElastic).Loop(loop).Delay(.5f).OnStart(() => print("asd"));
             }
         }
     }
