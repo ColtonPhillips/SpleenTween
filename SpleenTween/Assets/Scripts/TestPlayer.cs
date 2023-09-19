@@ -26,8 +26,12 @@ public class TestPlayer : MonoBehaviour
         {
             for (int i = 0; i < iterations; i++)
             {
-                Spleen.StopTween(tween);
-                tween = Spleen.ScaleX(gameObject, 2, 4, 3f, Ease.OutElastic).Loop(loop).Delay(.5f).OnStart(() => print("asd"));
+                Spleen.RotZ(gameObject, transform.rotation.z, transform.rotation.z + 360, 3f, Ease.OutElastic).Loop(LoopType.Incremental);
+                Spleen.ScaleX(gameObject, transform.localScale.x, transform.localScale.x + 2, 1.5f, Ease.InExpo).Loop(LoopType.Yoyo);
+                Spleen.ScaleY(gameObject, transform.localScale.x, transform.localScale.y - 0.5f, 1.5f, Ease.OutBack).Loop(LoopType.Rewind);
+                Spleen.PosY(gameObject, transform.position.y, transform.position.y - 3, 1.5f, Ease.OutBounce).Loop(LoopType.Rewind);
+                SpriteRenderer sr = GetComponent<SpriteRenderer>();
+                Spleen.Value(0, 1, 3f, Ease.InSine, (val) => sr.color = new Color(0, val, val, 1)).Loop(LoopType.Rewind);
             }
         }
     }
