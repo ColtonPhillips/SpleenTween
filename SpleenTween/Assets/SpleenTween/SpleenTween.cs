@@ -12,7 +12,7 @@ namespace Spleen
 
         readonly List<Tween> Tweens = new();
 
-        public static SpleenTween Instance;
+        static SpleenTween Instance;
        
         #region Initialization
         private void Awake()
@@ -171,16 +171,39 @@ namespace Spleen
         public static Tween RelativePosX(GameObject target, float to, float duration, Ease easing)
         {
             float from = target.transform.position.x;
+
             Value tween = new(from, to, duration, easing, (val) =>
             {
                 target.transform.position += new Vector3(val - from, 0, 0);
                 from = val;
             });
+
             AddNullCheck(tween, target);
 
             Instance.Tweens.Add(tween);
             return tween;
         }
+        /*public static Tween IncrementalPosX(GameObject target, float addition, float duration, Ease easing)
+        {
+            float from = target.transform.position.x;
+
+            Value tween = new(from, addition, duration, easing, (val) =>
+            {
+                target.transform.position += new Vector3(val - from, 0, 0);
+                from = val;
+            });
+
+            tween._onStart += () =>
+            {
+                tween._from = target.transform.position.x;
+                tween._to = target.transform.position.x + addition;
+            };
+
+            AddNullCheck(tween, target);
+
+            Instance.Tweens.Add(tween);
+            return tween;
+        }*/
 
         public static Tween PosY(GameObject target, float from, float to, float duration, Ease easing)
         {

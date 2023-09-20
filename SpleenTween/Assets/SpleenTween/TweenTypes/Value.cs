@@ -6,8 +6,8 @@ namespace Spleen
     public class Value : Tween
     {
         public Action<float> _onUpdate;
-        float _from;
-        float _to;
+        public float _from;
+        public float _to;
 
         public float _value;
 

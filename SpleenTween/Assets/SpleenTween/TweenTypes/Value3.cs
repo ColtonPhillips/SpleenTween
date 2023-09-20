@@ -6,8 +6,8 @@ namespace Spleen
     public class Value3 : Tween
     {
         public Action<Vector3> _onUpdate;
-        Vector3 _from;
-        Vector3 _to;
+        public Vector3 _from;
+        public Vector3 _to;
 
         public Vector3 _value;
 

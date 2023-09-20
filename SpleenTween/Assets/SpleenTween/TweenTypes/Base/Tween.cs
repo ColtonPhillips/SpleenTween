@@ -11,7 +11,7 @@ namespace Spleen
         protected float _duration;
         protected Ease _easing;
         protected Action _onComplete;
-        Action _onStart;
+        public Action _onStart;
 
         public GameObject _target;
         public Action _nullCheck;
@@ -62,7 +62,7 @@ namespace Spleen
             return this;
         }
 
-        public Tween Chain(Tween tween)
+        /*public Tween Chain(Tween tween)
         {
             chainedTweens.Add(tween);
             float waitTime = this._duration + this._delayDuration;
@@ -76,7 +76,7 @@ namespace Spleen
             tween._currentTime -= waitTime;
 
             return this;
-        }
+        }*/
 
         public virtual Tween Loop(LoopType loopType)
         {
