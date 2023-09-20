@@ -25,9 +25,9 @@ public class TestPlayer : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.T))
         {
             SpleenTween.RelativePosX(gameObject, 3, duration, easing)
-                .OnComplete(() => SpleenTween.RelativePosX(gameObject, gameObject.transform.position.x + 2f, 1f, Ease.Linear)
-                .OnComplete(() => SpleenTween.RelativePosX(gameObject, gameObject.transform.position.x - 5f, 2f, Ease.InQuint)
-                .OnComplete(() => SpleenTween.RelativePos(gameObject, gameObject.transform.position - Vector3.one * 2, 5f, Ease.InOutElastic))));
+                .OnComplete(() => SpleenTween.RelativePosX(gameObject, 2f, 1f, Ease.Linear)
+                .OnComplete(() => SpleenTween.RelativePosX(gameObject, -5f, 2f, Ease.InQuint)
+                .OnComplete(() => SpleenTween.RelativePos(gameObject, Vector3.one * -2, 5f, Ease.InOutElastic))));
         }
     }
 }
