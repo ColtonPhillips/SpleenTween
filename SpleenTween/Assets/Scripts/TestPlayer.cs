@@ -20,10 +20,11 @@ public class TestPlayer : MonoBehaviour
     Tween tween;
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S)) Spleen.StopAll();
+        if (Input.GetKeyDown(KeyCode.S)) Spleen.StopTweens(gameObject);
         if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         if (Input.GetKeyDown(KeyCode.T))
         {
+            
             for (int i = 0; i < iterations; i++)
             {
                 Spleen.Pos(gameObject, transform.position + Vector3.one * 1.1f, 2f, Ease.InOutElastic);

@@ -70,6 +70,15 @@ namespace SpleenTween
         {
             Instance.Tweens.Clear();
         }
+        public static void StopTweens(GameObject target)
+        {
+            for (int i = Instance.Tweens.Count - 1; i >= 0; i--)
+            {
+                Tween tween = Instance.Tweens[i];
+                if (tween._target == target)
+                    Instance.Tweens.RemoveAt(i);
+            }
+        }
 
         static void AddNullCheck(Tween tween, GameObject obj)
         {
@@ -78,6 +87,7 @@ namespace SpleenTween
                 if (obj == null)
                     tween._targetIsNull = true;
             };
+            tween._target = obj;
         }
 
         #endregion

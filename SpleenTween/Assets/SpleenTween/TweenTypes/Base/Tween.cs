@@ -10,6 +10,7 @@ namespace SpleenTween
         protected Action _onComplete;
         Action _onStart;
 
+        public GameObject _target;
         public Action _nullCheck;
         public bool _targetIsNull;
 
