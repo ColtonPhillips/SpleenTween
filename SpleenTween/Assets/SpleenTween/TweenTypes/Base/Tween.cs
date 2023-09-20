@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Unity.VisualScripting;
 using UnityEngine;
 
-namespace SpleenTween
+namespace Spleen
 {
     public class Tween
     {
@@ -33,6 +36,8 @@ namespace SpleenTween
 
         int _targetLerp = 1;
 
+        List<Tween> chainedTweens = new();
+
         public Tween(float duration, Ease easing)
         {
             _duration = duration;
@@ -54,6 +59,22 @@ namespace SpleenTween
             _delayDuration = delayDuration;
             _delayEnabled = true;
             _currentTime -= delayDuration;
+            return this;
+        }
+
+        public Tween Chain(Tween tween)
+        {
+            chainedTweens.Add(tween);
+            float waitTime = this._duration + this._delayDuration;
+            foreach(Tween t in chainedTweens)
+            {
+                if(t != tween)
+                {
+                    waitTime += t._duration + t._delayDuration;
+                }
+            }
+            tween._currentTime -= waitTime;
+
             return this;
         }
 
@@ -85,7 +106,7 @@ namespace SpleenTween
         {
             _nullCheck?.Invoke();
             if (_targetIsNull)
-                Spleen.StopTween(this);
+                SpleenTween.StopTween(this);
 
             _currentTime += Time.deltaTime;
 
@@ -141,7 +162,7 @@ namespace SpleenTween
 
                 UpdateValue();
 
-                Spleen.StopTween(this);
+                SpleenTween.StopTween(this);
             }
             return true;
         }

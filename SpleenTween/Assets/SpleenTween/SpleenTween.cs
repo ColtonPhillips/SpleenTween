@@ -4,15 +4,15 @@ using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace SpleenTween
+namespace Spleen
 {
-    public class Spleen : MonoBehaviour
+    public class SpleenTween : MonoBehaviour
     {
         public int ActiveTweensCount;
 
         readonly List<Tween> Tweens = new();
 
-        public static Spleen Instance;
+        public static SpleenTween Instance;
        
         #region Initialization
         private void Awake()
@@ -38,7 +38,7 @@ namespace SpleenTween
         [RuntimeInitializeOnLoadMethod]
         static void Initialize()
         {
-            Instance = new GameObject("SpleenTweenManager").AddComponent<Spleen>();
+            Instance = new GameObject("SpleenTweenManager").AddComponent<SpleenTween>();
         }
         #endregion
 
@@ -132,7 +132,19 @@ namespace SpleenTween
             Instance.Tweens.Add(tween);
             return tween;
         }
+        public static Tween RelativePos(GameObject target, Vector3 to, float duration, Ease easing)
+        {
+            Vector3 from = target.transform.position;
+            Value3 tween = new(from, to, duration, easing, (val) =>
+            {
+                target.transform.position += val - from;
+                from = val;
+            });
+            AddNullCheck(tween, target);
 
+            Instance.Tweens.Add(tween);
+            return tween;
+        }
 
         public static Tween PosX(GameObject target, float from, float to, float duration, Ease easing)
         {
@@ -150,6 +162,19 @@ namespace SpleenTween
             Value tween = new(target.transform.position.x, to, duration, easing, (val) =>
             {
                 target.transform.position = new Vector3(val, target.transform.position.y, target.transform.position.z);
+            });
+            AddNullCheck(tween, target);
+
+            Instance.Tweens.Add(tween);
+            return tween;
+        }
+        public static Tween RelativePosX(GameObject target, float to, float duration, Ease easing)
+        {
+            float from = target.transform.position.x;
+            Value tween = new(from, to, duration, easing, (val) =>
+            {
+                target.transform.position += new Vector3(val - from, 0, 0);
+                from = val;
             });
             AddNullCheck(tween, target);
 
@@ -179,6 +204,19 @@ namespace SpleenTween
             Instance.Tweens.Add(tween);
             return tween;
         }
+        public static Tween RelativePosY(GameObject target, float to, float duration, Ease easing)
+        {
+            float from = target.transform.position.y;
+            Value tween = new(from, to, duration, easing, (val) =>
+            {
+                target.transform.position += new Vector3(0, val - from, 0);
+                from = val;
+            });
+            AddNullCheck(tween, target);
+
+            Instance.Tweens.Add(tween);
+            return tween;
+        }
 
         public static Tween PosZ(GameObject target, float from, float to, float duration, Ease easing)
         {
@@ -196,6 +234,19 @@ namespace SpleenTween
             Value tween = new(target.transform.position.z, to, duration, easing, (val) =>
             {
                 target.transform.position = new Vector3(target.transform.position.x, target.transform.position.y, val);
+            });
+            AddNullCheck(tween, target);
+
+            Instance.Tweens.Add(tween);
+            return tween;
+        }
+        public static Tween RelativePosZ(GameObject target, float to, float duration, Ease easing)
+        {
+            float from = target.transform.position.z;
+            Value tween = new(from, to, duration, easing, (val) =>
+            {
+                target.transform.position += new Vector3(0, 0, val - from);
+                from = val;
             });
             AddNullCheck(tween, target);
 
@@ -227,7 +278,19 @@ namespace SpleenTween
             Instance.Tweens.Add(tween);
             return tween;
         }
+        public static Tween RelativeScale(GameObject target, Vector3 to, float duration, Ease easing)
+        {
+            Vector3 from = target.transform.localScale;
+            Value3 tween = new(from, to, duration, easing, (val) =>
+            {
+                target.transform.localScale += val - from;
+                from = val;
+            });
+            AddNullCheck(tween, target);
 
+            Instance.Tweens.Add(tween);
+            return tween;
+        }
 
         public static Tween ScaleX(GameObject target, float from, float to, float duration, Ease easing)
         {
@@ -245,6 +308,19 @@ namespace SpleenTween
             Value tween = new(target.transform.localScale.x, to, duration, easing, (val) =>
             {
                 target.transform.localScale = new Vector3(val, target.transform.localScale.y, target.transform.localScale.z);
+            });
+            AddNullCheck(tween, target);
+
+            Instance.Tweens.Add(tween);
+            return tween;
+        }
+        public static Tween RelativeScaleX(GameObject target, float to, float duration, Ease easing)
+        {
+            float from = target.transform.localScale.x;
+            Value tween = new(from, to, duration, easing, (val) =>
+            {
+                target.transform.localScale += new Vector3(val - from, 0, 0);
+                from = val;
             });
             AddNullCheck(tween, target);
 
@@ -274,6 +350,19 @@ namespace SpleenTween
             Instance.Tweens.Add(tween);
             return tween;
         }
+        public static Tween RelativeScaleY(GameObject target, float to, float duration, Ease easing)
+        {
+            float from = target.transform.localScale.y;
+            Value tween = new(from, to, duration, easing, (val) =>
+            {
+                target.transform.localScale += new Vector3(0, val - from, 0);
+                from = val;
+            });
+            AddNullCheck(tween, target);
+
+            Instance.Tweens.Add(tween);
+            return tween;
+        }
 
         public static Tween ScaleZ(GameObject target, float from, float to, float duration, Ease easing)
         {
@@ -297,15 +386,27 @@ namespace SpleenTween
             Instance.Tweens.Add(tween);
             return tween;
         }
+        public static Tween RelativeScaleZ(GameObject target, float to, float duration, Ease easing)
+        {
+            float from = target.transform.localScale.z;
+            Value tween = new(from, to, duration, easing, (val) =>
+            {
+                target.transform.localScale += new Vector3(0, 0, val - from);
+                from = val;
+            });
+            AddNullCheck(tween, target);
 
+            Instance.Tweens.Add(tween);
+            return tween;
+        }
         #endregion
 
-        #region Scale
+        #region Rotation
         public static Tween Rot(GameObject target, Vector3 from, Vector3 to, float duration, Ease easing)
         {
             Value3 tween = new(from, to, duration, easing, (val) =>
             {
-                target.transform.rotation = Quaternion.Euler(val);
+                target.transform.eulerAngles = val;
             });
             AddNullCheck(tween, target);
 
@@ -316,7 +417,20 @@ namespace SpleenTween
         {
             Value3 tween = new(target.transform.rotation.eulerAngles, to, duration, easing, (val) =>
             {
-                target.transform.rotation = Quaternion.Euler(val);
+                target.transform.eulerAngles = val;
+            });
+            AddNullCheck(tween, target);
+
+            Instance.Tweens.Add(tween);
+            return tween;
+        }
+        public static Tween RelativeRot(GameObject target, Vector3 to, float duration, Ease easing)
+        {
+            Vector3 from = target.transform.rotation.eulerAngles;
+            Value3 tween = new(from, to, duration, easing, (val) =>
+            {
+                target.transform.eulerAngles += val - from;
+                from = val;
             });
             AddNullCheck(tween, target);
 
@@ -328,7 +442,7 @@ namespace SpleenTween
         {
             Value tween = new(from, to, duration, easing, (val) =>
             {
-                target.transform.rotation = Quaternion.Euler(val, target.transform.rotation.y, target.transform.rotation.z);
+                target.transform.eulerAngles = new Vector3(val, target.transform.rotation.y, target.transform.rotation.z);
             });
             AddNullCheck(tween, target);
 
@@ -339,7 +453,20 @@ namespace SpleenTween
         {
             Value tween = new(target.transform.rotation.eulerAngles.x, to, duration, easing, (val) =>
             {
-                target.transform.rotation = Quaternion.Euler(val, target.transform.rotation.y, target.transform.rotation.z);
+                target.transform.eulerAngles = new Vector3(val, target.transform.rotation.y, target.transform.rotation.z);
+            });
+            AddNullCheck(tween, target);
+
+            Instance.Tweens.Add(tween);
+            return tween;
+        }
+        public static Tween RelativeRotX(GameObject target, float to, float duration, Ease easing)
+        {
+            float from = target.transform.eulerAngles.x;
+            Value tween = new(from, to, duration, easing, (val) =>
+            {
+                target.transform.eulerAngles += new Vector3(val - from, 0, 0);
+                from = val;
             });
             AddNullCheck(tween, target);
 
@@ -351,7 +478,7 @@ namespace SpleenTween
         {
             Value tween = new(from, to, duration, easing, (val) =>
             {
-                target.transform.rotation = Quaternion.Euler(target.transform.rotation.x, val, target.transform.rotation.z);
+                target.transform.eulerAngles = new Vector3(target.transform.rotation.x, val, target.transform.rotation.z);
             });
             AddNullCheck(tween, target);
 
@@ -362,7 +489,20 @@ namespace SpleenTween
         {
             Value tween = new(target.transform.rotation.eulerAngles.y, to, duration, easing, (val) =>
             {
-                target.transform.rotation = Quaternion.Euler(target.transform.rotation.x, val, target.transform.rotation.z);
+                target.transform.eulerAngles = new Vector3(target.transform.rotation.x, val, target.transform.rotation.z);
+            });
+            AddNullCheck(tween, target);
+
+            Instance.Tweens.Add(tween);
+            return tween;
+        }
+        public static Tween RelativeRotY(GameObject target, float to, float duration, Ease easing)
+        {
+            float from = target.transform.eulerAngles.y;
+            Value tween = new(from, to, duration, easing, (val) =>
+            {
+                target.transform.eulerAngles += new Vector3(0, val - from, 0);
+                from = val;
             });
             AddNullCheck(tween, target);
 
@@ -374,7 +514,7 @@ namespace SpleenTween
         {
             Value tween = new(from, to, duration, easing, (val) =>
             {
-                target.transform.rotation = Quaternion.Euler(target.transform.rotation.x, target.transform.rotation.y, val);
+                target.transform.eulerAngles = new Vector3(target.transform.rotation.x, target.transform.rotation.y, val);
             });
             AddNullCheck(tween, target);
 
@@ -385,14 +525,26 @@ namespace SpleenTween
         {
             Value tween = new(target.transform.rotation.eulerAngles.z, to, duration, easing, (val) =>
             {
-                target.transform.rotation = Quaternion.Euler(target.transform.rotation.x, target.transform.rotation.y, val);
+                target.transform.eulerAngles = new Vector3(target.transform.rotation.x, target.transform.rotation.y, val);
             });
             AddNullCheck(tween, target);
 
             Instance.Tweens.Add(tween);
             return tween;
         }
+        public static Tween RelativeRotZ(GameObject target, float to, float duration, Ease easing)
+        {
+            float from = target.transform.eulerAngles.z;
+            Value tween = new(from, to, duration, easing, (val) =>
+            {
+                target.transform.eulerAngles += new Vector3(0, 0, val - from);
+                from = val;
+            });
+            AddNullCheck(tween, target);
 
+            Instance.Tweens.Add(tween);
+            return tween;
+        }
         #endregion
 
         #endregion

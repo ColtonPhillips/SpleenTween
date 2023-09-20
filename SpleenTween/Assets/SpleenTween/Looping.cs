@@ -1,6 +1,6 @@
 using System;
 
-namespace SpleenTween
+namespace Spleen
 {
     public enum LoopType
     {

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace SpleenTween
+namespace Spleen
 {
     public class Value3 : Tween
     {
@@ -9,7 +9,7 @@ namespace SpleenTween
         Vector3 _from;
         Vector3 _to;
 
-        Vector3 _value;
+        public Vector3 _value;
 
         public Value3(Vector3 from, Vector3 to, float duration, Ease easing, Action<Vector3> onUpdate) : base(duration, easing)
         {
