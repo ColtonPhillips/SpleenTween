@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Spleen
+namespace SpleenTween
 {
     public class Value : Tween
     {

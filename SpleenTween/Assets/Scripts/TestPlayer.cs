@@ -1,4 +1,5 @@
-using Spleen;
+using SpleenTween;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,14 +21,15 @@ public class TestPlayer : MonoBehaviour
     Tween tween;
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S)) SpleenTween.StopTweens(gameObject);
+        if (Input.GetKeyDown(KeyCode.S)) Spleen.StopTweens(gameObject);
         if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         if (Input.GetKeyDown(KeyCode.T))
         {
-            SpleenTween.RelativePosX(gameObject, 3, duration, easing)
-                .OnComplete(() => SpleenTween.RelativePosX(gameObject, 2f, 1f, Ease.Linear)
-                .OnComplete(() => SpleenTween.RelativePosX(gameObject, -5f, 2f, Ease.InQuint)
-                .OnComplete(() => SpleenTween.RelativePos(gameObject, Vector3.one * -2, 5f, Ease.InOutElastic))));
+            Spleen.PosY(gameObject, UnityEngine.Random.Range(0, 10f), UnityEngine.Random.Range(0f, 10f), (Ease)UnityEngine.Random.Range(0, Enum.GetNames(typeof(Ease)).Length)).Loop(LoopType.Yoyo);
+            Spleen.PosX(gameObject, UnityEngine.Random.Range(0, 10f), UnityEngine.Random.Range(0f, 10f), (Ease)UnityEngine.Random.Range(0, Enum.GetNames(typeof(Ease)).Length)).Loop(LoopType.Yoyo);
+            Spleen.RotZ(gameObject, UnityEngine.Random.Range(0, 10f), UnityEngine.Random.Range(0f, 10f), (Ease)UnityEngine.Random.Range(0, Enum.GetNames(typeof(Ease)).Length)).Loop(LoopType.Yoyo);
+            Spleen.ScaleY(gameObject, UnityEngine.Random.Range(0, 10f), UnityEngine.Random.Range(0f, 10f), (Ease)UnityEngine.Random.Range(0, Enum.GetNames(typeof(Ease)).Length)).Loop(LoopType.Yoyo);
+            Spleen.ScaleX(gameObject, UnityEngine.Random.Range(0, 10f), UnityEngine.Random.Range(0f, 10f), (Ease)UnityEngine.Random.Range(0, Enum.GetNames(typeof(Ease)).Length)).Loop(LoopType.Yoyo);
         }
     }
 }

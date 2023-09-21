@@ -4,15 +4,15 @@ using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Spleen
+namespace SpleenTween
 {
-    public class SpleenTween : MonoBehaviour
+    public class Spleen : MonoBehaviour
     {
         public int ActiveTweensCount;
 
         readonly List<Tween> Tweens = new();
 
-        static SpleenTween Instance;
+        static Spleen Instance;
        
         #region Initialization
         private void Awake()
@@ -38,7 +38,7 @@ namespace Spleen
         [RuntimeInitializeOnLoadMethod]
         static void Initialize()
         {
-            Instance = new GameObject("SpleenTweenManager").AddComponent<SpleenTween>();
+            Instance = new GameObject("SpleenTweenManager").AddComponent<Spleen>();
         }
         #endregion
 
@@ -127,6 +127,7 @@ namespace Spleen
             {
                 target.transform.position = val;
             });
+
             AddNullCheck(tween, target);
 
             Instance.Tweens.Add(tween);
@@ -143,8 +144,14 @@ namespace Spleen
 
             tween._onStart += () =>
             {
-                tween._from = target.transform.position;
-                tween._to = target.transform.position + increment;
+                from = target.transform.position;
+                tween._from = from;
+                tween._to = from + increment;
+
+                if (tween._loopType == LoopType.Yoyo)
+                {
+                    increment = -increment;
+                }
             };
 
             AddNullCheck(tween, target);
@@ -170,6 +177,7 @@ namespace Spleen
             {
                 target.transform.position = new Vector3(val, target.transform.position.y, target.transform.position.z);
             });
+
             AddNullCheck(tween, target);
 
             Instance.Tweens.Add(tween);
@@ -187,8 +195,14 @@ namespace Spleen
 
             tween._onStart += () =>
             {
-                tween._from = target.transform.position.x;
-                tween._to = target.transform.position.x + increment;
+                from = target.transform.position.x;
+                tween._from = from;
+                tween._to = from + increment;
+
+                if (tween._loopType == LoopType.Yoyo)
+                {
+                    increment = -increment;
+                }
             };
 
             AddNullCheck(tween, target);
@@ -214,6 +228,7 @@ namespace Spleen
             {
                 target.transform.position = new Vector3(target.transform.position.x, val, target.transform.position.z);
             });
+
             AddNullCheck(tween, target);
 
             Instance.Tweens.Add(tween);
@@ -230,8 +245,14 @@ namespace Spleen
 
             tween._onStart += () =>
             {
-                tween._from = target.transform.position.y;
-                tween._to = target.transform.position.y + increment;
+                from = target.transform.position.y;
+                tween._from = from;
+                tween._to = from + increment;
+
+                if (tween._loopType == LoopType.Yoyo)
+                {
+                    increment = -increment;
+                }
             };
 
             AddNullCheck(tween, target);
@@ -257,6 +278,7 @@ namespace Spleen
             {
                 target.transform.position = new Vector3(target.transform.position.x, target.transform.position.y, val);
             });
+
             AddNullCheck(tween, target);
 
             Instance.Tweens.Add(tween);
@@ -273,8 +295,14 @@ namespace Spleen
 
             tween._onStart += () =>
             {
-                tween._from = target.transform.position.z;
-                tween._to = target.transform.position.z + increment;
+                from = target.transform.position.z;
+                tween._from = from;
+                tween._to = from + increment;
+
+                if (tween._loopType == LoopType.Yoyo)
+                {
+                    increment = -increment;
+                }
             };
 
             AddNullCheck(tween, target);
@@ -302,6 +330,7 @@ namespace Spleen
             {
                 target.transform.localScale = val;
             });
+
             AddNullCheck(tween, target);
 
             Instance.Tweens.Add(tween);
@@ -318,8 +347,14 @@ namespace Spleen
 
             tween._onStart += () =>
             {
-                tween._from = target.transform.localScale;
-                tween._to = target.transform.localScale + increment;
+                from = target.transform.localScale;
+                tween._from = from;
+                tween._to = from + increment;
+
+                if (tween._loopType == LoopType.Yoyo)
+                {
+                    increment = -increment;
+                }
             };
 
             AddNullCheck(tween, target);
@@ -345,6 +380,7 @@ namespace Spleen
             {
                 target.transform.localScale = new Vector3(val, target.transform.localScale.y, target.transform.localScale.z);
             });
+
             AddNullCheck(tween, target);
 
             Instance.Tweens.Add(tween);
@@ -361,10 +397,17 @@ namespace Spleen
 
             tween._onStart += () =>
             {
-                tween._from = target.transform.localScale.x;
-                tween._to = target.transform.localScale.x + increment;
-            };
+                from = target.transform.localScale.x;
+                tween._from = from;
+                tween._from = from;
+                tween._to = from + increment;
 
+                if (tween._loopType == LoopType.Yoyo)
+                {
+                    increment = -increment;
+                }
+            };
+            
             AddNullCheck(tween, target);
 
             Instance.Tweens.Add(tween);
@@ -388,6 +431,7 @@ namespace Spleen
             {
                 target.transform.localScale = new Vector3(target.transform.localScale.x, val, target.transform.localScale.z);
             });
+
             AddNullCheck(tween, target);
 
             Instance.Tweens.Add(tween);
@@ -404,8 +448,14 @@ namespace Spleen
 
             tween._onStart += () =>
             {
-                tween._from = target.transform.localScale.y;
-                tween._to = target.transform.localScale.y + increment;
+                from = target.transform.localScale.y;
+                tween._from = from;
+                tween._to = from + increment;
+
+                if (tween._loopType == LoopType.Yoyo)
+                {
+                    increment = -increment;
+                }
             };
 
             AddNullCheck(tween, target);
@@ -431,6 +481,7 @@ namespace Spleen
             {
                 target.transform.localScale = new Vector3(target.transform.localScale.x, target.transform.localScale.y, val);
             });
+
             AddNullCheck(tween, target);
 
             Instance.Tweens.Add(tween);
@@ -448,8 +499,14 @@ namespace Spleen
 
             tween._onStart += () =>
             {
-                tween._from = target.transform.localScale.z;
-                tween._to = target.transform.localScale.z + increment;
+                from = target.transform.localScale.z;
+                tween._from = from;
+                tween._to = from + increment;
+
+                if (tween._loopType == LoopType.Yoyo)
+                {
+                    increment = -increment;
+                }
             };
 
             Instance.Tweens.Add(tween);
@@ -475,6 +532,7 @@ namespace Spleen
             {
                 target.transform.eulerAngles = val;
             });
+
             AddNullCheck(tween, target);
 
             Instance.Tweens.Add(tween);
@@ -491,8 +549,14 @@ namespace Spleen
 
             tween._onStart += () =>
             {
-                tween._from = target.transform.eulerAngles;
-                tween._to = target.transform.eulerAngles + increment;
+                from = target.transform.eulerAngles;
+                tween._from = from;
+                tween._to = from + increment;
+
+                if (tween._loopType == LoopType.Yoyo)
+                {
+                    increment = -increment;
+                }
             };
 
             AddNullCheck(tween, target);
@@ -518,6 +582,7 @@ namespace Spleen
             {
                 target.transform.eulerAngles = new Vector3(val, target.transform.rotation.y, target.transform.rotation.z);
             });
+
             AddNullCheck(tween, target);
 
             Instance.Tweens.Add(tween);
@@ -534,8 +599,14 @@ namespace Spleen
 
             tween._onStart += () =>
             {
-                tween._from = target.transform.eulerAngles.x;
-                tween._to = target.transform.eulerAngles.x + increment;
+                from = target.transform.eulerAngles.x;
+                tween._from = from;
+                tween._to = from + increment;
+
+                if (tween._loopType == LoopType.Yoyo)
+                {
+                    increment = -increment;
+                }
             };
 
             AddNullCheck(tween, target);
@@ -561,6 +632,7 @@ namespace Spleen
             {
                 target.transform.eulerAngles = new Vector3(target.transform.rotation.x, val, target.transform.rotation.z);
             });
+
             AddNullCheck(tween, target);
 
             Instance.Tweens.Add(tween);
@@ -578,8 +650,14 @@ namespace Spleen
 
             tween._onStart += () =>
             {
-                tween._from = target.transform.eulerAngles.y;
-                tween._to = target.transform.eulerAngles.y + increment;
+                from = target.transform.eulerAngles.y;
+                tween._from = from;
+                tween._to = from + increment;
+
+                if (tween._loopType == LoopType.Yoyo)
+                {
+                    increment = -increment;
+                }
             };
 
             Instance.Tweens.Add(tween);
@@ -603,6 +681,7 @@ namespace Spleen
             {
                 target.transform.eulerAngles = new Vector3(target.transform.rotation.x, target.transform.rotation.y, val);
             });
+
             AddNullCheck(tween, target);
 
             Instance.Tweens.Add(tween);
@@ -619,8 +698,14 @@ namespace Spleen
 
             tween._onStart += () =>
             {
-                tween._from = target.transform.eulerAngles.z;
-                tween._to = target.transform.eulerAngles.z + increment;
+                from = target.transform.eulerAngles.z;
+                tween._from = from;
+                tween._to = from + increment;
+
+                if (tween._loopType == LoopType.Yoyo)
+                {
+                    increment = -increment;
+                }
             };
 
             AddNullCheck(tween, target);

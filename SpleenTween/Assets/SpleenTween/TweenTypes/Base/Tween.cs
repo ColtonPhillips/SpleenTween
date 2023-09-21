@@ -4,13 +4,13 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace Spleen
+namespace SpleenTween
 {
     public class Tween
     {
         protected float _duration;
         protected Ease _easing;
-        protected Action _onComplete;
+        public Action _onComplete;
         public Action _onStart;
 
         public GameObject _target;
@@ -23,7 +23,7 @@ namespace Spleen
         bool _delayEnabled;
         bool _startTriggered;
 
-        protected LoopType _loopType;
+        public LoopType _loopType;
         float _loopDelay;
 
         protected float _easeValue;
@@ -34,7 +34,7 @@ namespace Spleen
         Action _onAllLoopsComplete;
         bool _loopForever = false;
 
-        int _targetLerp = 1;
+        public int _targetLerp = 1;
 
         List<Tween> chainedTweens = new();
 
@@ -85,9 +85,24 @@ namespace Spleen
             _loop = true;
             return this;
         }
-
+        public virtual Tween Loop(LoopType loopType, float startDelay)
+        {
+            _currentTime -= startDelay;
+            _loopForever = true;
+            _loopType = loopType;
+            _loop = true;
+            return this;
+        }
         public virtual Tween Loop(LoopType loopType, int loopCount)
         {
+            _loopType = loopType;
+            _loopCount = loopCount - 1;
+            _loop = true;
+            return this;
+        }
+        public virtual Tween Loop(LoopType loopType, int loopCount, float startDelay)
+        {
+            _currentTime -= startDelay;
             _loopType = loopType;
             _loopCount = loopCount - 1;
             _loop = true;
@@ -101,12 +116,21 @@ namespace Spleen
             _loop = true;
             return this;
         }
+        public virtual Tween Loop(LoopType loopType, int loopCount, float startDelay, Action onAllLoopsComplete)
+        {
+            _currentTime -= startDelay;
+            _loopType = loopType;
+            _loopCount = loopCount - 1;
+            _onAllLoopsComplete += onAllLoopsComplete;
+            _loop = true;
+            return this;
+        }
 
         public bool Tweening()
         {
             _nullCheck?.Invoke();
             if (_targetIsNull)
-                SpleenTween.StopTween(this);
+                return false;
 
             _currentTime += Time.deltaTime;
 
@@ -162,7 +186,7 @@ namespace Spleen
 
                 UpdateValue();
 
-                SpleenTween.StopTween(this);
+                Spleen.StopTween(this);
             }
             return true;
         }
@@ -183,7 +207,6 @@ namespace Spleen
             _currentTime = 0;
             _easeValue = Easing.EasingValue(_easing, _lerpValue);
 
-            //set target ease for final value on yoyo loop
             if (_loopType == LoopType.Yoyo && (_loopCount > 0 || _loopForever))
                 _easeValue = 0;
             else if (_loopType == LoopType.Yoyo && _loopForever)
@@ -194,7 +217,6 @@ namespace Spleen
 
             if (_loopType != LoopType.Rewind)
                 UpdateValue();
-
 
             if (_delayEnabled)
                 _currentTime -= _delayDuration;
