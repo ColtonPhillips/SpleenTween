@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace SpleenTween
@@ -12,6 +10,7 @@ namespace SpleenTween
         protected Ease _easing;
         public Action _onComplete;
         public Action _onStart;
+        Action _onUpdateGeneral;
 
         public GameObject _target;
         public Action _nullCheck;
@@ -36,12 +35,17 @@ namespace SpleenTween
 
         public int _targetLerp = 1;
 
-        List<Tween> chainedTweens = new();
+        List<Tween> _chainedTweens = new();
 
         public Tween(float duration, Ease easing)
         {
             _duration = duration;
             _easing = easing;
+        }
+        public Tween OnUpdate(Action onUpdate)
+        {
+            _onUpdateGeneral += onUpdate;
+            return this;
         }
         public Tween OnComplete(Action onComplete)
         {
@@ -126,6 +130,17 @@ namespace SpleenTween
             return this;
         }
 
+        public Tween StopIfNull(GameObject target)
+        {
+            _nullCheck += () =>
+            {
+                if (target == null)
+                    _targetIsNull = true;
+            };
+            _target = target;
+            return this;
+        }
+
         public bool Tweening()
         {
             _nullCheck?.Invoke();
@@ -139,8 +154,7 @@ namespace SpleenTween
             
             if (_currentTime >= 0 && !_startTriggered)
             {
-                _onStart?.Invoke();
-                _startTriggered = true;
+                OnTweenStart();
             }
 
             _lerpValue = GetLerpValue(_currentTime, _duration);
@@ -151,11 +165,11 @@ namespace SpleenTween
             if(_currentTime < _duration)
             {
                 UpdateValue();
+                _onUpdateGeneral?.Invoke();
                 return true;
             }
 
             _easeValue = _targetLerp;
-            UpdateValue();
 
             _onComplete?.Invoke();
 
@@ -171,6 +185,8 @@ namespace SpleenTween
 
                 Restart();
                 _loopCount--;
+
+                _onUpdateGeneral?.Invoke();
                 return true;
             }
 
@@ -186,8 +202,12 @@ namespace SpleenTween
 
                 UpdateValue();
 
-                Spleen.StopTween(this);
+                _onUpdateGeneral?.Invoke();
+                return false;
             }
+
+            UpdateValue();
+            _onUpdateGeneral?.Invoke();
             return true;
         }
 
@@ -225,6 +245,12 @@ namespace SpleenTween
         public void StopLoop()
         {
             _loop = false;
+        }
+
+        void OnTweenStart()
+        {
+            _onStart?.Invoke();
+            _startTriggered = true;
         }
     }
 }
