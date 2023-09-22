@@ -9,9 +9,9 @@ namespace SpleenTween
     {
         public int ActiveTweensCount;
 
-        readonly List<Tween> Tweens = new();
+        public List<Tween> Tweens = new();
 
-        static Spleen Instance;
+        public static Spleen Instance;
        
         #region Initialization
         private void Awake()

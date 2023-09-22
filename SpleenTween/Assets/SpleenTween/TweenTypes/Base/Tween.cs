@@ -66,21 +66,23 @@ namespace SpleenTween
             return this;
         }
 
-        /*public Tween Chain(Tween tween)
+        public Tween Chain(Tween tween)
         {
-            chainedTweens.Add(tween);
+            Spleen.StopTween(tween);
+            _chainedTweens.Add(tween);
             float waitTime = this._duration + this._delayDuration;
-            foreach(Tween t in chainedTweens)
-            {
-                if(t != tween)
-                {
-                    waitTime += t._duration + t._delayDuration;
-                }
-            }
-            tween._currentTime -= waitTime;
 
+            int index = _chainedTweens.Count - 1;
+
+            Tween prevTween = null;
+            if (index <= 0)
+                prevTween = this;
+            else
+                prevTween = _chainedTweens[index - 1];
+
+            prevTween.OnComplete(() => Spleen.Instance.Tweens.Add(tween));
             return this;
-        }*/
+        }
 
         public virtual Tween Loop(LoopType loopType)
         {
