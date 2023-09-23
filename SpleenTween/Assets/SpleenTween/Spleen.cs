@@ -7,79 +7,27 @@ namespace SpleenTween
 {
     public class Spleen : MonoBehaviour
     {
-        public int ActiveTweensCount;
-
-        public List<Tween> Tweens = new();
-
-        public static Spleen Instance;
-       
-        #region Initialization
-        private void Awake()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
-            Instance = this;
-            DontDestroyOnLoad(Instance);
-        }
-
-        private void OnEnable() => SceneManager.activeSceneChanged += StopAllTweens;
-        private void OnDisable() => SceneManager.activeSceneChanged -= StopAllTweens;
-
-        // reset all lists when scene loads to prevent tweens carrying over
-        void StopAllTweens(Scene s1, Scene s2)
-        {
-            Tweens.Clear();
-        }
-
-        //create a new instance when the game starts
-        [RuntimeInitializeOnLoadMethod]
-        static void Initialize()
-        {
-            Instance = new GameObject("SpleenTweenManager").AddComponent<Spleen>();
-        }
-        #endregion
-
-        private void Update()
-        {
-            RunTweens();
-            ActiveTweensCount = Tweens.Count;
-        }
-
-        #region Tween Control
-        void RunTweens()
-        {
-            for (int i = 0; i < Tweens.Count; i++)
-            {
-                Tween tween = Tweens[i];
-                if (!tween.Tweening())
-                {
-                    Tweens.RemoveAt(i);
-                }
-            }
-        }
-
         public static void StopTween(Tween tween)
         {
-            Instance.Tweens.Remove(tween);
+            SpleenTweenManager.Instance.Tweens.Remove(tween);
         }
         public static void StopAll()
         {
-            Instance.Tweens.Clear();
+            SpleenTweenManager.Instance.Tweens.Clear();
         }
         public static void StopTweens(GameObject target)
         {
-            for (int i = Instance.Tweens.Count - 1; i >= 0; i--)
+            for (int i = SpleenTweenManager.Instance.Tweens.Count - 1; i >= 0; i--)
             {
-                Tween tween = Instance.Tweens[i];
+                Tween tween = SpleenTweenManager.Instance.Tweens[i];
                 if (tween.target == target)
-                    Instance.Tweens.RemoveAt(i);
+                    SpleenTweenManager.Instance.Tweens.RemoveAt(i);
             }
         }
-
-        #endregion
+        public static void AddTween(Tween tween)
+        {
+            SpleenTweenManager.Instance.Tweens.Add(tween);
+        }
 
         #region Static Tween Functions
 
@@ -87,13 +35,13 @@ namespace SpleenTween
         public static Tween Value(float from, float to, float duration, Ease easing, Action<float> onUpdate)
         {
             Value tween = new(from, to, duration, easing, onUpdate);
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween Value3(Vector3 from, Vector3 to, float duration, Ease easing, Action<Vector3> onUpdate)
         {
             Value3 tween = new(from, to, duration, easing, onUpdate);
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         #endregion
@@ -107,7 +55,7 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween Pos(GameObject target, Vector3 to, float duration, Ease easing)
@@ -119,7 +67,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween AddPos(GameObject target, Vector3 increment, float duration, Ease easing)
@@ -145,7 +93,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
 
@@ -157,7 +105,7 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween PosX(GameObject target, float to, float duration, Ease easing)
@@ -169,7 +117,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween AddPosX(GameObject target, float increment, float duration, Ease easing)
@@ -196,7 +144,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
 
@@ -208,7 +156,7 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween PosY(GameObject target, float to, float duration, Ease easing)
@@ -220,7 +168,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween AddPosY(GameObject target, float increment, float duration, Ease easing)
@@ -246,7 +194,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
 
@@ -258,7 +206,7 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween PosZ(GameObject target, float to, float duration, Ease easing)
@@ -270,7 +218,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween AddPosZ(GameObject target, float increment, float duration, Ease easing)
@@ -296,7 +244,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         #endregion
@@ -310,7 +258,7 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween LocPos(GameObject target, Vector3 to, float duration, Ease easing)
@@ -322,7 +270,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween AddLocPos(GameObject target, Vector3 increment, float duration, Ease easing)
@@ -348,7 +296,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
 
@@ -360,7 +308,7 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween LocPosX(GameObject target, float to, float duration, Ease easing)
@@ -372,7 +320,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween AddLocPosX(GameObject target, float increment, float duration, Ease easing)
@@ -399,7 +347,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
 
@@ -411,7 +359,7 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween LocPosY(GameObject target, float to, float duration, Ease easing)
@@ -423,7 +371,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween AddLocPosY(GameObject target, float increment, float duration, Ease easing)
@@ -449,7 +397,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
 
@@ -461,7 +409,7 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween LocPosZ(GameObject target, float to, float duration, Ease easing)
@@ -473,7 +421,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween AddLocPosZ(GameObject target, float increment, float duration, Ease easing)
@@ -499,7 +447,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         #endregion
@@ -513,7 +461,7 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween Scale(GameObject target, Vector3 to, float duration, Ease easing)
@@ -525,7 +473,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween AddScale(GameObject target, Vector3 increment, float duration, Ease easing)
@@ -551,7 +499,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
 
@@ -563,7 +511,7 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween ScaleX(GameObject target, float to, float duration, Ease easing)
@@ -575,7 +523,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween AddScaleX(GameObject target, float increment, float duration, Ease easing)
@@ -602,7 +550,7 @@ namespace SpleenTween
             
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
 
@@ -614,7 +562,7 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween ScaleY(GameObject target, float to, float duration, Ease easing)
@@ -626,7 +574,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween AddScaleY(GameObject target, float increment, float duration, Ease easing)
@@ -652,7 +600,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
 
@@ -664,7 +612,7 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween ScaleZ(GameObject target, float to, float duration, Ease easing)
@@ -676,7 +624,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween AddScaleZ(GameObject target, float increment, float duration, Ease easing)
@@ -701,7 +649,7 @@ namespace SpleenTween
                 }
             };
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         #endregion
@@ -715,7 +663,7 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween Rot(GameObject target, Vector3 to, float duration, Ease easing)
@@ -727,7 +675,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween AddRot(GameObject target, Vector3 increment, float duration, Ease easing)
@@ -753,7 +701,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
 
@@ -765,7 +713,7 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween RotX(GameObject target, float to, float duration, Ease easing)
@@ -777,7 +725,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween AddRotX(GameObject target, float increment, float duration, Ease easing)
@@ -803,7 +751,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
 
@@ -815,7 +763,7 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween RotY(GameObject target, float to, float duration, Ease easing)
@@ -827,7 +775,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween AddRotY(GameObject target, float increment, float duration, Ease easing)
@@ -852,7 +800,7 @@ namespace SpleenTween
                 }
             };
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
 
@@ -864,7 +812,7 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween RotZ(GameObject target, float to, float duration, Ease easing)
@@ -876,7 +824,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween AddRotZ(GameObject target, float increment, float duration, Ease easing)
@@ -902,7 +850,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         #endregion
@@ -916,7 +864,7 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween LocRot(GameObject target, Vector3 to, float duration, Ease easing)
@@ -928,7 +876,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween AddLocRot(GameObject target, Vector3 increment, float duration, Ease easing)
@@ -954,7 +902,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
 
@@ -966,7 +914,7 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween LocRotX(GameObject target, float to, float duration, Ease easing)
@@ -978,7 +926,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween AddLocRotX(GameObject target, float increment, float duration, Ease easing)
@@ -1004,7 +952,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
 
@@ -1016,7 +964,7 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween LocRotY(GameObject target, float to, float duration, Ease easing)
@@ -1028,7 +976,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween AddLocRotY(GameObject target, float increment, float duration, Ease easing)
@@ -1053,7 +1001,7 @@ namespace SpleenTween
                 }
             };
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
 
@@ -1065,7 +1013,7 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween LocRotZ(GameObject target, float to, float duration, Ease easing)
@@ -1077,7 +1025,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween AddLocRotZ(GameObject target, float increment, float duration, Ease easing)
@@ -1103,7 +1051,7 @@ namespace SpleenTween
 
             tween.StopIfNull(target);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         #endregion
@@ -1117,7 +1065,7 @@ namespace SpleenTween
             });
             tween.StopIfNull(source.gameObject);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween Vol(AudioSource source, float to, float duration, Ease easing)
@@ -1128,7 +1076,7 @@ namespace SpleenTween
             });
             tween.StopIfNull(source.gameObject);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
         public static Tween AddVol(AudioSource source, float increment, float duration, Ease easing)
@@ -1154,7 +1102,7 @@ namespace SpleenTween
 
             tween.StopIfNull(source.gameObject);
 
-            Instance.Tweens.Add(tween);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
 

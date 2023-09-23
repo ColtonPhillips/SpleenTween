@@ -80,7 +80,7 @@ namespace SpleenTween
             else
                 prevTween = chainedTweens[index - 1];
 
-            prevTween.OnComplete(() => Spleen.Instance.Tweens.Add(tween));
+            prevTween.OnComplete(() => Spleen.AddTween(tween));
             return this;
         }
 
