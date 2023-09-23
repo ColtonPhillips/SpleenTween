@@ -74,7 +74,7 @@ namespace SpleenTween
             for (int i = Instance.Tweens.Count - 1; i >= 0; i--)
             {
                 Tween tween = Instance.Tweens[i];
-                if (tween._target == target)
+                if (tween.target == target)
                     Instance.Tweens.RemoveAt(i);
             }
         }
@@ -131,13 +131,13 @@ namespace SpleenTween
                 from = val;
             });
 
-            tween._onStart += () =>
+            tween.onStart += () =>
             {
                 from = target.transform.position;
-                tween._from = from;
-                tween._to = from + increment;
+                tween.from = from;
+                tween.to = from + increment;
 
-                if (tween._loopType == LoopType.Yoyo)
+                if (tween.loopType == LoopType.Yoyo)
                 {
                     increment = -increment;
                 }
@@ -182,13 +182,13 @@ namespace SpleenTween
                 from = val;
             });
 
-            tween._onStart += () =>
+            tween.onStart += () =>
             {
                 from = target.transform.position.x;
-                tween._from = from;
-                tween._to = from + increment;
+                tween.from = from;
+                tween.to = from + increment;
 
-                if (tween._loopType == LoopType.Yoyo)
+                if (tween.loopType == LoopType.Yoyo)
                 {
                     increment = -increment;
                 }
@@ -232,13 +232,13 @@ namespace SpleenTween
                 from = val;
             });
 
-            tween._onStart += () =>
+            tween.onStart += () =>
             {
                 from = target.transform.position.y;
-                tween._from = from;
-                tween._to = from + increment;
+                tween.from = from;
+                tween.to = from + increment;
 
-                if (tween._loopType == LoopType.Yoyo)
+                if (tween.loopType == LoopType.Yoyo)
                 {
                     increment = -increment;
                 }
@@ -282,13 +282,13 @@ namespace SpleenTween
                 from = val;
             });
 
-            tween._onStart += () =>
+            tween.onStart += () =>
             {
                 from = target.transform.position.z;
-                tween._from = from;
-                tween._to = from + increment;
+                tween.from = from;
+                tween.to = from + increment;
 
-                if (tween._loopType == LoopType.Yoyo)
+                if (tween.loopType == LoopType.Yoyo)
                 {
                     increment = -increment;
                 }
@@ -334,13 +334,13 @@ namespace SpleenTween
                 from = val;
             });
 
-            tween._onStart += () =>
+            tween.onStart += () =>
             {
                 from = target.transform.localPosition;
-                tween._from = from;
-                tween._to = from + increment;
+                tween.from = from;
+                tween.to = from + increment;
 
-                if (tween._loopType == LoopType.Yoyo)
+                if (tween.loopType == LoopType.Yoyo)
                 {
                     increment = -increment;
                 }
@@ -385,13 +385,13 @@ namespace SpleenTween
                 from = val;
             });
 
-            tween._onStart += () =>
+            tween.onStart += () =>
             {
                 from = target.transform.localPosition.x;
-                tween._from = from;
-                tween._to = from + increment;
+                tween.from = from;
+                tween.to = from + increment;
 
-                if (tween._loopType == LoopType.Yoyo)
+                if (tween.loopType == LoopType.Yoyo)
                 {
                     increment = -increment;
                 }
@@ -435,13 +435,13 @@ namespace SpleenTween
                 from = val;
             });
 
-            tween._onStart += () =>
+            tween.onStart += () =>
             {
                 from = target.transform.localPosition.y;
-                tween._from = from;
-                tween._to = from + increment;
+                tween.from = from;
+                tween.to = from + increment;
 
-                if (tween._loopType == LoopType.Yoyo)
+                if (tween.loopType == LoopType.Yoyo)
                 {
                     increment = -increment;
                 }
@@ -485,13 +485,13 @@ namespace SpleenTween
                 from = val;
             });
 
-            tween._onStart += () =>
+            tween.onStart += () =>
             {
                 from = target.transform.localPosition.z;
-                tween._from = from;
-                tween._to = from + increment;
+                tween.from = from;
+                tween.to = from + increment;
 
-                if (tween._loopType == LoopType.Yoyo)
+                if (tween.loopType == LoopType.Yoyo)
                 {
                     increment = -increment;
                 }
@@ -537,13 +537,13 @@ namespace SpleenTween
                 from = val;
             });
 
-            tween._onStart += () =>
+            tween.onStart += () =>
             {
                 from = target.transform.localScale;
-                tween._from = from;
-                tween._to = from + increment;
+                tween.from = from;
+                tween.to = from + increment;
 
-                if (tween._loopType == LoopType.Yoyo)
+                if (tween.loopType == LoopType.Yoyo)
                 {
                     increment = -increment;
                 }
@@ -587,14 +587,14 @@ namespace SpleenTween
                 from = val;
             });
 
-            tween._onStart += () =>
+            tween.onStart += () =>
             {
                 from = target.transform.localScale.x;
-                tween._from = from;
-                tween._from = from;
-                tween._to = from + increment;
+                tween.from = from;
+                tween.from = from;
+                tween.to = from + increment;
 
-                if (tween._loopType == LoopType.Yoyo)
+                if (tween.loopType == LoopType.Yoyo)
                 {
                     increment = -increment;
                 }
@@ -638,13 +638,13 @@ namespace SpleenTween
                 from = val;
             });
 
-            tween._onStart += () =>
+            tween.onStart += () =>
             {
                 from = target.transform.localScale.y;
-                tween._from = from;
-                tween._to = from + increment;
+                tween.from = from;
+                tween.to = from + increment;
 
-                if (tween._loopType == LoopType.Yoyo)
+                if (tween.loopType == LoopType.Yoyo)
                 {
                     increment = -increment;
                 }
@@ -689,13 +689,13 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            tween._onStart += () =>
+            tween.onStart += () =>
             {
                 from = target.transform.localScale.z;
-                tween._from = from;
-                tween._to = from + increment;
+                tween.from = from;
+                tween.to = from + increment;
 
-                if (tween._loopType == LoopType.Yoyo)
+                if (tween.loopType == LoopType.Yoyo)
                 {
                     increment = -increment;
                 }
@@ -739,13 +739,13 @@ namespace SpleenTween
                 from = val;
             });
 
-            tween._onStart += () =>
+            tween.onStart += () =>
             {
                 from = target.transform.eulerAngles;
-                tween._from = from;
-                tween._to = from + increment;
+                tween.from = from;
+                tween.to = from + increment;
 
-                if (tween._loopType == LoopType.Yoyo)
+                if (tween.loopType == LoopType.Yoyo)
                 {
                     increment = -increment;
                 }
@@ -789,13 +789,13 @@ namespace SpleenTween
                 from = val;
             });
 
-            tween._onStart += () =>
+            tween.onStart += () =>
             {
                 from = target.transform.eulerAngles.x;
-                tween._from = from;
-                tween._to = from + increment;
+                tween.from = from;
+                tween.to = from + increment;
 
-                if (tween._loopType == LoopType.Yoyo)
+                if (tween.loopType == LoopType.Yoyo)
                 {
                     increment = -increment;
                 }
@@ -840,13 +840,13 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            tween._onStart += () =>
+            tween.onStart += () =>
             {
                 from = target.transform.eulerAngles.y;
-                tween._from = from;
-                tween._to = from + increment;
+                tween.from = from;
+                tween.to = from + increment;
 
-                if (tween._loopType == LoopType.Yoyo)
+                if (tween.loopType == LoopType.Yoyo)
                 {
                     increment = -increment;
                 }
@@ -888,13 +888,13 @@ namespace SpleenTween
                 from = val;
             });
 
-            tween._onStart += () =>
+            tween.onStart += () =>
             {
                 from = target.transform.eulerAngles.z;
-                tween._from = from;
-                tween._to = from + increment;
+                tween.from = from;
+                tween.to = from + increment;
 
-                if (tween._loopType == LoopType.Yoyo)
+                if (tween.loopType == LoopType.Yoyo)
                 {
                     increment = -increment;
                 }
@@ -940,13 +940,13 @@ namespace SpleenTween
                 from = val;
             });
 
-            tween._onStart += () =>
+            tween.onStart += () =>
             {
                 from = target.transform.localEulerAngles;
-                tween._from = from;
-                tween._to = from + increment;
+                tween.from = from;
+                tween.to = from + increment;
 
-                if (tween._loopType == LoopType.Yoyo)
+                if (tween.loopType == LoopType.Yoyo)
                 {
                     increment = -increment;
                 }
@@ -990,13 +990,13 @@ namespace SpleenTween
                 from = val;
             });
 
-            tween._onStart += () =>
+            tween.onStart += () =>
             {
                 from = target.transform.localEulerAngles.x;
-                tween._from = from;
-                tween._to = from + increment;
+                tween.from = from;
+                tween.to = from + increment;
 
-                if (tween._loopType == LoopType.Yoyo)
+                if (tween.loopType == LoopType.Yoyo)
                 {
                     increment = -increment;
                 }
@@ -1041,13 +1041,13 @@ namespace SpleenTween
             });
             tween.StopIfNull(target);
 
-            tween._onStart += () =>
+            tween.onStart += () =>
             {
                 from = target.transform.localEulerAngles.y;
-                tween._from = from;
-                tween._to = from + increment;
+                tween.from = from;
+                tween.to = from + increment;
 
-                if (tween._loopType == LoopType.Yoyo)
+                if (tween.loopType == LoopType.Yoyo)
                 {
                     increment = -increment;
                 }
@@ -1089,13 +1089,13 @@ namespace SpleenTween
                 from = val;
             });
 
-            tween._onStart += () =>
+            tween.onStart += () =>
             {
                 from = target.transform.localEulerAngles.z;
-                tween._from = from;
-                tween._to = from + increment;
+                tween.from = from;
+                tween.to = from + increment;
 
-                if (tween._loopType == LoopType.Yoyo)
+                if (tween.loopType == LoopType.Yoyo)
                 {
                     increment = -increment;
                 }
@@ -1140,13 +1140,13 @@ namespace SpleenTween
                 from = val;
             });
 
-            tween._onStart += () =>
+            tween.onStart += () =>
             {
                 from = source.volume;
-                tween._from = from;
-                tween._to = from + increment;
+                tween.from = from;
+                tween.to = from + increment;
 
-                if (tween._loopType == LoopType.Yoyo)
+                if (tween.loopType == LoopType.Yoyo)
                 {
                     increment = -increment;
                 }

@@ -5,47 +5,47 @@ namespace SpleenTween
 {
     public class Value : Tween
     {
-        public Action<float> _onUpdate;
-        public float _from;
-        public float _to;
+        public Action<float> onUpdate;
+        public float from;
+        public float to;
 
-        public float _value;
+        public float value;
 
         public Value(float from, float to, float duration, Ease easing, Action<float> onUpdate) : base(duration, easing)
         {
-            _from = from;
-            _to = to;
-            _duration = duration;
-            _easing = easing;
-            _onUpdate += onUpdate;
+            this.from = from;
+            this.to = to;
+            this.duration = duration;
+            this.easing = easing;
+            this.onUpdate += onUpdate;
         }
 
         public override void UpdateValue()
         {
-            _value = Mathf.LerpUnclamped(_from, _to, _easeValue);
-            _onUpdate?.Invoke(_value);
+            value = Mathf.LerpUnclamped(from, to, easeValue);
+            onUpdate?.Invoke(value);
         }
 
         void LoopSpecificActions(LoopType loopType)
         {
             if (loopType == LoopType.Yoyo)
             {
-                _onComplete += () =>
+                onComplete += () =>
                 {
-                    float from = _from;
-                    float to = _to;
+                    float from = this.from;
+                    float to = this.to;
 
-                    _from = to;
-                    _to = from;
+                    from = to;
+                    to = from;
                 };
             }
             else if(loopType == LoopType.Incremental)
             {
-                _onComplete += () =>
+                onComplete += () =>
                 {
-                    float diff = _to - _from;
-                    _from += diff;
-                    _to += diff;
+                    float diff = to - from;
+                    from += diff;
+                    to += diff;
                 };
             }
         }

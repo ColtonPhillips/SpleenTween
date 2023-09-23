@@ -6,79 +6,79 @@ namespace SpleenTween
 {
     public class Tween
     {
-        protected float _duration;
-        protected Ease _easing;
-        public Action _onComplete;
-        public Action _onStart;
-        Action _onUpdateGeneral;
+        protected float duration;
+        protected Ease easing;
+        public Action onComplete;
+        public Action onStart;
+        Action onUpdateGeneral;
 
-        public GameObject _target;
-        public Action _nullCheck;
-        public bool _targetIsNull;
+        public GameObject target;
+        public Action nullCheck;
+        public bool targetIsNull;
 
-        float _currentTime;
+        float currentTime;
 
-        float _delayDuration;
-        bool _delayEnabled;
-        bool _startTriggered;
+        float delayDuration;
+        bool delayEnabled;
+        bool startTriggered;
 
-        public LoopType _loopType;
-        float _loopDelay;
+        public LoopType loopType;
+        float loopDelay;
 
-        protected float _easeValue;
-        float _lerpValue;
+        protected float easeValue;
+        float lerpValue;
 
-        bool _loop;
-        int _loopCount;
-        Action _onAllLoopsComplete;
-        bool _loopForever = false;
+        bool loop;
+        int loopCount;
+        Action onAllLoopsComplete;
+        bool loopForever = false;
 
-        public int _targetLerp = 1;
+        public int targetLerp = 1;
 
-        List<Tween> _chainedTweens = new();
+        List<Tween> chainedTweens = new();
 
         public Tween(float duration, Ease easing)
         {
-            _duration = duration;
-            _easing = easing;
+            this.duration = duration;
+            this.easing = easing;
         }
         public Tween OnUpdate(Action onUpdate)
         {
-            _onUpdateGeneral += onUpdate;
+            onUpdateGeneral += onUpdate;
             return this;
         }
         public Tween OnComplete(Action onComplete)
         {
-            _onComplete += onComplete;
+            this.onComplete += onComplete;
             return this;
         }
         public Tween OnStart(Action onStart)
         {
-            _onStart += onStart;
+            this.onStart += onStart;
             return this;
         }
 
         public Tween Delay(float delayDuration)
         {
-            _delayDuration = delayDuration;
-            _delayEnabled = true;
-            _currentTime -= delayDuration;
+            this.delayDuration = delayDuration;
+            delayEnabled = true;
+            currentTime -= delayDuration;
             return this;
         }
 
         public Tween Chain(Tween tween)
         {
             Spleen.StopTween(tween);
-            _chainedTweens.Add(tween);
-            float waitTime = this._duration + this._delayDuration;
+            chainedTweens.Add(tween);
+            float waitTime = this.duration + this.delayDuration;
 
-            int index = _chainedTweens.Count - 1;
+            int index = chainedTweens.Count - 1;
 
             Tween prevTween = null;
             if (index <= 0)
                 prevTween = this;
             else
-                prevTween = _chainedTweens[index - 1];
+                prevTween = chainedTweens[index - 1];
 
             prevTween.OnComplete(() => Spleen.Instance.Tweens.Add(tween));
             return this;
@@ -86,130 +86,130 @@ namespace SpleenTween
 
         public virtual Tween Loop(LoopType loopType)
         {
-            _loopForever = true;
-            _loopType = loopType;
-            _loop = true;
+            loopForever = true;
+            this.loopType = loopType;
+            loop = true;
             return this;
         }
         public virtual Tween Loop(LoopType loopType, float startDelay)
         {
-            _currentTime -= startDelay;
-            _loopForever = true;
-            _loopType = loopType;
-            _loop = true;
+            currentTime -= startDelay;
+            loopForever = true;
+            this.loopType = loopType;
+            loop = true;
             return this;
         }
         public virtual Tween Loop(LoopType loopType, int loopCount)
         {
-            _loopType = loopType;
-            _loopCount = loopCount - 1;
-            _loop = true;
+            this.loopType = loopType;
+            this.loopCount = loopCount - 1;
+            loop = true;
             return this;
         }
         public virtual Tween Loop(LoopType loopType, int loopCount, float startDelay)
         {
-            _currentTime -= startDelay;
-            _loopType = loopType;
-            _loopCount = loopCount - 1;
-            _loop = true;
+            currentTime -= startDelay;
+            this.loopType = loopType;
+            this.loopCount = loopCount - 1;
+            loop = true;
             return this;
         }
         public virtual Tween Loop(LoopType loopType, int loopCount, Action onAllLoopsComplete)
         {
-            _loopType = loopType;
-            _loopCount = loopCount - 1;
-            _onAllLoopsComplete += onAllLoopsComplete;
-            _loop = true;
+            this.loopType = loopType;
+            this.loopCount = loopCount - 1;
+            this.onAllLoopsComplete += onAllLoopsComplete;
+            loop = true;
             return this;
         }
         public virtual Tween Loop(LoopType loopType, int loopCount, float startDelay, Action onAllLoopsComplete)
         {
-            _currentTime -= startDelay;
-            _loopType = loopType;
-            _loopCount = loopCount - 1;
-            _onAllLoopsComplete += onAllLoopsComplete;
-            _loop = true;
+            currentTime -= startDelay;
+            this.loopType = loopType;
+            this.loopCount = loopCount - 1;
+            this.onAllLoopsComplete += onAllLoopsComplete;
+            loop = true;
             return this;
         }
 
         public Tween StopIfNull(GameObject target)
         {
-            _nullCheck += () =>
+            nullCheck += () =>
             {
                 if (target == null)
-                    _targetIsNull = true;
+                    targetIsNull = true;
             };
-            _target = target;
+            this.target = target;
             return this;
         }
 
         public bool Tweening()
         {
-            _nullCheck?.Invoke();
-            if (_targetIsNull)
+            nullCheck?.Invoke();
+            if (targetIsNull)
                 return false;
 
-            _currentTime += Time.deltaTime;
+            currentTime += Time.deltaTime;
 
-            if (_currentTime < 0)
+            if (currentTime < 0)
                 return true;
             
-            if (_currentTime >= 0 && !_startTriggered)
+            if (currentTime >= 0 && !startTriggered)
             {
                 OnTweenStart();
             }
 
-            _lerpValue = GetLerpValue(_currentTime, _duration);
-            if (_loop && _targetLerp == 0)
-                _lerpValue = Looping.LoopValue(_loopType, _lerpValue);
-            _easeValue = Easing.EasingValue(_easing, _lerpValue);
+            lerpValue = GetLerpValue(currentTime, duration);
+            if (loop && targetLerp == 0)
+                lerpValue = Looping.LoopValue(loopType, lerpValue);
+            easeValue = Easing.EasingValue(easing, lerpValue);
 
-            if(_currentTime < _duration)
+            if(currentTime < duration)
             {
                 UpdateValue();
-                _onUpdateGeneral?.Invoke();
+                onUpdateGeneral?.Invoke();
                 return true;
             }
 
-            _easeValue = _targetLerp;
+            easeValue = targetLerp;
 
-            _onComplete?.Invoke();
+            onComplete?.Invoke();
 
-            if (_loopCount > 0 || _loopForever)
+            if (loopCount > 0 || loopForever)
             {
-                if (_loopType == LoopType.Rewind)
+                if (loopType == LoopType.Rewind)
                 {
-                    if (_targetLerp == 1)
-                        _targetLerp = 0;
-                    else if (_targetLerp == 0)
-                        _targetLerp = 1;
+                    if (targetLerp == 1)
+                        targetLerp = 0;
+                    else if (targetLerp == 0)
+                        targetLerp = 1;
                 }
 
                 Restart();
-                _loopCount--;
+                loopCount--;
 
-                _onUpdateGeneral?.Invoke();
+                onUpdateGeneral?.Invoke();
                 return true;
             }
 
-            if (_loopCount <= 0 && !_loopForever)
+            if (loopCount <= 0 && !loopForever)
             {
-                _loop = false;
-                _onAllLoopsComplete?.Invoke();
+                loop = false;
+                onAllLoopsComplete?.Invoke();
 
                 Restart();
 
-                if (_loopType == LoopType.Yoyo)
-                    _easeValue = 0;
+                if (loopType == LoopType.Yoyo)
+                    easeValue = 0;
 
                 UpdateValue();
 
-                _onUpdateGeneral?.Invoke();
+                onUpdateGeneral?.Invoke();
                 return false;
             }
 
             UpdateValue();
-            _onUpdateGeneral?.Invoke();
+            onUpdateGeneral?.Invoke();
             return true;
         }
 
@@ -223,36 +223,36 @@ namespace SpleenTween
 
         public void Restart()
         {
-            _startTriggered = false;
+            startTriggered = false;
 
-            _lerpValue = _targetLerp;
-            _currentTime = 0;
-            _easeValue = Easing.EasingValue(_easing, _lerpValue);
+            lerpValue = targetLerp;
+            currentTime = 0;
+            easeValue = Easing.EasingValue(easing, lerpValue);
 
-            if (_loopType == LoopType.Yoyo && (_loopCount > 0 || _loopForever))
-                _easeValue = 0;
-            else if (_loopType == LoopType.Yoyo && _loopForever)
-                _easeValue = 1;
+            if (loopType == LoopType.Yoyo && (loopCount > 0 || loopForever))
+                easeValue = 0;
+            else if (loopType == LoopType.Yoyo && loopForever)
+                easeValue = 1;
 
-            if(_loopType == LoopType.Incremental)
-                _easeValue = 0;
+            if(loopType == LoopType.Incremental)
+                easeValue = 0;
 
-            if (_loopType != LoopType.Rewind)
+            if (loopType != LoopType.Rewind)
                 UpdateValue();
 
-            if (_delayEnabled)
-                _currentTime -= _delayDuration;
+            if (delayEnabled)
+                currentTime -= delayDuration;
         }
 
         public void StopLoop()
         {
-            _loop = false;
+            loop = false;
         }
 
         void OnTweenStart()
         {
-            _onStart?.Invoke();
-            _startTriggered = true;
+            onStart?.Invoke();
+            startTriggered = true;
         }
     }
 }

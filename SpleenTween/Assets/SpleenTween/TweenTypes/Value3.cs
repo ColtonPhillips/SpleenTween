@@ -5,53 +5,53 @@ namespace SpleenTween
 {
     public class Value3 : Tween
     {
-        public Action<Vector3> _onUpdate;
-        public Vector3 _from;
-        public Vector3 _to;
+        public Action<Vector3> onUpdate;
+        public Vector3 from;
+        public Vector3 to;
 
-        public Vector3 _value;
+        public Vector3 value;
 
         public Value3(Vector3 from, Vector3 to, float duration, Ease easing, Action<Vector3> onUpdate) : base(duration, easing)
         {
-            _from = from;
-            _to = to;
-            _duration = duration;
-            _easing = easing;
-            _onUpdate += onUpdate;
+            this.from = from;
+            this.to = to;
+            this.duration = duration;
+            this.easing = easing;
+            this.onUpdate += onUpdate;
         }
 
         public override void UpdateValue()
         {
-            _value = Vector3.LerpUnclamped(_from, _to, _easeValue);
-            _onUpdate?.Invoke(_value);
+            value = Vector3.LerpUnclamped(from, to, easeValue);
+            onUpdate?.Invoke(value);
         }
 
         void LoopSpecificActions(LoopType loopType)
         {
             if (loopType == LoopType.Yoyo)
             {
-                _onComplete += () =>
+                onComplete += () =>
                 {
-                    Vector3 from = _from;
-                    Vector3 to = _to;
-                    _from = to;
-                    _to = from;
+                    Vector3 from = this.from;
+                    Vector3 to = this.to;
+                    from = to;
+                    to = from;
                 };
             }
             else if (loopType == LoopType.Incremental)
             {
-                _onComplete += () =>
+                onComplete += () =>
                 {
-                    Vector3 diff = _to - _from;
-                    _from += diff;
-                    _to += diff;
+                    Vector3 diff = to - from;
+                    from += diff;
+                    to += diff;
                 };
             }
         }
         public override Tween Loop(LoopType loopType)
         {
             base.Loop(loopType);
-            LoopSpecificActions(_loopType);
+            LoopSpecificActions(loopType);
             return this;
         }
         public override Tween Loop(LoopType loopType, int loopCount)
