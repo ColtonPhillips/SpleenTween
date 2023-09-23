@@ -49,26 +49,13 @@ namespace SpleenTween
         #region Position
         public static Tween Pos(GameObject target, Vector3 from, Vector3 to, float duration, Ease easing)
         {
-            Value3 tween = new(from, to, duration, easing, (val) =>
-            {
-                target.transform.position = val;
-            });
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value3 tween = new(from, to, duration, easing, (val) => target.transform.position = val);
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween Pos(GameObject target, Vector3 to, float duration, Ease easing)
         {
-            Value3 tween = new(target.transform.position, to, duration, easing, (val) =>
-            {
-                target.transform.position = val;
-            });
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value3 tween = new(target.transform.position, to, duration, easing, (val) => target.transform.position = val);
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween AddPos(GameObject target, Vector3 increment, float duration, Ease easing)
         {
@@ -78,7 +65,6 @@ namespace SpleenTween
                 target.transform.position += val - from;
                 from = val;
             });
-
             tween.onStart += () =>
             {
                 from = target.transform.position;
@@ -86,50 +72,31 @@ namespace SpleenTween
                 tween.to = from + increment;
 
                 if (tween.loopType == LoopType.Yoyo)
-                {
                     increment = -increment;
-                }
             };
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
 
         public static Tween PosX(GameObject target, float from, float to, float duration, Ease easing)
         {
-            Value tween = new(from, to, duration, easing, (val) =>
-            {
-                target.transform.position = new Vector3(val, target.transform.position.y, target.transform.position.z);
-            });
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(from, to, duration, easing, 
+                (val) => target.transform.position = new Vector3(val, target.transform.position.y, target.transform.position.z));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween PosX(GameObject target, float to, float duration, Ease easing)
         {
-            Value tween = new(target.transform.position.x, to, duration, easing, (val) =>
-            {
-                target.transform.position = new Vector3(val, target.transform.position.y, target.transform.position.z);
-            });
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(target.transform.position.x, to, duration, easing, 
+                (val) => target.transform.position = new Vector3(val, target.transform.position.y, target.transform.position.z));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween AddPosX(GameObject target, float increment, float duration, Ease easing)
         {
             float from = target.transform.position.x;
-
             Value tween = new(from, increment, duration, easing, (val) =>
             {
                 target.transform.position += new Vector3(val - from, 0, 0);
                 from = val;
             });
-
             tween.onStart += () =>
             {
                 from = target.transform.position.x;
@@ -137,39 +104,22 @@ namespace SpleenTween
                 tween.to = from + increment;
 
                 if (tween.loopType == LoopType.Yoyo)
-                {
                     increment = -increment;
-                }
             };
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
 
         public static Tween PosY(GameObject target, float from, float to, float duration, Ease easing)
         {
-            Value tween = new(from, to, duration, easing, (val) =>
-            {
-                target.transform.position = new Vector3(target.transform.position.x, val, target.transform.position.z);
-            });
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(from, to, duration, easing, 
+                (val) => target.transform.position = new Vector3(target.transform.position.x, val, target.transform.position.z));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween PosY(GameObject target, float to, float duration, Ease easing)
         {
-            Value tween = new(target.transform.position.y, to, duration, easing, (val) =>
-            {
-                target.transform.position = new Vector3(target.transform.position.x, val, target.transform.position.z);
-            });
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(target.transform.position.y, to, duration, easing, 
+                (val) => target.transform.position = new Vector3(target.transform.position.x, val, target.transform.position.z));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween AddPosY(GameObject target, float increment, float duration, Ease easing)
         {
@@ -179,7 +129,6 @@ namespace SpleenTween
                 target.transform.position += new Vector3(0, val - from, 0);
                 from = val;
             });
-
             tween.onStart += () =>
             {
                 from = target.transform.position.y;
@@ -187,39 +136,22 @@ namespace SpleenTween
                 tween.to = from + increment;
 
                 if (tween.loopType == LoopType.Yoyo)
-                {
                     increment = -increment;
-                }
             };
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
 
         public static Tween PosZ(GameObject target, float from, float to, float duration, Ease easing)
         {
-            Value tween = new(from, to, duration, easing, (val) =>
-            {
-                target.transform.position = new Vector3(target.transform.position.x, target.transform.position.y, val);
-            });
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(from, to, duration, easing, 
+                (val) => target.transform.position = new Vector3(target.transform.position.x, target.transform.position.y, val));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween PosZ(GameObject target, float to, float duration, Ease easing)
         {
-            Value tween = new(target.transform.position.z, to, duration, easing, (val) =>
-            {
-                target.transform.position = new Vector3(target.transform.position.x, target.transform.position.y, val);
-            });
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(target.transform.position.z, to, duration, easing, 
+                (val) => target.transform.position = new Vector3(target.transform.position.x, target.transform.position.y, val));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween AddPosZ(GameObject target, float increment, float duration, Ease easing)
         {
@@ -229,7 +161,6 @@ namespace SpleenTween
                 target.transform.position += new Vector3(0, 0, val - from);
                 from = val;
             });
-
             tween.onStart += () =>
             {
                 from = target.transform.position.z;
@@ -237,41 +168,22 @@ namespace SpleenTween
                 tween.to = from + increment;
 
                 if (tween.loopType == LoopType.Yoyo)
-                {
                     increment = -increment;
-                }
             };
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         #endregion
 
         #region Local Position
         public static Tween LocPos(GameObject target, Vector3 from, Vector3 to, float duration, Ease easing)
         {
-            Value3 tween = new(from, to, duration, easing, (val) =>
-            {
-                target.transform.localPosition = val;
-            });
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value3 tween = new(from, to, duration, easing, (val) => target.transform.localPosition = val);
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween LocPos(GameObject target, Vector3 to, float duration, Ease easing)
         {
-            Value3 tween = new(target.transform.localPosition, to, duration, easing, (val) =>
-            {
-                target.transform.localPosition = val;
-            });
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value3 tween = new(target.transform.localPosition, to, duration, easing, (val) => target.transform.localPosition = val);
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween AddLocPos(GameObject target, Vector3 increment, float duration, Ease easing)
         {
@@ -281,7 +193,6 @@ namespace SpleenTween
                 target.transform.localPosition += val - from;
                 from = val;
             });
-
             tween.onStart += () =>
             {
                 from = target.transform.localPosition;
@@ -289,50 +200,33 @@ namespace SpleenTween
                 tween.to = from + increment;
 
                 if (tween.loopType == LoopType.Yoyo)
-                {
                     increment = -increment;
-                }
             };
-
             tween.StopIfNull(target);
-
             SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
 
         public static Tween LocPosX(GameObject target, float from, float to, float duration, Ease easing)
         {
-            Value tween = new(from, to, duration, easing, (val) =>
-            {
-                target.transform.localPosition = new Vector3(val, target.transform.localPosition.y, target.transform.localPosition.z);
-            });
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(from, to, duration, easing, 
+                (val) => target.transform.localPosition = new Vector3(val, target.transform.localPosition.y, target.transform.localPosition.z));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween LocPosX(GameObject target, float to, float duration, Ease easing)
         {
-            Value tween = new(target.transform.localPosition.x, to, duration, easing, (val) =>
-            {
-                target.transform.localPosition = new Vector3(val, target.transform.localPosition.y, target.transform.localPosition.z);
-            });
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(target.transform.localPosition.x, to, duration, easing,
+                (val) => target.transform.localPosition = new Vector3(val, target.transform.localPosition.y, target.transform.localPosition.z));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween AddLocPosX(GameObject target, float increment, float duration, Ease easing)
         {
             float from = target.transform.localPosition.x;
-
             Value tween = new(from, increment, duration, easing, (val) =>
             {
                 target.transform.localPosition += new Vector3(val - from, 0, 0);
                 from = val;
             });
-
             tween.onStart += () =>
             {
                 from = target.transform.localPosition.x;
@@ -340,39 +234,24 @@ namespace SpleenTween
                 tween.to = from + increment;
 
                 if (tween.loopType == LoopType.Yoyo)
-                {
                     increment = -increment;
-                }
             };
-
             tween.StopIfNull(target);
-
             SpleenTweenManager.Instance.Tweens.Add(tween);
             return tween;
         }
 
         public static Tween LocPosY(GameObject target, float from, float to, float duration, Ease easing)
         {
-            Value tween = new(from, to, duration, easing, (val) =>
-            {
-                target.transform.localPosition = new Vector3(target.transform.localPosition.x, val, target.transform.localPosition.z);
-            });
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(from, to, duration, easing, 
+                (val) => target.transform.localPosition = new Vector3(target.transform.localPosition.x, val, target.transform.localPosition.z));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween LocPosY(GameObject target, float to, float duration, Ease easing)
         {
-            Value tween = new(target.transform.localPosition.y, to, duration, easing, (val) =>
-            {
-                target.transform.localPosition = new Vector3(target.transform.localPosition.x, val, target.transform.localPosition.z);
-            });
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(target.transform.localPosition.y, to, duration, easing, 
+                (val) => target.transform.localPosition = new Vector3(target.transform.localPosition.x, val, target.transform.localPosition.z));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween AddLocPosY(GameObject target, float increment, float duration, Ease easing)
         {
@@ -382,7 +261,6 @@ namespace SpleenTween
                 target.transform.localPosition += new Vector3(0, val - from, 0);
                 from = val;
             });
-
             tween.onStart += () =>
             {
                 from = target.transform.localPosition.y;
@@ -390,39 +268,22 @@ namespace SpleenTween
                 tween.to = from + increment;
 
                 if (tween.loopType == LoopType.Yoyo)
-                {
                     increment = -increment;
-                }
             };
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
 
         public static Tween LocPosZ(GameObject target, float from, float to, float duration, Ease easing)
         {
-            Value tween = new(from, to, duration, easing, (val) =>
-            {
-                target.transform.localPosition = new Vector3(target.transform.localPosition.x, target.transform.localPosition.y, val);
-            });
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(from, to, duration, easing, 
+                (val) => target.transform.localPosition = new Vector3(target.transform.localPosition.x, target.transform.localPosition.y, val));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween LocPosZ(GameObject target, float to, float duration, Ease easing)
         {
-            Value tween = new(target.transform.localPosition.z, to, duration, easing, (val) =>
-            {
-                target.transform.localPosition = new Vector3(target.transform.localPosition.x, target.transform.localPosition.y, val);
-            });
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(target.transform.localPosition.z, to, duration, easing, 
+                (val) => target.transform.localPosition = new Vector3(target.transform.localPosition.x, target.transform.localPosition.y, val));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween AddLocPosZ(GameObject target, float increment, float duration, Ease easing)
         {
@@ -432,49 +293,28 @@ namespace SpleenTween
                 target.transform.localPosition += new Vector3(0, 0, val - from);
                 from = val;
             });
-
             tween.onStart += () =>
             {
                 from = target.transform.localPosition.z;
                 tween.from = from;
                 tween.to = from + increment;
-
                 if (tween.loopType == LoopType.Yoyo)
-                {
                     increment = -increment;
-                }
             };
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         #endregion
 
         #region Scale
         public static Tween Scale(GameObject target, Vector3 from, Vector3 to, float duration, Ease easing)
         {
-            Value3 tween = new(from, to, duration, easing, (val) =>
-            {
-                target.transform.localScale = val;
-            });
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value3 tween = new(from, to, duration, easing, (val) => target.transform.localScale = val);
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween Scale(GameObject target, Vector3 to, float duration, Ease easing)
         {
-            Value3 tween = new(target.transform.localScale, to, duration, easing, (val) =>
-            {
-                target.transform.localScale = val;
-            });
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value3 tween = new(target.transform.localScale, to, duration, easing, (val) => target.transform.localScale = val);
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween AddScale(GameObject target, Vector3 increment, float duration, Ease easing)
         {
@@ -484,7 +324,6 @@ namespace SpleenTween
                 target.transform.localScale += val - from;
                 from = val;
             });
-
             tween.onStart += () =>
             {
                 from = target.transform.localScale;
@@ -492,15 +331,9 @@ namespace SpleenTween
                 tween.to = from + increment;
 
                 if (tween.loopType == LoopType.Yoyo)
-                {
                     increment = -increment;
-                }
             };
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
 
         public static Tween ScaleX(GameObject target, float from, float to, float duration, Ease easing)
@@ -509,10 +342,7 @@ namespace SpleenTween
             {
                 target.transform.localScale = new Vector3(val, target.transform.localScale.y, target.transform.localScale.z);
             });
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween ScaleX(GameObject target, float to, float duration, Ease easing)
         {
@@ -520,11 +350,7 @@ namespace SpleenTween
             {
                 target.transform.localScale = new Vector3(val, target.transform.localScale.y, target.transform.localScale.z);
             });
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween AddScaleX(GameObject target, float increment, float duration, Ease easing)
         {
@@ -534,7 +360,6 @@ namespace SpleenTween
                 target.transform.localScale += new Vector3(val - from, 0, 0);
                 from = val;
             });
-
             tween.onStart += () =>
             {
                 from = target.transform.localScale.x;
@@ -543,39 +368,22 @@ namespace SpleenTween
                 tween.to = from + increment;
 
                 if (tween.loopType == LoopType.Yoyo)
-                {
                     increment = -increment;
-                }
             };
-            
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
 
         public static Tween ScaleY(GameObject target, float from, float to, float duration, Ease easing)
         {
-            Value tween = new(from, to, duration, easing, (val) =>
-            {
-                target.transform.localScale = new Vector3(target.transform.localScale.x, val, target.transform.localScale.z);
-            });
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(from, to, duration, easing, 
+                (val) => target.transform.localScale = new Vector3(target.transform.localScale.x, val, target.transform.localScale.z));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween ScaleY(GameObject target, float to, float duration, Ease easing)
         {
-            Value tween = new(target.transform.localScale.y, to, duration, easing, (val) =>
-            {
-                target.transform.localScale = new Vector3(target.transform.localScale.x, val, target.transform.localScale.z);
-            });
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(target.transform.localScale.y, to, duration, easing, 
+                (val) => target.transform.localScale = new Vector3(target.transform.localScale.x, val, target.transform.localScale.z));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween AddScaleY(GameObject target, float increment, float duration, Ease easing)
         {
@@ -585,7 +393,6 @@ namespace SpleenTween
                 target.transform.localScale += new Vector3(0, val - from, 0);
                 from = val;
             });
-
             tween.onStart += () =>
             {
                 from = target.transform.localScale.y;
@@ -593,39 +400,22 @@ namespace SpleenTween
                 tween.to = from + increment;
 
                 if (tween.loopType == LoopType.Yoyo)
-                {
                     increment = -increment;
-                }
             };
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
 
         public static Tween ScaleZ(GameObject target, float from, float to, float duration, Ease easing)
         {
-            Value tween = new(from, to, duration, easing, (val) =>
-            {
-                target.transform.localScale = new Vector3(target.transform.localScale.x, target.transform.localScale.y, val);
-            });
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(from, to, duration, easing, 
+                (val) => target.transform.localScale = new Vector3(target.transform.localScale.x, target.transform.localScale.y, val));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween ScaleZ(GameObject target, float to, float duration, Ease easing)
         {
-            Value tween = new(target.transform.localScale.z, to, duration, easing, (val) =>
-            {
-                target.transform.localScale = new Vector3(target.transform.localScale.x, target.transform.localScale.y, val);
-            });
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(target.transform.localScale.z, to, duration, easing, 
+                (val) => target.transform.localScale = new Vector3(target.transform.localScale.x, target.transform.localScale.y, val));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween AddScaleZ(GameObject target, float increment, float duration, Ease easing)
         {
@@ -635,8 +425,6 @@ namespace SpleenTween
                 target.transform.localScale += new Vector3(0, 0, val - from);
                 from = val;
             });
-            tween.StopIfNull(target);
-
             tween.onStart += () =>
             {
                 from = target.transform.localScale.z;
@@ -644,39 +432,22 @@ namespace SpleenTween
                 tween.to = from + increment;
 
                 if (tween.loopType == LoopType.Yoyo)
-                {
                     increment = -increment;
-                }
             };
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         #endregion
 
         #region Rotation
         public static Tween Rot(GameObject target, Vector3 from, Vector3 to, float duration, Ease easing)
         {
-            Value3 tween = new(from, to, duration, easing, (val) =>
-            {
-                target.transform.eulerAngles = val;
-            });
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value3 tween = new(from, to, duration, easing, (val) => target.transform.eulerAngles = val);
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween Rot(GameObject target, Vector3 to, float duration, Ease easing)
         {
-            Value3 tween = new(target.transform.rotation.eulerAngles, to, duration, easing, (val) =>
-            {
-                target.transform.eulerAngles = val;
-            });
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value3 tween = new(target.transform.rotation.eulerAngles, to, duration, easing, (val) => target.transform.eulerAngles = val);
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween AddRot(GameObject target, Vector3 increment, float duration, Ease easing)
         {
@@ -686,7 +457,6 @@ namespace SpleenTween
                 target.transform.eulerAngles += val - from;
                 from = val;
             });
-
             tween.onStart += () =>
             {
                 from = target.transform.eulerAngles;
@@ -694,39 +464,22 @@ namespace SpleenTween
                 tween.to = from + increment;
 
                 if (tween.loopType == LoopType.Yoyo)
-                {
                     increment = -increment;
-                }
             };
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
 
         public static Tween RotX(GameObject target, float from, float to, float duration, Ease easing)
         {
-            Value tween = new(from, to, duration, easing, (val) =>
-            {
-                target.transform.eulerAngles = new Vector3(val, target.transform.rotation.y, target.transform.rotation.z);
-            });
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(from, to, duration, easing, 
+                (val) => target.transform.eulerAngles = new Vector3(val, target.transform.rotation.y, target.transform.rotation.z));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween RotX(GameObject target, float to, float duration, Ease easing)
         {
-            Value tween = new(target.transform.rotation.eulerAngles.x, to, duration, easing, (val) =>
-            {
-                target.transform.eulerAngles = new Vector3(val, target.transform.rotation.y, target.transform.rotation.z);
-            });
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(target.transform.rotation.eulerAngles.x, to, duration, easing, 
+                (val) => target.transform.eulerAngles = new Vector3(val, target.transform.rotation.y, target.transform.rotation.z));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween AddRotX(GameObject target, float increment, float duration, Ease easing)
         {
@@ -736,7 +489,6 @@ namespace SpleenTween
                 target.transform.eulerAngles += new Vector3(val - from, 0, 0);
                 from = val;
             });
-
             tween.onStart += () =>
             {
                 from = target.transform.eulerAngles.x;
@@ -744,39 +496,22 @@ namespace SpleenTween
                 tween.to = from + increment;
 
                 if (tween.loopType == LoopType.Yoyo)
-                {
                     increment = -increment;
-                }
             };
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
 
         public static Tween RotY(GameObject target, float from, float to, float duration, Ease easing)
         {
-            Value tween = new(from, to, duration, easing, (val) =>
-            {
-                target.transform.eulerAngles = new Vector3(target.transform.rotation.x, val, target.transform.rotation.z);
-            });
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(from, to, duration, easing, 
+                (val) => target.transform.eulerAngles = new Vector3(target.transform.rotation.x, val, target.transform.rotation.z));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween RotY(GameObject target, float to, float duration, Ease easing)
         {
-            Value tween = new(target.transform.rotation.eulerAngles.y, to, duration, easing, (val) =>
-            {
-                target.transform.eulerAngles = new Vector3(target.transform.rotation.x, val, target.transform.rotation.z);
-            });
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(target.transform.rotation.eulerAngles.y, to, duration, easing, 
+                (val) => target.transform.eulerAngles = new Vector3(target.transform.rotation.x, val, target.transform.rotation.z));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween AddRotY(GameObject target, float increment, float duration, Ease easing)
         {
@@ -786,8 +521,6 @@ namespace SpleenTween
                 target.transform.eulerAngles += new Vector3(0, val - from, 0);
                 from = val;
             });
-            tween.StopIfNull(target);
-
             tween.onStart += () =>
             {
                 from = target.transform.eulerAngles.y;
@@ -795,37 +528,22 @@ namespace SpleenTween
                 tween.to = from + increment;
 
                 if (tween.loopType == LoopType.Yoyo)
-                {
                     increment = -increment;
-                }
             };
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
 
         public static Tween RotZ(GameObject target, float from, float to, float duration, Ease easing)
         {
-            Value tween = new(from, to, duration, easing, (val) =>
-            {
-                target.transform.eulerAngles = new Vector3(target.transform.rotation.x, target.transform.rotation.y, val);
-            });
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(from, to, duration, easing,
+                (val) => target.transform.eulerAngles = new Vector3(target.transform.rotation.x, target.transform.rotation.y, val));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween RotZ(GameObject target, float to, float duration, Ease easing)
         {
-            Value tween = new(target.transform.rotation.eulerAngles.z, to, duration, easing, (val) =>
-            {
-                target.transform.eulerAngles = new Vector3(target.transform.rotation.x, target.transform.rotation.y, val);
-            });
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(target.transform.rotation.eulerAngles.z, to, duration, easing, 
+                (val) => target.transform.eulerAngles = new Vector3(target.transform.rotation.x, target.transform.rotation.y, val));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween AddRotZ(GameObject target, float increment, float duration, Ease easing)
         {
@@ -835,7 +553,6 @@ namespace SpleenTween
                 target.transform.eulerAngles += new Vector3(0, 0, val - from);
                 from = val;
             });
-
             tween.onStart += () =>
             {
                 from = target.transform.eulerAngles.z;
@@ -843,41 +560,22 @@ namespace SpleenTween
                 tween.to = from + increment;
 
                 if (tween.loopType == LoopType.Yoyo)
-                {
                     increment = -increment;
-                }
             };
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         #endregion
 
         #region Local Rotation
         public static Tween LocRot(GameObject target, Vector3 from, Vector3 to, float duration, Ease easing)
         {
-            Value3 tween = new(from, to, duration, easing, (val) =>
-            {
-                target.transform.localEulerAngles = val;
-            });
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value3 tween = new(from, to, duration, easing, (val) => target.transform.localEulerAngles = val);
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween LocRot(GameObject target, Vector3 to, float duration, Ease easing)
         {
-            Value3 tween = new(target.transform.localEulerAngles, to, duration, easing, (val) =>
-            {
-                target.transform.localEulerAngles = val;
-            });
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value3 tween = new(target.transform.localEulerAngles, to, duration, easing, (val) => target.transform.localEulerAngles = val);
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween AddLocRot(GameObject target, Vector3 increment, float duration, Ease easing)
         {
@@ -887,7 +585,6 @@ namespace SpleenTween
                 target.transform.localEulerAngles += val - from;
                 from = val;
             });
-
             tween.onStart += () =>
             {
                 from = target.transform.localEulerAngles;
@@ -895,39 +592,22 @@ namespace SpleenTween
                 tween.to = from + increment;
 
                 if (tween.loopType == LoopType.Yoyo)
-                {
                     increment = -increment;
-                }
             };
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
 
         public static Tween LocRotX(GameObject target, float from, float to, float duration, Ease easing)
         {
-            Value tween = new(from, to, duration, easing, (val) =>
-            {
-                target.transform.localEulerAngles = new Vector3(val, target.transform.localRotation.y, target.transform.localRotation.z);
-            });
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(from, to, duration, easing, 
+                (val) => target.transform.localEulerAngles = new Vector3(val, target.transform.localRotation.y, target.transform.localRotation.z));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween LocRotX(GameObject target, float to, float duration, Ease easing)
         {
-            Value tween = new(target.transform.localEulerAngles.x, to, duration, easing, (val) =>
-            {
-                target.transform.localEulerAngles = new Vector3(val, target.transform.localRotation.y, target.transform.localRotation.z);
-            });
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(target.transform.localEulerAngles.x, to, duration, easing, 
+                (val) => target.transform.localEulerAngles = new Vector3(val, target.transform.localRotation.y, target.transform.localRotation.z));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween AddLocRotX(GameObject target, float increment, float duration, Ease easing)
         {
@@ -937,7 +617,6 @@ namespace SpleenTween
                 target.transform.localEulerAngles += new Vector3(val - from, 0, 0);
                 from = val;
             });
-
             tween.onStart += () =>
             {
                 from = target.transform.localEulerAngles.x;
@@ -945,39 +624,22 @@ namespace SpleenTween
                 tween.to = from + increment;
 
                 if (tween.loopType == LoopType.Yoyo)
-                {
                     increment = -increment;
-                }
             };
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
 
         public static Tween LocRotY(GameObject target, float from, float to, float duration, Ease easing)
         {
-            Value tween = new(from, to, duration, easing, (val) =>
-            {
-                target.transform.localEulerAngles = new Vector3(target.transform.localRotation.x, val, target.transform.localRotation.z);
-            });
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(from, to, duration, easing, 
+                (val) => target.transform.localEulerAngles = new Vector3(target.transform.localRotation.x, val, target.transform.localRotation.z));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween LocRotY(GameObject target, float to, float duration, Ease easing)
         {
-            Value tween = new(target.transform.localEulerAngles.y, to, duration, easing, (val) =>
-            {
-                target.transform.localEulerAngles = new Vector3(target.transform.localRotation.x, val, target.transform.localRotation.z);
-            });
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(target.transform.localEulerAngles.y, to, duration, easing, 
+                (val) => target.transform.localEulerAngles = new Vector3(target.transform.localRotation.x, val, target.transform.localRotation.z));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween AddLocRotY(GameObject target, float increment, float duration, Ease easing)
         {
@@ -987,8 +649,6 @@ namespace SpleenTween
                 target.transform.localEulerAngles += new Vector3(0, val - from, 0);
                 from = val;
             });
-            tween.StopIfNull(target);
-
             tween.onStart += () =>
             {
                 from = target.transform.localEulerAngles.y;
@@ -996,37 +656,22 @@ namespace SpleenTween
                 tween.to = from + increment;
 
                 if (tween.loopType == LoopType.Yoyo)
-                {
                     increment = -increment;
-                }
             };
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
 
         public static Tween LocRotZ(GameObject target, float from, float to, float duration, Ease easing)
         {
-            Value tween = new(from, to, duration, easing, (val) =>
-            {
-                target.transform.localEulerAngles = new Vector3(target.transform.localRotation.x, target.transform.localRotation.y, val);
-            });
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(from, to, duration, easing, 
+                (val) => target.transform.localEulerAngles = new Vector3(target.transform.localRotation.x, target.transform.localRotation.y, val));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween LocRotZ(GameObject target, float to, float duration, Ease easing)
         {
-            Value tween = new(target.transform.localEulerAngles.z, to, duration, easing, (val) =>
-            {
-                target.transform.localEulerAngles = new Vector3(target.transform.localRotation.x, target.transform.localRotation.y, val);
-            });
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(target.transform.localEulerAngles.z, to, duration, easing, 
+                (val) => target.transform.localEulerAngles = new Vector3(target.transform.localRotation.x, target.transform.localRotation.y, val));
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         public static Tween AddLocRotZ(GameObject target, float increment, float duration, Ease easing)
         {
@@ -1036,7 +681,6 @@ namespace SpleenTween
                 target.transform.localEulerAngles += new Vector3(0, 0, val - from);
                 from = val;
             });
-
             tween.onStart += () =>
             {
                 from = target.transform.localEulerAngles.z;
@@ -1044,29 +688,17 @@ namespace SpleenTween
                 tween.to = from + increment;
 
                 if (tween.loopType == LoopType.Yoyo)
-                {
                     increment = -increment;
-                }
             };
-
-            tween.StopIfNull(target);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, target);
         }
         #endregion
 
         #region Audio
         public static Tween Vol(AudioSource source, float from, float to, float duration, Ease easing)
         {
-            Value tween = new(from, to, duration, easing, (val) =>
-            {
-                source.volume = val;
-            });
-            tween.StopIfNull(source.gameObject);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            Value tween = new(from, to, duration, easing, (val) => source.volume = val);
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, source.gameObject);
         }
         public static Tween Vol(AudioSource source, float to, float duration, Ease easing)
         {
@@ -1074,10 +706,7 @@ namespace SpleenTween
             {
                 source.volume = val;
             });
-            tween.StopIfNull(source.gameObject);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, source.gameObject);
         }
         public static Tween AddVol(AudioSource source, float increment, float duration, Ease easing)
         {
@@ -1087,7 +716,6 @@ namespace SpleenTween
                 source.volume += val - from;
                 from = val;
             });
-
             tween.onStart += () =>
             {
                 from = source.volume;
@@ -1095,15 +723,9 @@ namespace SpleenTween
                 tween.to = from + increment;
 
                 if (tween.loopType == LoopType.Yoyo)
-                {
                     increment = -increment;
-                }
             };
-
-            tween.StopIfNull(source.gameObject);
-
-            SpleenTweenManager.Instance.Tweens.Add(tween);
-            return tween;
+            return SpleenTweenManager.StartTweenAndAddNullCheck(tween, source.gameObject);
         }
 
 

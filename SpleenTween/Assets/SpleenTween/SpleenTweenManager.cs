@@ -59,6 +59,13 @@ namespace SpleenTween
                 }
             }
         }
+
+        public static Tween StartTweenAndAddNullCheck(Tween tween, GameObject target)
+        {
+            tween.StopIfNull(target);
+            Instance.Tweens.Add(tween);
+            return tween;
+        }
     }
 }
 
