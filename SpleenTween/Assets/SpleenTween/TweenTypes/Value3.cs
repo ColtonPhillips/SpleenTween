@@ -34,8 +34,8 @@ namespace SpleenTween
                 {
                     Vector3 from = this.from;
                     Vector3 to = this.to;
-                    from = to;
-                    to = from;
+                    this.from = to;
+                    this.to = from;
                 };
             }
             else if (loopType == LoopType.Incremental)
@@ -43,8 +43,8 @@ namespace SpleenTween
                 onComplete += () =>
                 {
                     Vector3 diff = to - from;
-                    from += diff;
-                    to += diff;
+                    this.from += diff;
+                    this.to += diff;
                 };
             }
         }
@@ -64,6 +64,13 @@ namespace SpleenTween
         {
             base.Loop(loopType, loopCount, onAllLoopsComplete);
             LoopSpecificActions(loopType);
+            return this;
+        }
+
+        public override Tween Loop(LoopType loopType, int loopCount, float startDelay, Action onAllLoopsComplete)
+        {
+            LoopSpecificActions(loopType);
+            base.Loop(loopType, startDelay);
             return this;
         }
     }

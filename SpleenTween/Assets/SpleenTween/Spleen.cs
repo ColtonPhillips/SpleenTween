@@ -67,9 +67,12 @@ namespace SpleenTween
             });
             tween.onStart += () =>
             {
-                from = target.transform.position;
-                tween.from = from;
-                tween.to = from + increment;
+                if (tween.loopType != LoopType.Rewind)
+                {
+                    from = target.transform.position;
+                    tween.from = from;
+                    tween.to = from + increment;
+                }
 
                 if (tween.loopType == LoopType.Yoyo)
                     increment = -increment;
@@ -99,9 +102,12 @@ namespace SpleenTween
             });
             tween.onStart += () =>
             {
-                from = target.transform.position.x;
-                tween.from = from;
-                tween.to = from + increment;
+                if(tween.loopType != LoopType.Rewind)
+                {
+                    from = target.transform.position.x;
+                    tween.from = from;
+                    tween.to = from + increment;
+                }
 
                 if (tween.loopType == LoopType.Yoyo)
                     increment = -increment;
@@ -131,9 +137,12 @@ namespace SpleenTween
             });
             tween.onStart += () =>
             {
-                from = target.transform.position.y;
-                tween.from = from;
-                tween.to = from + increment;
+                if (tween.loopType != LoopType.Rewind)
+                {
+                    from = target.transform.position.y;
+                    tween.from = from;
+                    tween.to = from + increment;
+                }
 
                 if (tween.loopType == LoopType.Yoyo)
                     increment = -increment;
@@ -163,9 +172,12 @@ namespace SpleenTween
             });
             tween.onStart += () =>
             {
-                from = target.transform.position.z;
-                tween.from = from;
-                tween.to = from + increment;
+                if (tween.loopType != LoopType.Rewind)
+                {
+                    from = target.transform.position.z;
+                    tween.from = from;
+                    tween.to = from + increment;
+                }
 
                 if (tween.loopType == LoopType.Yoyo)
                     increment = -increment;
@@ -195,9 +207,12 @@ namespace SpleenTween
             });
             tween.onStart += () =>
             {
-                from = target.transform.localPosition;
-                tween.from = from;
-                tween.to = from + increment;
+                if (tween.loopType != LoopType.Rewind)
+                {
+                    from = target.transform.localPosition;
+                    tween.from = from;
+                    tween.to = from + increment;
+                }
 
                 if (tween.loopType == LoopType.Yoyo)
                     increment = -increment;
@@ -229,9 +244,12 @@ namespace SpleenTween
             });
             tween.onStart += () =>
             {
-                from = target.transform.localPosition.x;
-                tween.from = from;
-                tween.to = from + increment;
+                if (tween.loopType != LoopType.Rewind)
+                {
+                    from = target.transform.localPosition.x;
+                    tween.from = from;
+                    tween.to = from + increment;
+                }
 
                 if (tween.loopType == LoopType.Yoyo)
                     increment = -increment;
@@ -263,9 +281,12 @@ namespace SpleenTween
             });
             tween.onStart += () =>
             {
-                from = target.transform.localPosition.y;
-                tween.from = from;
-                tween.to = from + increment;
+                if (tween.loopType != LoopType.Rewind)
+                {
+                    from = target.transform.localPosition.y;
+                    tween.from = from;
+                    tween.to = from + increment;
+                }
 
                 if (tween.loopType == LoopType.Yoyo)
                     increment = -increment;
@@ -295,9 +316,13 @@ namespace SpleenTween
             });
             tween.onStart += () =>
             {
-                from = target.transform.localPosition.z;
-                tween.from = from;
-                tween.to = from + increment;
+                if (tween.loopType != LoopType.Rewind)
+                {
+                    from = target.transform.localPosition.z;
+                    tween.from = from;
+                    tween.to = from + increment;
+                }
+
                 if (tween.loopType == LoopType.Yoyo)
                     increment = -increment;
             };
@@ -326,9 +351,12 @@ namespace SpleenTween
             });
             tween.onStart += () =>
             {
-                from = target.transform.localScale;
-                tween.from = from;
-                tween.to = from + increment;
+                if (tween.loopType != LoopType.Rewind)
+                {
+                    from = target.transform.localScale;
+                    tween.from = from;
+                    tween.to = from + increment;
+                }
 
                 if (tween.loopType == LoopType.Yoyo)
                     increment = -increment;
@@ -362,10 +390,12 @@ namespace SpleenTween
             });
             tween.onStart += () =>
             {
-                from = target.transform.localScale.x;
-                tween.from = from;
-                tween.from = from;
-                tween.to = from + increment;
+                if (tween.loopType != LoopType.Rewind)
+                {
+                    from = target.transform.localScale.x;
+                    tween.from = from;
+                    tween.to = from + increment;
+                }
 
                 if (tween.loopType == LoopType.Yoyo)
                     increment = -increment;
@@ -395,9 +425,12 @@ namespace SpleenTween
             });
             tween.onStart += () =>
             {
-                from = target.transform.localScale.y;
-                tween.from = from;
-                tween.to = from + increment;
+                if (tween.loopType != LoopType.Rewind)
+                {
+                    from = target.transform.localScale.y;
+                    tween.from = from;
+                    tween.to = from + increment;
+                }
 
                 if (tween.loopType == LoopType.Yoyo)
                     increment = -increment;
@@ -427,9 +460,12 @@ namespace SpleenTween
             });
             tween.onStart += () =>
             {
-                from = target.transform.localScale.z;
-                tween.from = from;
-                tween.to = from + increment;
+                if (tween.loopType != LoopType.Rewind)
+                {
+                    from = target.transform.localScale.z;
+                    tween.from = from;
+                    tween.to = from + increment;
+                }
 
                 if (tween.loopType == LoopType.Yoyo)
                     increment = -increment;
@@ -451,7 +487,7 @@ namespace SpleenTween
         }
         public static Tween AddRot(GameObject target, Vector3 increment, float duration, Ease easing)
         {
-            Vector3 from = target.transform.rotation.eulerAngles;
+            Vector3 from = target.transform.eulerAngles;
             Value3 tween = new(from, increment, duration, easing, (val) =>
             {
                 target.transform.eulerAngles += val - from;
@@ -459,9 +495,12 @@ namespace SpleenTween
             });
             tween.onStart += () =>
             {
-                from = target.transform.eulerAngles;
-                tween.from = from;
-                tween.to = from + increment;
+                if (tween.loopType != LoopType.Rewind)
+                {
+                    from = target.transform.eulerAngles;
+                    tween.from = from;
+                    tween.to = from + increment;
+                }
 
                 if (tween.loopType == LoopType.Yoyo)
                     increment = -increment;
@@ -491,9 +530,12 @@ namespace SpleenTween
             });
             tween.onStart += () =>
             {
-                from = target.transform.eulerAngles.x;
-                tween.from = from;
-                tween.to = from + increment;
+                if (tween.loopType != LoopType.Rewind)
+                {
+                    from = target.transform.eulerAngles.x;
+                    tween.from = from;
+                    tween.to = from + increment;
+                }
 
                 if (tween.loopType == LoopType.Yoyo)
                     increment = -increment;
@@ -523,9 +565,12 @@ namespace SpleenTween
             });
             tween.onStart += () =>
             {
-                from = target.transform.eulerAngles.y;
-                tween.from = from;
-                tween.to = from + increment;
+                if (tween.loopType != LoopType.Rewind)
+                {
+                    from = target.transform.eulerAngles.y;
+                    tween.from = from;
+                    tween.to = from + increment;
+                }
 
                 if (tween.loopType == LoopType.Yoyo)
                     increment = -increment;
@@ -555,9 +600,12 @@ namespace SpleenTween
             });
             tween.onStart += () =>
             {
-                from = target.transform.eulerAngles.z;
-                tween.from = from;
-                tween.to = from + increment;
+                if (tween.loopType != LoopType.Rewind)
+                {
+                    from = target.transform.eulerAngles.z;
+                    tween.from = from;
+                    tween.to = from + increment;
+                }
 
                 if (tween.loopType == LoopType.Yoyo)
                     increment = -increment;
@@ -587,9 +635,12 @@ namespace SpleenTween
             });
             tween.onStart += () =>
             {
-                from = target.transform.localEulerAngles;
-                tween.from = from;
-                tween.to = from + increment;
+                if (tween.loopType != LoopType.Rewind)
+                {
+                    from = target.transform.localEulerAngles;
+                    tween.from = from;
+                    tween.to = from + increment;
+                }
 
                 if (tween.loopType == LoopType.Yoyo)
                     increment = -increment;
@@ -619,9 +670,12 @@ namespace SpleenTween
             });
             tween.onStart += () =>
             {
-                from = target.transform.localEulerAngles.x;
-                tween.from = from;
-                tween.to = from + increment;
+                if (tween.loopType != LoopType.Rewind)
+                {
+                    from = target.transform.localEulerAngles.x;
+                    tween.from = from;
+                    tween.to = from + increment;
+                }
 
                 if (tween.loopType == LoopType.Yoyo)
                     increment = -increment;
@@ -651,9 +705,12 @@ namespace SpleenTween
             });
             tween.onStart += () =>
             {
-                from = target.transform.localEulerAngles.y;
-                tween.from = from;
-                tween.to = from + increment;
+                if (tween.loopType != LoopType.Rewind)
+                {
+                    from = target.transform.localEulerAngles.y;
+                    tween.from = from;
+                    tween.to = from + increment;
+                }
 
                 if (tween.loopType == LoopType.Yoyo)
                     increment = -increment;
@@ -683,9 +740,12 @@ namespace SpleenTween
             });
             tween.onStart += () =>
             {
-                from = target.transform.localEulerAngles.z;
-                tween.from = from;
-                tween.to = from + increment;
+                if (tween.loopType != LoopType.Rewind)
+                {
+                    from = target.transform.localEulerAngles.z;
+                    tween.from = from;
+                    tween.to = from + increment;
+                }
 
                 if (tween.loopType == LoopType.Yoyo)
                     increment = -increment;
@@ -718,9 +778,12 @@ namespace SpleenTween
             });
             tween.onStart += () =>
             {
-                from = source.volume;
-                tween.from = from;
-                tween.to = from + increment;
+                if (tween.loopType != LoopType.Rewind)
+                {
+                    from = source.volume;
+                    tween.from = from;
+                    tween.to = from + increment;
+                }
 
                 if (tween.loopType == LoopType.Yoyo)
                     increment = -increment;

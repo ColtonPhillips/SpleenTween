@@ -35,8 +35,8 @@ namespace SpleenTween
                     float from = this.from;
                     float to = this.to;
 
-                    from = to;
-                    to = from;
+                    this.from = to;
+                    this.to = from;
                 };
             }
             else if(loopType == LoopType.Incremental)
@@ -44,8 +44,8 @@ namespace SpleenTween
                 onComplete += () =>
                 {
                     float diff = to - from;
-                    from += diff;
-                    to += diff;
+                    this.from += diff;
+                    this.to += diff;
                 };
             }
         }
@@ -65,6 +65,13 @@ namespace SpleenTween
         {
             LoopSpecificActions(loopType);
             base.Loop(loopType, loopCount, onAllLoopsComplete);
+            return this;
+        }
+
+        public override Tween Loop(LoopType loopType, int loopCount, float startDelay, Action onAllLoopsComplete)
+        {
+            LoopSpecificActions(loopType);
+            base.Loop(loopType, startDelay);
             return this;
         }
     }
