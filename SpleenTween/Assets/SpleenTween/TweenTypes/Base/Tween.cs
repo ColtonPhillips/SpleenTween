@@ -173,44 +173,48 @@ namespace SpleenTween
 
             easeValue = targetLerp;
 
-            onComplete?.Invoke();
-
-            if (loopCount > 0 || loopForever)
+            if (loop)
             {
-                if (loopType == LoopType.Rewind)
+                onComplete?.Invoke();
+
+                if (loopCount > 0 || loopForever)
                 {
-                    if (targetLerp == 1)
-                        targetLerp = 0;
-                    else if (targetLerp == 0)
-                        targetLerp = 1;
+                    if (loopType == LoopType.Rewind)
+                    {
+                        if (targetLerp == 1)
+                            targetLerp = 0;
+                        else if (targetLerp == 0)
+                            targetLerp = 1;
+                    }
+
+                    Restart();
+                    loopCount--;
+
+                    onUpdateGeneral?.Invoke();
+                    return true;
                 }
 
-                Restart();
-                loopCount--;
+                if (loopCount <= 0 && !loopForever)
+                {
+                    loop = false;
+                    onAllLoopsComplete?.Invoke();
 
-                onUpdateGeneral?.Invoke();
-                return true;
+                    Restart();
+
+                    if (loopType == LoopType.Yoyo)
+                        easeValue = 0;
+
+                    UpdateValue();
+
+                    onUpdateGeneral?.Invoke();
+                    return false;
+                }
             }
-
-            if (loopCount <= 0 && !loopForever)
-            {
-                loop = false;
-                onAllLoopsComplete?.Invoke();
-
-                Restart();
-
-                if (loopType == LoopType.Yoyo)
-                    easeValue = 0;
-
-                UpdateValue();
-
-                onUpdateGeneral?.Invoke();
-                return false;
-            }
-
+            
             UpdateValue();
             onUpdateGeneral?.Invoke();
-            return true;
+            onComplete?.Invoke();
+            return false;
         }
 
         public virtual void UpdateValue() { }

@@ -36,7 +36,8 @@ public class TestPlayer : MonoBehaviour
 
             //Spleen.AddVol(source, .1f, 10, Ease.OutCubic);
 
-            Spleen.AddPosX(gameObject, 2, 2f, Ease.OutCubic).Loop(LoopType.Incremental);//.Chain(Spleen.AddPosY(gameObject, 2, 2, 0)).Chain(Spleen.AddPosY(gameObject, -2, 3f, 0));
+            Spleen.AddPosX(gameObject, 2, 2f, Ease.OutCubic).Loop(LoopType.Rewind);//.Chain(Spleen.AddPosY(gameObject, 2, 2, 0)).Chain(Spleen.AddPosY(gameObject, -2, 3f, 0));
+            //Spleen.Timer(4, (curTime) => print(curTime)).OnComplete(() => print("DONE"));
         }
     }
 }

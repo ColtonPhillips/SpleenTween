@@ -31,6 +31,21 @@ namespace SpleenTween
 
         #region Static Tween Functions
 
+        #region Time
+        public static Tween Timer(float duration)
+        {
+            Value tween = new(0, duration, duration, 0, null);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
+            return tween;
+        }
+        public static Tween Timer(float duration, Action<float> onTimeUpdate)
+        {
+            Value tween = new(0, duration, duration, 0, onTimeUpdate);
+            SpleenTweenManager.Instance.Tweens.Add(tween);
+            return tween;
+        }
+        #endregion
+
         #region Value
         public static Tween Value(float from, float to, float duration, Ease easing, Action<float> onUpdate)
         {
