@@ -51,13 +51,18 @@ namespace SpleenTween
         {
             if (typeof(T) == typeof(float))
             {
-                float floatVal = Mathf.LerpUnclamped((float)(object)from, (float)(object)to, lerp);
-                val = (T)(object)floatVal;
+                float newVal = Mathf.LerpUnclamped((float)(object)from, (float)(object)to, lerp);
+                val = (T)(object)newVal;
             }
             else if (typeof(T) == typeof(Vector3))
             {
-                Vector3 floatVal = Vector3.LerpUnclamped((Vector3)(object)from, (Vector3)(object)to, lerp);
-                val = (T)(object)floatVal;
+                Vector3 newVal = Vector3.LerpUnclamped((Vector3)(object)from, (Vector3)(object)to, lerp);
+                val = (T)(object)newVal;
+            }
+            else if (typeof(T) == typeof(Color))
+            {
+                Color newVal = Color.LerpUnclamped((Color)(object)from, (Color)(object)to, lerp);
+                val = (T)(object)newVal;
             }
 
             update?.Invoke(val);
