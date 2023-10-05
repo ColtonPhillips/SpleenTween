@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace SpleenTween
 {
@@ -56,8 +57,13 @@ namespace SpleenTween
             Instance.activeTweens.Remove(tween);
         }
 
-        //private void OnEnable() => SceneManager.activeSceneChanged += StopAllTweens;
-        //private void OnDisable() => SceneManager.activeSceneChanged -= StopAllTweens;
+        public static void StopAll(Scene a, Scene b)
+        {
+            Instance.activeTweens.Clear();
+        }
+
+        private void OnEnable() => SceneManager.activeSceneChanged += StopAll;
+        private void OnDisable() => SceneManager.activeSceneChanged -= StopAll;
     }
 
 }
