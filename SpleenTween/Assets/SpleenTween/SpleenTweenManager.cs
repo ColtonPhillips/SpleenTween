@@ -13,10 +13,7 @@ namespace SpleenTween
         public static SpleenTweenManager Instance;
 
         [RuntimeInitializeOnLoadMethod]
-        static void Initialize()
-        {
-            new GameObject("SpleenTweenManager").AddComponent<SpleenTweenManager>();
-        }
+        static void Initialize() => new GameObject("SpleenTweenManager").AddComponent<SpleenTweenManager>();
 
         private void Awake()
         {
@@ -47,20 +44,10 @@ namespace SpleenTween
             }
         }
 
-        public static void StartTween(ITween tween)
-        {
-            Instance.activeTweens.Add(tween);
-        }
+        public static void StartTween(ITween tween) => Instance.activeTweens.Add(tween);
+        public static void StopTween(ITween tween) => Instance.activeTweens.Remove(tween);
+        public static void StopAll(Scene a, Scene b) => Instance.activeTweens.Clear();
 
-        public static void StopTween(ITween tween)
-        {
-            Instance.activeTweens.Remove(tween);
-        }
-
-        public static void StopAll(Scene a, Scene b)
-        {
-            Instance.activeTweens.Clear();
-        }
 
         private void OnEnable() => SceneManager.activeSceneChanged += StopAll;
         private void OnDisable() => SceneManager.activeSceneChanged -= StopAll;
