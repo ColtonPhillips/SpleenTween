@@ -36,8 +36,8 @@ namespace SpleenTween
             for (int i = 0; i < activeTweens.Count; i++)
             {
                 ITween tween = activeTweens[i];
-                tween.Run(out bool done);
-                if (done)
+                bool running = tween.Run();
+                if (!running)
                 {
                     activeTweens.RemoveAt(i);
                 }
@@ -47,6 +47,11 @@ namespace SpleenTween
         public static void StartTween(ITween tween)
         {
             Instance.activeTweens.Add(tween);
+        }
+
+        public static void StopTween(ITween tween)
+        {
+            Instance.activeTweens.Remove(tween);
         }
 
         //private void OnEnable() => SceneManager.activeSceneChanged += StopAllTweens;

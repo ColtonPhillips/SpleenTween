@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 namespace SpleenTween 
@@ -15,6 +16,7 @@ namespace SpleenTween
         float duration;
 
         Action<T> update;
+        Func<bool> stopIfTargetNull;
 
         public Tween(T from, T to, float duration, Action<T> update)
         {
@@ -23,28 +25,47 @@ namespace SpleenTween
             this.duration = duration;
             this.update = update;
         }
-
-        public void Run(out bool done)
+        public Tween(T from, T to, float duration, Action<T> update, Func<bool> stopIfTargetNull)
         {
+            this.from = from;
+            this.to = to;
+            this.duration = duration;
+            this.update = update;
+            this.stopIfTargetNull = stopIfTargetNull;
+        }
+
+        bool ITween.Run()
+        {
+            if(stopIfTargetNull != null)
+            {
+                bool targetNull = stopIfTargetNull.Invoke();
+                Debug.Log(targetNull);
+
+                if (targetNull)
+                {
+                    return false;
+                }
+            }
+
             time += Time.deltaTime;
             float lerp = time / duration;
 
-            Update(lerp);
+            UpdateValue(lerp);
 
-            done = time >= duration;
-            if (!done) return;
+            bool running = time < duration;
+            return running;
         }
 
-        private void Update(float lerp)
+        private void UpdateValue(float lerp)
         {
             if (typeof(T) == typeof(float))
             {
-                float floatVal = Mathf.Lerp((float)(object)from, (float)(object)to, lerp);
+                float floatVal = Mathf.LerpUnclamped((float)(object)from, (float)(object)to, lerp);
                 val = (T)(object)floatVal;
             }
             else if (typeof(T) == typeof(Vector3))
             {
-                Vector3 floatVal = Vector3.Lerp((Vector3)(object)from, (Vector3)(object)to, lerp);
+                Vector3 floatVal = Vector3.LerpUnclamped((Vector3)(object)from, (Vector3)(object)to, lerp);
                 val = (T)(object)floatVal;
             }
 
