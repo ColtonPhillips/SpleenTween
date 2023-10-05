@@ -206,14 +206,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f362c5fb817350d438d9750c911406fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  from: 1
+  from: 0
   to: 1.25
   duration: 1
   iterations: 1
   currentValue: 0
   targetTest: {fileID: 0}
-  easing: 26
-  loop: 3
   source: {fileID: 242166099}
 --- !u!4 &242166098
 Transform:

@@ -15,29 +15,13 @@ public class TestPlayer : MonoBehaviour
 
     [SerializeField] Transform targetTest;
 
-    [SerializeField] Ease easing;
-    [SerializeField] LoopType loop;
-
     [SerializeField] AudioSource source;
-
-    Tween tween;
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S)) Spleen.StopTweens(gameObject);
-        if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         if (Input.GetKeyDown(KeyCode.T))
         {
-            //Spleen.PosY(transform.gameObject, UnityEngine.Random.Range(0, 10f), UnityEngine.Random.Range(0f, 10f), (Ease)UnityEngine.Random.Range(0, Enum.GetNames(typeof(Ease)).Length)).Loop(LoopType.Yoyo);
-            //Spleen.PosX(transform.gameObject, UnityEngine.Random.Range(0, 10f), UnityEngine.Random.Range(0f, 10f), (Ease)UnityEngine.Random.Range(0, Enum.GetNames(typeof(Ease)).Length)).Loop(LoopType.Yoyo);
-            //Spleen.RotZ(transform.gameObject, UnityEngine.Random.Range(0, 10f), UnityEngine.Random.Range(0f, 10f), (Ease)UnityEngine.Random.Range(0, Enum.GetNames(typeof(Ease)).Length)).Loop(LoopType.Yoyo);
-
-            //Spleen.AddLocRotZ(gameObject, UnityEngine.Random.Range(0f, 360f), UnityEngine.Random.Range(.25f, 1.25f), (Ease)UnityEngine.Random.Range(0, Enum.GetNames(typeof(Ease)).Length)).Loop(LoopType.Yoyo);
-
-            //Spleen.AddVol(source, .1f, 10, Ease.OutCubic);
-
-            Spleen.AddPosX(gameObject, 2, 2f, Ease.OutCubic).Loop(LoopType.Rewind);//.Chain(Spleen.AddPosY(gameObject, 2, 2, 0)).Chain(Spleen.AddPosY(gameObject, -2, 3f, 0));
-            //Spleen.Timer(4, (curTime) => print(curTime)).OnComplete(() => print("DONE"));
+            Spleen.Pos(transform, transform.position + Vector3.one * from, transform.position + Vector3.one * to, 3f);
         }
     }
 }
