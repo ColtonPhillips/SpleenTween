@@ -8,15 +8,15 @@ namespace SpleenTween
 {
     public class Tween<T> : ITween
     {
-        T from;
-        T to;
+        readonly T from;
+        readonly T to;
         T val;
 
         float time;
-        float duration;
+        readonly float duration;
 
-        Action<T> update;
-        Func<bool> stopIfTargetNull;
+        readonly Action<T> update;
+        readonly Func<bool> nullCheck;
 
         public Tween(T from, T to, float duration, Action<T> update)
         {
@@ -25,27 +25,18 @@ namespace SpleenTween
             this.duration = duration;
             this.update = update;
         }
-        public Tween(T from, T to, float duration, Action<T> update, Func<bool> stopIfTargetNull)
+        public Tween(T from, T to, float duration, Action<T> update, Func<bool> nullCheck)
         {
             this.from = from;
             this.to = to;
             this.duration = duration;
             this.update = update;
-            this.stopIfTargetNull = stopIfTargetNull;
+            this.nullCheck = nullCheck;
         }
 
         bool ITween.Run()
         {
-            if(stopIfTargetNull != null)
-            {
-                bool targetNull = stopIfTargetNull.Invoke();
-                Debug.Log(targetNull);
-
-                if (targetNull)
-                {
-                    return false;
-                }
-            }
+            if (NullTarget()) return false;
 
             time += Time.deltaTime;
             float lerp = time / duration;
@@ -70,6 +61,18 @@ namespace SpleenTween
             }
 
             update?.Invoke(val);
+        }
+
+        bool NullTarget()
+        {
+            if (nullCheck != null)
+            {
+                if (nullCheck.Invoke() == true)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

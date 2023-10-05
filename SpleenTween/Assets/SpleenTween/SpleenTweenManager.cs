@@ -6,6 +6,7 @@ namespace SpleenTween
 {
     public class SpleenTweenManager : MonoBehaviour
     {
+        public int activeTweensCount;
         readonly List<ITween> activeTweens = new();
 
         public static SpleenTweenManager Instance;
@@ -29,6 +30,7 @@ namespace SpleenTween
         private void Update()
         {
             RunTweens();
+            activeTweensCount = activeTweens.Count;
         }
 
         void RunTweens()

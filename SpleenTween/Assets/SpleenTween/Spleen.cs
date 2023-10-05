@@ -13,9 +13,12 @@ namespace SpleenTween
             SpleenTweenManager.StartTween(tween);
             return tween;
         }
-        static Tween<T> CreateTargetTween<T,J>(J target, T from, T to, float duration, Action<T> update)
+        static Tween<T> CreateTargetTween<T,K>(K target, T from, T to, float duration, Action<T> update)
         {
-            Tween<T> tween = new(from, to, duration, update, () => target == null || EqualityComparer<J>.Default.Equals(target, default));
+            Tween<T> tween = new(from, to, duration, update, () =>
+            {
+                return target == null || target.Equals(null);
+            });
             SpleenTweenManager.StartTween(tween);
             return tween;
         }
