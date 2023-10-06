@@ -15,7 +15,7 @@ namespace SpleenTween
 
         float time;
         readonly float duration;
-        float lerp;
+        float lerpValue;
 
         readonly Ease easeType = Ease.Linear;
 
@@ -65,8 +65,11 @@ namespace SpleenTween
             if (NullTarget()) return false;
 
             time += Time.deltaTime;
-            lerp = Easing.EaseVal(easeType, time / duration);
-            lerp = loopType != Loop.Rewind ? lerp : Looping.RewindValue(lerp, forward);
+
+            float lerp = time / duration;
+            float inverseLerp = 1 - lerp;
+
+            lerpValue = Easing.EaseVal(easeType, loopType == Loop.Rewind ? (forward ? lerp : inverseLerp) : lerp);
 
             bool running = time < duration;
             if (!running)
@@ -83,7 +86,7 @@ namespace SpleenTween
                     forward = !forward;
                     running = true;
                     time = 0;
-                    lerp = forward ? 0 : 1;
+                    lerpValue = forward ? 0 : 1;
                 }
             }
 
@@ -95,17 +98,17 @@ namespace SpleenTween
         {
             if (typeof(T) == typeof(float))
             {
-                float newVal = Mathf.LerpUnclamped((float)(object)from, (float)(object)to, lerp);
+                float newVal = Mathf.LerpUnclamped((float)(object)from, (float)(object)to, lerpValue);
                 val = (T)(object)newVal;
             }
             else if (typeof(T) == typeof(Vector3))
             {
-                Vector3 newVal = Vector3.LerpUnclamped((Vector3)(object)from, (Vector3)(object)to, lerp);
+                Vector3 newVal = Vector3.LerpUnclamped((Vector3)(object)from, (Vector3)(object)to, lerpValue);
                 val = (T)(object)newVal;
             }
             else if (typeof(T) == typeof(Color))
             {
-                Color newVal = Color.LerpUnclamped((Color)(object)from, (Color)(object)to, lerp);
+                Color newVal = Color.LerpUnclamped((Color)(object)from, (Color)(object)to, lerpValue);
                 val = (T)(object)newVal;
             }
 
@@ -114,7 +117,7 @@ namespace SpleenTween
 
         void CompleteTween()
         {
-            lerp = 1;
+            lerpValue = 1;
             onComplete?.Invoke();
         }
 
@@ -125,7 +128,7 @@ namespace SpleenTween
             forward = !forward;
 
             time = 0;
-            lerp = 0;
+            lerpValue = 0;
         }
 
         bool NullTarget()
