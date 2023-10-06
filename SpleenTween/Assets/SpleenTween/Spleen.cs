@@ -7,15 +7,15 @@ namespace SpleenTween
 {
     public class Spleen : MonoBehaviour
     {
-        static Tween<T> CreateTween<T>(T from, T to, float duration, Action<T> update)
+        static Tween<T> CreateTween<T>(T from, T to, float duration, Ease ease, Action<T> update)
         {
-            Tween<T> tween = new(from, to, duration, update);
+            Tween<T> tween = new(from, to, duration, ease, update);
             SpleenTweenManager.StartTween(tween);
             return tween;
         }
-        static Tween<T> CreateTargetTween<T,K>(K target, T from, T to, float duration, Action<T> update)
+        static Tween<T> CreateTargetTween<T,K>(K target, T from, T to, float duration, Ease ease, Action<T> update)
         {
-            Tween<T> tween = new(from, to, duration, update, () =>
+            Tween<T> tween = new(from, to, duration, ease, update, () =>
             {
                 return target == null || target.Equals(null);
             });
@@ -23,36 +23,18 @@ namespace SpleenTween
             return tween;
         }
 
-        public static Tween<float> Value(float from, float to, float duration, Action<float> update) => 
-            CreateTween(from, to, duration, update);
-        public static Tween<Vector3> Value3(Vector3 from, Vector3 to, float duration, Action<Vector3> update) => 
-            CreateTween(from, to, duration, update);
+        public static Tween<float> Value(float from, float to, float duration, Ease ease, Action<float> update) => 
+            CreateTween(from, to, duration, ease, update);
+        public static Tween<Vector3> Value3(Vector3 from, Vector3 to, float duration, Ease ease, Action<Vector3> update) => 
+            CreateTween(from, to, duration, ease, update);
 
-        public static Tween<Vector3> Pos(Transform target, Vector3 from, Vector3 to, float duration) => 
-            CreateTargetTween(target, from, to, duration, val => target.position = val);
-        public static Tween<float> PosX(Transform target, float from, float to, float duration) =>
-            CreateTargetTween(target, from, to, duration, val => SpleenExt.SetPosAxis(target, val, SpleenExt.Axes.X));
-        public static Tween<float> PosY(Transform target, float from, float to, float duration) =>
-            CreateTargetTween(target, from, to, duration, val => SpleenExt.SetPosAxis(target, val, SpleenExt.Axes.Y));
-        public static Tween<float> PosZ(Transform target, float from, float to, float duration) =>
-            CreateTargetTween(target, from, to, duration, val => SpleenExt.SetPosAxis(target, val, SpleenExt.Axes.Z));
-
-        public static Tween<Vector3> Scale(Transform target, Vector3 from, Vector3 to, float duration) =>
-            CreateTargetTween(target, from, to, duration, val => target.localScale = val);
-        public static Tween<float> ScaleX(Transform target, float from, float to, float duration) =>
-            CreateTargetTween(target, from, to, duration, val => SpleenExt.SetScaleAxis(target, val, SpleenExt.Axes.X));
-        public static Tween<float> ScaleY(Transform target, float from, float to, float duration) =>
-            CreateTargetTween(target, from, to, duration, val => SpleenExt.SetScaleAxis(target, val, SpleenExt.Axes.Y));
-        public static Tween<float> ScaleZ(Transform target, float from, float to, float duration) =>
-            CreateTargetTween(target, from, to, duration, val => SpleenExt.SetScaleAxis(target, val, SpleenExt.Axes.Z));
-
-        public static Tween<Vector3> Rot(Transform target, Vector3 from, Vector3 to, float duration) =>
-            CreateTargetTween(target, from, to, duration, val => target.eulerAngles = val);
-        public static Tween<float> RotX(Transform target, float from, float to, float duration) =>
-            CreateTargetTween(target, from, to, duration, val => SpleenExt.SetRotAxis(target, val, SpleenExt.Axes.X));
-        public static Tween<float> RotY(Transform target, float from, float to, float duration) =>
-            CreateTargetTween(target, from, to, duration, val => SpleenExt.SetRotAxis(target, val, SpleenExt.Axes.Y));
-        public static Tween<float> RotZ(Transform target, float from, float to, float duration) =>
-            CreateTargetTween(target, from, to, duration, val => SpleenExt.SetRotAxis(target, val, SpleenExt.Axes.Z));
+        public static Tween<Vector3> Pos(Transform target, Vector3 from, Vector3 to, float duration, Ease ease) => 
+            CreateTargetTween(target, from, to, duration, ease, val => target.position = val);
+        public static Tween<float> PosX(Transform target, float from, float to, float duration, Ease ease) =>
+            CreateTargetTween(target, from, to, duration, ease, val => SpleenExt.SetPosAxis(SpleenExt.Axes.X, target, val));
+        public static Tween<float> PosY(Transform target, float from, float to, float duration, Ease ease) =>
+            CreateTargetTween(target, from, to, duration, ease, val => SpleenExt.SetPosAxis(SpleenExt.Axes.Y, target, val));
+        public static Tween<float> PosZ(Transform target, float from, float to, float duration, Ease ease) =>
+            CreateTargetTween(target, from, to, duration, ease, val => SpleenExt.SetPosAxis(SpleenExt.Axes.Z, target, val));
     }
 }
