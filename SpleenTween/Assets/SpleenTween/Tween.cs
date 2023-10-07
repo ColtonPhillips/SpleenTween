@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.Video;
 
 namespace SpleenTween 
 {
@@ -15,7 +16,9 @@ namespace SpleenTween
 
         float time;
         readonly float duration;
-        float LerpProgress { get => time / duration; }
+        float delay;
+
+        float LerpProgress { get => Mathf.Clamp01(time / duration); }
         float EaseProgress
         {
             get
@@ -87,6 +90,13 @@ namespace SpleenTween
             return this;
         }
 
+        public Tween<T> SetDelay(float delay, bool startDelay)
+        {
+            this.delay = delay;
+            if(startDelay) DelayCycle(delay);
+            return this;
+        }
+
         bool ITween.Run()
         {
             if (Cycles == 0) return false;
@@ -94,6 +104,7 @@ namespace SpleenTween
             if (NullTarget()) return false;
 
             time += Time.deltaTime;
+            if (time < 0) return true;
 
             if (!Active)
             {
@@ -137,8 +148,14 @@ namespace SpleenTween
             {
                 Looping.RestartLoopTypes(loopType, ref from, ref to);
                 time = 0;
+                DelayCycle(delay);
                 loopCounter++;
             }
+        }
+
+        void DelayCycle(float delay)
+        {
+            time -= delay;
         }
 
         bool NullTarget()
