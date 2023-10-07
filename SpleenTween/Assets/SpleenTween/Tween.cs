@@ -23,9 +23,20 @@ namespace SpleenTween
         {
             get
             {
-                float backwardsLerp = 1 - LerpProgress;
-                float lerpBasedOnDirection = loopType == Loop.Rewind ? (Direction == 0 ? backwardsLerp : LerpProgress) : LerpProgress;
-                float easeVal = Easing.EaseVal(easeType, lerpBasedOnDirection);
+                float easeVal = Easing.EaseVal(easeType, LerpProgress);
+
+                if(loopType == Loop.Rewind)
+                {
+                    float backwardsLerp = 1 - LerpProgress;
+                    float lerpBasedOnDirection = Direction == 0 ? backwardsLerp : LerpProgress;
+                    return Easing.EaseVal(easeType, lerpBasedOnDirection); 
+                }
+                else if(loopType == Loop.Yoyo)  // magic yoyo code instead of swapping from and to
+                {
+                    float backwardsEase = 1 - easeVal;
+                    return Direction == 0 ? backwardsEase : easeVal;
+                }
+
                 return easeVal;
             }
             set { }
@@ -52,7 +63,7 @@ namespace SpleenTween
 
         int loopCounter;
 
-        int Direction { get => loopType != Loop.Rewind ? 1 : ((loopCounter % 2) == 0 ? 1 : 0); } // default to forward if not rewind. otherwise, check direction based on loop count
+        int Direction { get => (loopType != Loop.Rewind && loopType != Loop.Yoyo) ? 1 : ((loopCounter % 2) == 0 ? 1 : 0); } // default to forward if not rewind. otherwise, check direction based on loop count
 
 
         public Tween(T from, T to, float duration, Ease easeType, Action<T> onUpdate)

@@ -18,10 +18,6 @@ public class Looping
     {
         switch(loopType)
         {
-            case Loop.Yoyo:
-                RestartYoyoLoop(ref from, ref to);
-                break;
-
             case Loop.Increment:
                 RestartIncrementLoop(ref from, ref to);
                 break;
