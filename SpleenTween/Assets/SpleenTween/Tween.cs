@@ -15,7 +15,20 @@ namespace SpleenTween
 
         float time;
         readonly float duration;
-        float lerpValue;
+        float LerpProgress { get => time / duration; }
+        float EaseProgress
+        {
+            get
+            {
+                float backwardsLerp = 1 - LerpProgress;
+                float lerpBasedOnDirection = loopType == Loop.Rewind ? (Direction == 0 ? backwardsLerp : LerpProgress) : LerpProgress;
+                float easeVal = Easing.EaseVal(easeType, lerpBasedOnDirection);
+                return easeVal;
+            }
+            set { }
+        }
+
+        bool Active { get => time < duration; }
 
         readonly Ease easeType = Ease.Linear;
 
@@ -25,9 +38,23 @@ namespace SpleenTween
         Action onComplete;
 
         Loop loopType;
-        int loopCycles = 0;
 
-        bool forward = true;
+        int _cycles = -1;
+        int Cycles
+        {
+            get
+            {
+                int clampedCycles = Mathf.Clamp(_cycles - loopCounter, -1, int.MaxValue);
+                return clampedCycles;
+            }
+            set 
+            {
+                Mathf.Clamp(value, -1, int.MaxValue);
+            }
+        }
+        int loopCounter; 
+
+        int Direction { get => (loopCounter % 2) == 0 ? 1 : 0; }
 
         public Tween(T from, T to, float duration, Ease easeType, Action<T> update)
         {
@@ -53,82 +80,65 @@ namespace SpleenTween
             return this;
         }
 
-        public Tween<T> SetLoop(Loop loopType)
+        public Tween<T> SetLoop(Loop loopType, int cycles)
         {
             this.loopType = loopType;
-            loopCycles = -1;
+            _cycles = cycles;
             return this;
         }
 
         bool ITween.Run()
         {
+            if (Cycles == 0) return false;
+
             if (NullTarget()) return false;
 
             time += Time.deltaTime;
 
-            float lerp = time / duration;
-            float inverseLerp = 1 - lerp;
-
-            lerpValue = Easing.EaseVal(easeType, loopType == Loop.Rewind ? (forward ? lerp : inverseLerp) : lerp);
-
-            bool running = time < duration;
-            if (!running)
+            if (!Active)
             {
                 CompleteTween();
-
-                if (loopType == Loop.Yoyo)
-                {
-                    Reverse();
-                    running = true;
-                }
-                else if (loopType == Loop.Rewind)
-                {
-                    forward = !forward;
-                    running = true;
-                    time = 0;
-                    lerpValue = forward ? 0 : 1;
-                }
+                RestartLoop();
+                EaseProgress = Direction;
             }
 
             UpdateValue();
-            return running;
+            return Active;
         }
 
         private void UpdateValue()
         {
             if (typeof(T) == typeof(float))
             {
-                float newVal = Mathf.LerpUnclamped((float)(object)from, (float)(object)to, lerpValue);
+                float newVal = Mathf.LerpUnclamped((float)(object)from, (float)(object)to, EaseProgress);
                 val = (T)(object)newVal;
             }
             else if (typeof(T) == typeof(Vector3))
             {
-                Vector3 newVal = Vector3.LerpUnclamped((Vector3)(object)from, (Vector3)(object)to, lerpValue);
+                Vector3 newVal = Vector3.LerpUnclamped((Vector3)(object)from, (Vector3)(object)to, EaseProgress);
                 val = (T)(object)newVal;
             }
             else if (typeof(T) == typeof(Color))
             {
-                Color newVal = Color.LerpUnclamped((Color)(object)from, (Color)(object)to, lerpValue);
+                Color newVal = Color.LerpUnclamped((Color)(object)from, (Color)(object)to, EaseProgress);
                 val = (T)(object)newVal;
             }
-
             update?.Invoke(val);
         }
 
         void CompleteTween()
         {
-            lerpValue = 1;
             onComplete?.Invoke();
-        }
+        } 
 
-        void Reverse()
+        void RestartLoop()
         {
-            (from, to) = (to, from);
-
-            forward = !forward;
-
-            time = 0;
-            lerpValue = 0;
+            if (Cycles == -1 || Cycles > 0)
+            {
+                Looping.RestartLoopTypes(loopType, ref from, ref to);
+                time = 0;
+                loopCounter++;
+            }
         }
 
         bool NullTarget()

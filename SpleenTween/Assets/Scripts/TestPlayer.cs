@@ -21,7 +21,7 @@ public class TestPlayer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            Spleen.Pos(transform, transform.position + Vector3.one * from, transform.position + Vector3.one * to, 2f, Ease.OutCubic).OnComplete(() => print("complete")).SetLoop(Loop.Rewind);
+            Spleen.Pos(transform, transform.position + Vector3.one * from, transform.position + Vector3.one * to, 2f, Ease.OutCubic).SetLoop(Loop.Restart, 3);
         }
     }
 }
