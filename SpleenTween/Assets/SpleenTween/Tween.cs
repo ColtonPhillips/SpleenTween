@@ -33,68 +33,44 @@ namespace SpleenTween
 
         bool Active { get => time < duration; }
 
-        readonly Ease easeType = Ease.Linear;
+        readonly Ease easeType;
+        Loop loopType;
 
-        readonly Action<T> update;
+        Action<T> onUpdate;
         readonly Func<bool> nullCheck;
 
         Action onComplete;
+        Action onStart;
+        bool started;
 
-        Loop loopType;
-
-        int _cycles = -1;
+        int cycles = -1;
         int Cycles
         {
-            get
-            {
-                int clampedCycles = Mathf.Clamp(_cycles - loopCounter, -1, int.MaxValue);
-                return clampedCycles;
-            }
-            set 
-            {
-                Mathf.Clamp(value, -1, int.MaxValue);
-            }
+            get => Mathf.Clamp(cycles - loopCounter, -1, int.MaxValue);
+            set => Mathf.Clamp(value, -1, int.MaxValue);
         }
-        int loopCounter; 
 
-        int Direction { get => (loopCounter % 2) == 0 ? 1 : 0; }
+        int loopCounter;
 
-        public Tween(T from, T to, float duration, Ease easeType, Action<T> update)
+        int Direction { get => loopType != Loop.Rewind ? 1 : ((loopCounter % 2) == 0 ? 1 : 0); } // default to forward if not rewind. otherwise, check direction based on loop count
+
+
+        public Tween(T from, T to, float duration, Ease easeType, Action<T> onUpdate)
         {
             this.from = from;
             this.to = to;
             this.duration = duration;
             this.easeType = easeType;
-            this.update = update;
+            this.onUpdate = onUpdate;
         }
-        public Tween(T from, T to, float duration, Ease easeType, Action<T> update, Func<bool> nullCheck)
+        public Tween(T from, T to, float duration, Ease easeType, Action<T> onUpdate, Func<bool> nullCheck)
         {
             this.from = from;
             this.to = to;
             this.duration = duration;
-            this.update = update;
+            this.onUpdate = onUpdate;
             this.easeType = easeType;
             this.nullCheck = nullCheck;
-        }
-
-        public Tween<T> OnComplete(Action onComplete)
-        {
-            this.onComplete += onComplete;
-            return this;
-        }
-
-        public Tween<T> SetLoop(Loop loopType, int cycles)
-        {
-            this.loopType = loopType;
-            _cycles = cycles;
-            return this;
-        }
-
-        public Tween<T> SetDelay(float delay, bool startDelay)
-        {
-            this.delay = delay;
-            if(startDelay) DelayCycle(delay);
-            return this;
         }
 
         bool ITween.Run()
@@ -105,16 +81,48 @@ namespace SpleenTween
 
             time += Time.deltaTime;
             if (time < 0) return true; // wait for delay
+            if (time >= 0 && !started) OnStartTween(); 
 
             if (!Active)
             {
-                CompleteTween();
+                OnCompleteTween();
                 RestartLoop();
                 EaseProgress = Direction; // set final value for precision
+                Debug.Log(Direction);
             }
 
             UpdateValue();
             return Active;
+        }
+
+        public Tween<T> OnComplete(Action onComplete)
+        {
+            this.onComplete += onComplete;
+            return this;
+        }
+        public Tween<T> OnStart(Action onStart)
+        {
+            this.onStart += onStart;
+            return this;
+        }
+        public Tween<T> OnUpdate(Action<T> onUpdate)
+        {
+            this.onUpdate += onUpdate;
+            return this;
+        }
+
+        public Tween<T> SetLoop(Loop loopType, int cycles)
+        {
+            this.loopType = loopType;
+            this.cycles = cycles;
+            return this;
+        }
+
+        public Tween<T> SetDelay(float delay, bool startDelay)
+        {
+            this.delay = delay;
+            if(startDelay) DelayCycle(delay);
+            return this;
         }
 
         private void UpdateValue()
@@ -134,13 +142,19 @@ namespace SpleenTween
                 Color newVal = Color.LerpUnclamped((Color)(object)from, (Color)(object)to, EaseProgress);
                 val = (T)(object)newVal;
             }
-            update?.Invoke(val);
+            onUpdate?.Invoke(val);
         }
 
-        void CompleteTween()
+        void OnCompleteTween()
         {
+            started = false;
             onComplete?.Invoke();
         } 
+        void OnStartTween()
+        {
+            started = true;
+            onStart?.Invoke();
+        }
 
         void RestartLoop()
         {

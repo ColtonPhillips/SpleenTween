@@ -21,7 +21,12 @@ public class TestPlayer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            Spleen.Pos(transform, transform.position + Vector3.one * from, transform.position + Vector3.one * to, 2f, Ease.OutElastic).SetLoop(Loop.Increment, 3).SetDelay(1, false);
+            Spleen.Pos(transform, transform.position + Vector3.one * from, transform.position + Vector3.one * to, 2f, Ease.OutElastic).SetLoop(Loop.Rewind, 3).SetDelay(1, false).OnStart(() => print("started")).OnUpdate((_) => print("asd")).OnComplete(() => print("complted"));
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 }

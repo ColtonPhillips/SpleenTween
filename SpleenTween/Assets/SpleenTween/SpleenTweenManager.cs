@@ -48,7 +48,6 @@ namespace SpleenTween
         public static void StopTween(ITween tween) => Instance.activeTweens.Remove(tween);
         public static void StopAll(Scene a, Scene b) => Instance.activeTweens.Clear();
 
-
         private void OnEnable() => SceneManager.activeSceneChanged += StopAll;
         private void OnDisable() => SceneManager.activeSceneChanged -= StopAll;
     }
