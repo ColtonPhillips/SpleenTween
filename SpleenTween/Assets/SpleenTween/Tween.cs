@@ -54,7 +54,7 @@ namespace SpleenTween
         Action onStart;
         bool started;
 
-        int cycles = -1;
+        int cycles = 0;
         int Cycles
         {
             get => Mathf.Clamp(cycles - loopCounter, -1, int.MaxValue);
@@ -65,6 +65,7 @@ namespace SpleenTween
 
         int Direction { get => (loopType != Loop.Rewind && loopType != Loop.Yoyo) ? 1 : ((loopCounter % 2) == 0 ? 1 : 0); } // default to forward if not rewind. otherwise, check direction based on loop count
 
+        public bool Paused { get; private set; }
 
         public Tween(T from, T to, float duration, Ease easeType, Action<T> onUpdate)
         {
@@ -86,7 +87,7 @@ namespace SpleenTween
 
         bool ITween.Run()
         {
-            if (Cycles == 0) return false; // hack: because if Cycles is 0, it does 1 cycle
+            if (Paused) return true;
 
             if (NullTarget()) return false;
 
@@ -99,7 +100,6 @@ namespace SpleenTween
                 OnCompleteTween();
                 RestartLoop();
                 EaseProgress = Direction; // set final value for precision
-                Debug.Log(Direction);
             }
 
             UpdateValue();
@@ -124,8 +124,12 @@ namespace SpleenTween
 
         public Tween<T> SetLoop(Loop loopType, int cycles)
         {
+            if (cycles == 0)
+                SpleenTweenManager.StopTween(this);
+
             this.loopType = loopType;
-            this.cycles = cycles;
+            this.cycles = cycles - 1;
+
             return this;
         }
 
@@ -135,6 +139,18 @@ namespace SpleenTween
             if(startDelay) DelayCycle(delay);
             return this;
         }
+
+        public Tween<T> Pause()
+        {
+            Paused = true;
+            return this;
+        }
+        public Tween<T> Play()
+        {
+            Paused = false;
+            return this;
+        }
+
 
         private void UpdateValue()
         {

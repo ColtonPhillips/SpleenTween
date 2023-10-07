@@ -21,7 +21,7 @@ public class TestPlayer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            Spleen.Pos(transform, transform.position + Vector3.one * from, transform.position + Vector3.one * to, 2f, Ease.OutElastic).SetLoop(Loop.Yoyo, 3).SetDelay(1, false).OnStart(() => print("started")).OnUpdate((_) => print("asd")).OnComplete(() => print("complted"));
+            Spleen.Pos(transform, Vector3.zero, Vector3.one, 1f, Ease.Linear).SetLoop(Loop.Yoyo, -1);
         }
 
         if (Input.GetKeyDown(KeyCode.S))
