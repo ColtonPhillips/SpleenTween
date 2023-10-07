@@ -16,14 +16,10 @@ public class Looping
 {
     public static void RestartLoopTypes<T>(Loop loopType, ref T from, ref T to)
     {
-        switch(loopType)
+        switch (loopType)
         {
-            case Loop.Increment:
-                RestartIncrementLoop(ref from, ref to);
-                break;
-
-            default:
-                break;
+            case Loop.Increment: RestartIncrementLoop(ref from, ref to); break;
+            default: break;
         }
     }
 
