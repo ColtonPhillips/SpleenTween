@@ -99,18 +99,18 @@ namespace SpleenTween
 
         bool ITween.Run()
         {
-            if (Cycles == 0) return false;
+            if (Cycles == 0) return false; // hack: because if Cycles is 0, it does 1 cycle
 
             if (NullTarget()) return false;
 
             time += Time.deltaTime;
-            if (time < 0) return true;
+            if (time < 0) return true; // wait for delay
 
             if (!Active)
             {
                 CompleteTween();
                 RestartLoop();
-                EaseProgress = Direction;
+                EaseProgress = Direction; // set final value for precision
             }
 
             UpdateValue();
