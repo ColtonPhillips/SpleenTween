@@ -58,7 +58,10 @@ namespace SpleenTween
 
         int loopCounter;
 
-        int Direction { get => (!Looping.IsLoopWeird(LoopType)) ? 1 : ((loopCounter % 2) == 0 ? 1 : 0); } // default to forward if not rewind. otherwise, check direction based on loop count
+        int Direction 
+        { 
+            get => (!Looping.IsLoopWeird(LoopType) || (loopCounter % 2) == 0) ? 1 : 0; // default to forward if not rewind. otherwise, check direction based on loop count
+        } 
 
         public bool Paused { get; private set; }
 
@@ -182,14 +185,7 @@ namespace SpleenTween
 
         bool NullTarget()
         {
-            if (nullCheck != null)
-            {
-                if (nullCheck.Invoke() == true)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return nullCheck != null && nullCheck.Invoke();
         }
     }
 }

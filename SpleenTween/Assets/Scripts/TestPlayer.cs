@@ -25,7 +25,6 @@ public class TestPlayer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            SpleenTweenManager.StopTween(tween);
             tween = Spleen.AddPos(transform, Vector3.one * to, duration, ease).SetLoop(loop, loopCount);
         }
 
