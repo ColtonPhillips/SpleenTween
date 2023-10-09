@@ -26,9 +26,26 @@ namespace SpleenTween
         {
             return null;
         }
-        static Tween<T> CreateRelativeTargetTween<T, K>(K target, T initalValue, T increment, float duration, Ease ease, Action<T> onUpdate)
+        static Tween<T> CreateRelativeTargetTween<T, K>(K target, T increment, float duration, Ease ease, Func<T> initialVal, Action<T,T> onUpdate)
         {
-            return null;
+            T initial = initialVal.Invoke();
+            Tween<T> tween = new(initial, increment, duration, ease, (val) =>
+            {
+                onUpdate.Invoke(val, initial);
+            });
+            tween.OnUpdate((val) => initial = val);
+
+            tween.OnStart(() =>
+            {
+                if (tween.LoopType != Loop.Rewind && tween.LoopType != Loop.Yoyo)
+                {
+                    initial = initialVal.Invoke();
+                    tween.from = initial;
+                    tween.to = SpleenExt.AddGeneric<T>(initial, increment);
+                }
+            });
+            SpleenTweenManager.StartTween(tween);
+            return tween;
         }
 
 
@@ -46,8 +63,12 @@ namespace SpleenTween
         public static Tween<float> PosZ(Transform target, float from, float to, float duration, Ease ease) =>
             CreateTargetTween(target, from, to, duration, ease, val => SpleenExt.SetPosAxis(SpleenExt.Axes.Z, target, val));
 
-
         public static Tween<Vector3> AddPos(Transform target, Vector3 increment, float duration, Ease easing)
+        {
+            return CreateRelativeTargetTween(target, increment, duration, easing, () => target.position, (val, from) => target.position += val - from);
+        }
+
+        public static Tween<Vector3> AddPosTesting(Transform target, Vector3 increment, float duration, Ease easing)
         {
             Vector3 from = target.position;
             Tween<Vector3> tween = new(from, increment, duration, easing, (val) =>
@@ -68,7 +89,5 @@ namespace SpleenTween
             SpleenTweenManager.StartTween(tween);
             return tween;
         }
-
-        void 
     }
 }
