@@ -1,3 +1,4 @@
+using SpleenTween;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,32 +31,8 @@ public class Looping
 
     static void RestartIncrementLoop<T>(ref T from, ref T to)
     {
-        if (typeof(T) == typeof(float))
-        {
-            float diff = (float)(object)to - (float)(object)from;
-            float newFrom = (float)(object)from + diff;
-            float newTo = (float)(object)to + diff;
-
-            from = (T)(object)newFrom;
-            to = (T)(object)newTo;
-        }
-        else if (typeof(T) == typeof(Vector3))
-        {
-            Vector3 diff = (Vector3)(object)to - (Vector3)(object)from;
-            Vector3 newFrom = (Vector3)(object)from + diff;
-            Vector3 newTo = (Vector3)(object)to + diff;
-
-            from = (T)(object)newFrom;
-            to = (T)(object)newTo;
-        }
-        else if (typeof(T) == typeof(Color))
-        {
-            Color diff = (Color)(object)to - (Color)(object)from;
-            Color newFrom = (Color)(object)from + diff;
-            Color newTo = (Color)(object)to + diff;
-
-            from = (T)(object)newFrom;
-            to = (T)(object)newTo;
-        }
+        T diff = SpleenExt.SubtractGeneric<T>(to, from);
+        from = SpleenExt.AddGeneric<T>(from, diff);
+        to = SpleenExt.AddGeneric<T>(to, diff);
     }
 }

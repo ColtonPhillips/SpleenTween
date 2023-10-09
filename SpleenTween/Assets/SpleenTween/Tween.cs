@@ -154,21 +154,7 @@ namespace SpleenTween
 
         private void UpdateValue()
         {
-            if (typeof(T) == typeof(float))
-            {
-                float newVal = Mathf.LerpUnclamped((float)(object)from, (float)(object)to, EaseProgress);
-                val = (T)(object)newVal;
-            }
-            else if (typeof(T) == typeof(Vector3))
-            {
-                Vector3 newVal = Vector3.LerpUnclamped((Vector3)(object)from, (Vector3)(object)to, EaseProgress);
-                val = (T)(object)newVal;
-            }
-            else if (typeof(T) == typeof(Color))
-            {
-                Color newVal = Color.LerpUnclamped((Color)(object)from, (Color)(object)to, EaseProgress);
-                val = (T)(object)newVal;
-            }
+            val = SpleenExt.LerpUnclampedGeneric(from, to, EaseProgress);
             onUpdate?.Invoke(val);
         }
 

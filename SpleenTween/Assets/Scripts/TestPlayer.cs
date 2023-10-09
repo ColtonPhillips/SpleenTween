@@ -8,6 +8,9 @@ public class TestPlayer : MonoBehaviour
     [SerializeField] float from;
     [SerializeField] float to;
     [SerializeField] float duration;
+    [SerializeField] Ease ease;
+    [SerializeField] Loop loop;
+    [SerializeField] int loopCount = -1;
 
     [SerializeField] int iterations;
 
@@ -17,11 +20,14 @@ public class TestPlayer : MonoBehaviour
 
     [SerializeField] AudioSource source;
 
+    ITween tween;
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            Spleen.Pos(transform, Vector3.zero, Vector3.one, 1f, Ease.Linear).SetLoop(Loop.Yoyo, -1);
+            SpleenTweenManager.StopTween(tween);
+            tween = Spleen.Pos(transform, Vector3.one * from, Vector3.one * to, duration, ease).SetLoop(loop, loopCount);
         }
 
         if (Input.GetKeyDown(KeyCode.S))
