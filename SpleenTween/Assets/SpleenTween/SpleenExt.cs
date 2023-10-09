@@ -5,24 +5,38 @@ namespace SpleenTween
 {
     public class SpleenExt : MonoBehaviour
     {
-        public enum Axes {X,Y,Z};
+        public enum Axes {x,y,z};
 
-        static void SetTransformAxis(Axes axis, Transform target, float targetVal, Action<Vector3> setAxis)
+        static void SetAxis(Axes axis, Vector3 inVal, float targetVal, Action<Vector3> setAxis)
         {
-            Vector3 newTransform = target.position;
+            Vector3 newVal = inVal;
             switch (axis)
             {
-                case Axes.X: newTransform.x = targetVal; break;
-                case Axes.Y: newTransform.y = targetVal; break;
-                case Axes.Z: newTransform.z = targetVal; break;
+                case Axes.x: newVal.x = targetVal; break;
+                case Axes.y: newVal.y = targetVal; break;
+                case Axes.z: newVal.z = targetVal; break;
             }
-            setAxis(newTransform);
+            setAxis(newVal);
+        }
+        static void AddAxis(Axes axis, float increment, Action<Vector3> setAxis)
+        {
+            Vector3 newVal = Vector3.zero;
+            switch (axis)
+            {
+                case Axes.x: newVal.x = increment; break;
+                case Axes.y: newVal.y = increment; break;
+                case Axes.z: newVal.z = increment; break;
+            }
+            setAxis(newVal);
         }
 
-        public static void SetPosAxis(Axes axis, Transform target, float targetVal) => SetTransformAxis(axis, target, targetVal, (val) => target.transform.position = val);
-        public static void SetScaleAxis(Axes axis, Transform target, float targetVal) => SetTransformAxis(axis, target, targetVal, (val) => target.transform.localScale = val);
-        public static void SetRotAxis(Axes axis, Transform target, float targetVal) => SetTransformAxis(axis, target, targetVal, (val) => target.transform.eulerAngles = val);
+        public static void SetPosAxis(Axes axis, Transform target, float targetVal) => SetAxis(axis, target.position, targetVal, (val) => target.transform.position = val);
+        public static void SetScaleAxis(Axes axis, Transform target, float targetVal) => SetAxis(axis, target.localScale, targetVal, (val) => target.transform.localScale = val);
+        public static void SetRotAxis(Axes axis, Transform target, float targetVal) => SetAxis(axis, target.eulerAngles, targetVal, (val) => target.transform.eulerAngles = val);
 
+        public static void AddPosAxis(Axes axis, Transform target, float increment) => AddAxis(axis, increment, (val) => target.transform.position += val);
+        public static void AddScaleAxis(Axes axis, Transform target, float increment) => AddAxis(axis, increment, (val) => target.transform.localScale += val);
+        public static void AddRotAxis(Axes axis, Transform target, float increment) => AddAxis(axis, increment, (val) => target.transform.eulerAngles += val);
 
 
         public static T AddGeneric<T>(T a, T b)

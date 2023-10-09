@@ -209,8 +209,8 @@ MonoBehaviour:
   from: 1
   to: 3
   duration: 2
-  ease: 26
-  loop: 2
+  ease: 9
+  loop: 1
   loopCount: 1
   iterations: 1
   currentValue: 0
