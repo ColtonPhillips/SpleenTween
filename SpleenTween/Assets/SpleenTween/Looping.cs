@@ -1,9 +1,4 @@
 using SpleenTween;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
 
 public enum Loop
 {
@@ -24,15 +19,15 @@ public class Looping
         }
     }
 
-    static void RestartYoyoLoop<T>(ref T from, ref T to)
+    public static bool IsLoopWeird(Loop loopType)
     {
-        (from, to) = (to, from);
+        return loopType == Loop.Yoyo || loopType == Loop.Rewind;
     }
 
     static void RestartIncrementLoop<T>(ref T from, ref T to)
     {
-        T diff = SpleenExt.SubtractGeneric<T>(to, from);
-        from = SpleenExt.AddGeneric<T>(from, diff);
-        to = SpleenExt.AddGeneric<T>(to, diff);
+        T diff = SpleenExt.SubtractGeneric(to, from);
+        from = SpleenExt.AddGeneric(from, diff);
+        to = SpleenExt.AddGeneric(to, diff);
     }
 }

@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace SpleenTween
@@ -26,24 +24,30 @@ namespace SpleenTween
         {
             return null;
         }
-        static Tween<T> CreateRelativeTargetTween<T, K>(K target, T increment, float duration, Ease ease, Func<T> initialVal, Action<T,T> onUpdate)
+        static Tween<T> CreateRelativeTargetTween<T, K>(K target, T increment, float duration, Ease ease, Func<T> currentVal, Action<T, T> onUpdate)
         {
-            T initial = initialVal.Invoke();
-            Tween<T> tween = new(initial, increment, duration, ease, (val) =>
+            T current = currentVal.Invoke();
+            T from = current;
+            T to = SpleenExt.AddGeneric(current, increment);
+
+            Tween<T> tween = new(from, to, duration, ease, (val) =>
             {
-                onUpdate.Invoke(val, initial);
+                onUpdate.Invoke(val, current);
+                current = val;
             });
-            tween.OnUpdate((val) => initial = val);
 
             tween.OnStart(() =>
             {
-                if (tween.LoopType != Loop.Rewind && tween.LoopType != Loop.Yoyo)
+                if (!Looping.IsLoopWeird(tween.LoopType))
                 {
-                    initial = initialVal.Invoke();
-                    tween.from = initial;
-                    tween.to = SpleenExt.AddGeneric<T>(initial, increment);
+                    current = currentVal.Invoke();
+                    from = current;
+                    to = SpleenExt.AddGeneric(current, increment);
+                    tween.from = from;
+                    tween.to = to;
                 }
             });
+
             SpleenTweenManager.StartTween(tween);
             return tween;
         }
@@ -63,31 +67,7 @@ namespace SpleenTween
         public static Tween<float> PosZ(Transform target, float from, float to, float duration, Ease ease) =>
             CreateTargetTween(target, from, to, duration, ease, val => SpleenExt.SetPosAxis(SpleenExt.Axes.Z, target, val));
 
-        public static Tween<Vector3> AddPos(Transform target, Vector3 increment, float duration, Ease easing)
-        {
-            return CreateRelativeTargetTween(target, increment, duration, easing, () => target.position, (val, from) => target.position += val - from);
-        }
-
-        public static Tween<Vector3> AddPosTesting(Transform target, Vector3 increment, float duration, Ease easing)
-        {
-            Vector3 from = target.position;
-            Tween<Vector3> tween = new(from, increment, duration, easing, (val) =>
-            {
-                target.position += val - from;
-                from = val;
-            });
-            tween.OnStart(() =>
-            {
-                if (tween.LoopType != Loop.Rewind && tween.LoopType != Loop.Yoyo)
-                {
-                    from = target.position;
-                    tween.from = from;
-                    tween.to = from + increment;
-                }
-            });
-
-            SpleenTweenManager.StartTween(tween);
-            return tween;
-        }
+        public static Tween<Vector3> AddPos(Transform target, Vector3 increment, float duration, Ease easing) =>
+            CreateRelativeTargetTween(target, increment, duration, easing, () => target.position, (val, from) => target.position += val - from);
     }
 }

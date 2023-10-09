@@ -1,10 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
-using UnityEngine.Video;
 
 namespace SpleenTween 
 {
@@ -63,7 +58,7 @@ namespace SpleenTween
 
         int loopCounter;
 
-        int Direction { get => (LoopType != Loop.Rewind && LoopType != Loop.Yoyo) ? 1 : ((loopCounter % 2) == 0 ? 1 : 0); } // default to forward if not rewind. otherwise, check direction based on loop count
+        int Direction { get => (!Looping.IsLoopWeird(LoopType)) ? 1 : ((loopCounter % 2) == 0 ? 1 : 0); } // default to forward if not rewind. otherwise, check direction based on loop count
 
         public bool Paused { get; private set; }
 
