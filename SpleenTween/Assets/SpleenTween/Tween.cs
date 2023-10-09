@@ -10,8 +10,8 @@ namespace SpleenTween
 {
     public class Tween<T> : ITween
     {
-        T from;
-        T to;
+        public T from;
+        public T to;
         T val;
 
         float time;
@@ -25,13 +25,13 @@ namespace SpleenTween
             {
                 float easeVal = Easing.EaseVal(easeType, LerpProgress);
 
-                if(loopType == Loop.Rewind)
+                if(LoopType == Loop.Rewind)
                 {
                     float backwardsLerp = 1 - LerpProgress;
                     float lerpBasedOnDirection = Direction == 0 ? backwardsLerp : LerpProgress;
                     return Easing.EaseVal(easeType, lerpBasedOnDirection); 
                 }
-                else if(loopType == Loop.Yoyo)  // magic yoyo code instead of swapping from and to
+                else if(LoopType == Loop.Yoyo)  // magic yoyo code instead of swapping from and to
                 {
                     float backwardsEase = 1 - easeVal;
                     return Direction == 0 ? backwardsEase : easeVal;
@@ -45,7 +45,7 @@ namespace SpleenTween
         bool Active { get => time < duration; }
 
         readonly Ease easeType;
-        Loop loopType;
+        public Loop LoopType { get; private set; }
 
         Action<T> onUpdate;
         readonly Func<bool> nullCheck;
@@ -63,7 +63,7 @@ namespace SpleenTween
 
         int loopCounter;
 
-        int Direction { get => (loopType != Loop.Rewind && loopType != Loop.Yoyo) ? 1 : ((loopCounter % 2) == 0 ? 1 : 0); } // default to forward if not rewind. otherwise, check direction based on loop count
+        int Direction { get => (LoopType != Loop.Rewind && LoopType != Loop.Yoyo) ? 1 : ((loopCounter % 2) == 0 ? 1 : 0); } // default to forward if not rewind. otherwise, check direction based on loop count
 
         public bool Paused { get; private set; }
 
@@ -127,7 +127,7 @@ namespace SpleenTween
             if (cycles == 0)
                 SpleenTweenManager.StopTween(this);
 
-            this.loopType = loopType;
+            this.LoopType = loopType;
             this.cycles = cycles - 1;
 
             return this;
@@ -173,7 +173,7 @@ namespace SpleenTween
         {
             if (Cycles == -1 || Cycles > 0)
             {
-                Looping.RestartLoopTypes(loopType, ref from, ref to);
+                Looping.RestartLoopTypes(LoopType, ref from, ref to);
                 time = 0;
                 DelayCycle(delay);
                 loopCounter++;
